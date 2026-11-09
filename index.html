@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VITRO | Scrubs de ingeniería para estudiantes de ciencias de la salud</title>
+<meta name="description" content="Scrubs de grado profesional diseñados por estudiantes de ingeniería, para estudiantes de medicina, enfermería, odontología y fisioterapia. Set completo $800 MXN.">
+<meta property="og:title" content="VITRO | Scrubs para estudiantes de ciencias de la salud">
+<meta property="og:description" content="De estudiantes para estudiantes. Set completo $800 MXN.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFAF5; --bg2:#F3F1EA; --ink:#12182B; --muted:#53565E; --soft:#7A7C82;
+  --line:#E4E0D3; --ph:#E7E3D9; --navy:#0E1830; --gold:#E8B84B;
+  --c-navy:#1E2C4C; --c-vino:#7C2343; --c-verde:#A7CDB6;
+  --head:'Montserrat','Verdana',sans-serif; --body:'Instrument Sans','Segoe UI',Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.dark a:focus-visible,.dark button:focus-visible,.dark input:focus-visible{outline-color:var(--gold)}
+h1,h2,h3{font-family:var(--head);margin:0;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.dark .eyebrow{color:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:14px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;font:600 15px var(--body);cursor:pointer}
+.btn:hover{opacity:.9}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.wa{background:#2F7D57;border-color:#2F7D57}
+.btn[aria-disabled=true]{opacity:.45;cursor:not-allowed}
+.ph{background:var(--ph) center/cover no-repeat;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#8B8778;font-size:14px;font-weight:600;text-align:center;padding:16px}
+section{padding:72px 0}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em}
+nav.main{display:flex;gap:28px}
+nav.main a{font-size:15px;font-weight:500}
+nav.main a:hover{text-decoration:underline;text-underline-offset:6px}
+.top .btn{min-height:44px;border-radius:22px;padding:0 20px;font-size:14px}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(38px,5.4vw,60px);line-height:1.05;font-weight:800;margin:18px 0 22px}
+.hero p.lead{font-size:18px;color:var(--muted);max-width:480px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
+.hero .tags{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.hero .tags span+span::before{content:"";display:inline-block;width:4px;height:4px;border-radius:2px;background:#C9C4B4;margin-right:14px;vertical-align:middle}
+.hero .ph{min-height:520px}
+.hero .badge{position:absolute;left:20px;bottom:20px;background:#fff;border-radius:14px;padding:12px 18px;box-shadow:0 20px 40px -20px rgba(18,24,43,.35);text-align:left}
+.badge small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.badge b{font-size:15px}
+.rel{position:relative}
+
+/* carreras */
+.careers .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:28px}
+.career{border:1px solid var(--line);background:#fff;border-radius:16px;padding:24px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;font:inherit;color:inherit}
+.career:hover{border-color:var(--ink)}
+.career .ic{width:50px;height:50px;border-radius:25px;background:#F0EEE4;display:flex;align-items:center;justify-content:center}
+.career b{font-size:15px}.career span{font-size:13px;color:var(--soft)}
+.sec-head{display:flex;flex-direction:column;gap:10px;max-width:640px}
+.sec-head h2{font-size:clamp(28px,3.4vw,36px);font-weight:800}
+.sec-head p{color:var(--muted)}
+
+/* tienda */
+.shop{background:var(--bg2)}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:32px auto 0;max-width:880px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.card .ph{height:280px;position:relative}
+.card .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.card h3{font-size:18px;font-weight:700}
+.price{font:700 18px var(--head)}
+.card .desc{font-size:14px;color:var(--muted)}
+.lbl{font-size:13px;font-weight:600}
+.mxn{font:500 12px var(--body);color:var(--soft)}
+.stu{font-size:14px;color:#2F7D57}.stu b{font-weight:700}
+.few{color:#9C5A1F;font-weight:600}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#FBFAF5;font-size:14px;line-height:1.4;cursor:pointer}
+.chk input{margin-top:3px;width:20px;height:20px;flex:none}
+.chk small{color:var(--muted);font-size:13px}
+.dots{display:flex;gap:12px;flex-wrap:wrap}
+.dot{border:0;background:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:8px;font:500 13px var(--body);color:var(--ink);min-height:44px}
+.dot i{width:26px;height:26px;border-radius:13px;display:block;box-shadow:inset 0 0 0 1px rgba(18,24,43,.2)}
+.dot[aria-pressed=true] i{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+.dot[disabled]{opacity:.5;cursor:not-allowed}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.size{min-width:48px;min-height:44px;border-radius:12px;border:1px solid #C9C4B4;background:#fff;font:600 14px var(--body);cursor:pointer}
+.size[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.buy{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.note{font-size:12px;color:var(--soft)}
+.chip{position:absolute;top:12px;left:12px;background:var(--ink);color:#fff;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 10px}
+.soon{font-size:12px;color:var(--soft)}
+
+/* colores */
+.colors{background:var(--navy);color:#fff}
+.colors .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:center}
+.colors h2{font-size:clamp(30px,4vw,40px);font-weight:800;margin:14px 0}
+.colors p{color:#B9C0D6}
+.swatches{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
+.sw{border:0;background:none;cursor:pointer;color:#fff;display:flex;flex-direction:column;align-items:center;gap:10px;font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;min-height:44px}
+.sw i{width:48px;height:48px;border-radius:24px;display:block}
+.sw[aria-pressed=true] i{box-shadow:0 0 0 3px var(--navy),0 0 0 5px var(--gold)}
+.sw span{color:#8890A6}.sw[aria-pressed=true] span{color:#fff}
+.colors h3{font-size:28px;font-weight:800;margin:10px 0 12px}
+
+/* manifiesto / tribu */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.two .ph{min-height:420px}
+.two h2{font-size:clamp(28px,3.6vw,38px);font-weight:800;margin:14px 0 18px}
+.two p+p{margin-top:14px}
+.two .muted{color:var(--muted)}
+.tribe{background:var(--bg2)}
+.amanc{display:inline-block;margin-top:18px;padding:10px 16px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:600}
+
+/* quiz */
+.quiz{background:var(--navy);color:#fff;text-align:center}
+.quiz .box{max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:18px}
+.quiz h2{font-size:clamp(28px,4vw,36px);font-weight:800}
+.bar{display:flex;gap:8px}
+.bar i{display:block;width:56px;height:4px;border-radius:2px;background:rgba(255,255,255,.25)}
+.bar i.on{background:var(--gold)}
+.q{font:700 22px var(--head)}
+.opts{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.opt{min-height:52px;padding:0 22px;border:1.5px solid rgba(255,255,255,.4);border-radius:12px;background:transparent;color:#fff;font:600 15px var(--body);cursor:pointer}
+.opt:hover{background:rgba(255,255,255,.1)}
+.result{display:flex;flex-direction:column;align-items:center;gap:14px}
+.result h3{font-size:28px;font-weight:800}
+.result p{color:#B9C0D6;max-width:520px}
+.quiz .btn{background:#fff;color:var(--ink);border-color:#fff}
+.quiz .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+
+/* newsletter */
+.news{text-align:center}
+.news form{display:flex;gap:12px;max-width:480px;margin:22px auto 0}
+.news input{flex:1;min-height:52px;border:1px solid #C9C4B4;border-radius:26px;padding:0 20px;font:15px var(--body);background:#fff;color:var(--ink)}
+.news .btn{border-radius:26px}
+.news .msg{margin-top:12px;font-size:14px;color:var(--muted);min-height:20px}
+
+/* footer */
+footer{background:var(--ink);color:#fff;padding:56px 0 28px}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+footer h4{margin:0 0 12px;font:700 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#7C8299}
+footer a{display:block;font-size:15px;margin-bottom:8px}
+footer p{color:#B9C0D6;font-size:14px;max-width:340px;margin:12px 0 16px}
+footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:#7C8299}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* carrito */
+.cartbtn{position:relative;min-height:44px;min-width:44px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.cartbtn b{position:absolute;top:2px;right:0;min-width:18px;height:18px;border-radius:9px;background:var(--ink);color:#fff;font:700 11px var(--body);display:flex;align-items:center;justify-content:center;padding:0 4px}
+.cartbtn b[hidden]{display:none}
+.veil{position:fixed;inset:0;background:rgba(18,24,43,.45);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;z-index:50;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(18,24,43,.35)}
+.drawer[hidden],.veil[hidden]{display:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.drawer header h2{font-size:20px;font-weight:800}
+.x{min-width:44px;min-height:44px;border:0;background:none;font-size:26px;cursor:pointer;color:var(--ink)}
+.dbody{flex:1;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.line{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.line b{font-size:15px}.line small{display:block;color:var(--muted);font-size:13px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:36px;height:36px;border-radius:10px;border:1px solid #C9C4B4;background:#fff;font:600 16px var(--body);cursor:pointer}
+.qty span{min-width:22px;text-align:center;font-weight:600}
+.rm{border:0;background:none;color:var(--soft);font:500 13px var(--body);text-decoration:underline;cursor:pointer;min-height:36px}
+.dfoot{border-top:1px solid var(--line);padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.tot{display:flex;justify-content:space-between;font-size:15px}
+.tot.big{font:800 18px var(--head)}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select{min-height:46px;border:1px solid #C9C4B4;border-radius:10px;padding:0 12px;font:15px var(--body);background:#fff;color:var(--ink);width:100%}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:#9B1C1C;font-size:13px;min-height:18px}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+
+@media (max-width:900px){
+  nav.main{display:none}
+  .hero .wrap,.colors .wrap,.two{grid-template-columns:1fr;gap:32px}
+  .hero .ph{min-height:360px}
+  .careers .grid{grid-template-columns:repeat(2,1fr)}
+  .products{grid-template-columns:1fr}
+  section{padding:56px 0}
+  footer .cols{grid-template-columns:1fr}
+  .news form{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="VITRO, inicio">
+      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#12182B"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#12182B" stroke-width="3" stroke-linecap="round"/></svg>
+      VITRO
+    </a>
+    <nav class="main" aria-label="Principal">
+      <a href="#tienda">Scrubs</a>
+      <a href="#carreras">Por carrera</a>
+      <a href="#tribu">La tribu</a>
+      <a href="#manifiesto">Manifiesto</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button type="button" class="cartbtn" id="opencart" aria-label="Abrir carrito">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V8"/></svg>
+        <b id="cartcount" hidden>0</b>
+      </button>
+      <a class="btn" href="#tienda">Ver tienda</a>
+    </div>
+  </div>
+</header>
+
+<div class="veil" id="veil" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" hidden>
+  <header><h2 id="dtitle">Tu pedido</h2><button type="button" class="x" id="closecart" aria-label="Cerrar carrito">&times;</button></header>
+  <div class="dbody" id="dbody"></div>
+  <div class="dfoot" id="dfoot"></div>
+</aside>
+
+<main id="inicio">
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">De estudiantes para estudiantes</div>
+      <h1>Ingeniería para quienes cuidan la vida.</h1>
+      <p class="lead">Scrubs diseñados por estudiantes de ingeniería que vieron a sus amigos hacer guardias de 12 horas con ropa que no aguantaba. Tela técnica, corte honesto, cero disfraz.</p>
+      <div class="cta">
+        <a class="btn" href="#tienda">Ver los scrubs</a>
+        <a class="btn ghost" href="#quiz">¿Qué bata eres?</a>
+      </div>
+      <div class="tags"><span>Resiste el cloro</span><span>V-Shield en Traction Navy</span><span>Precio estudiante desde $800</span></div>
+    </div>
+    <div class="rel">
+      <div class="ph" style="background-image:url(img/hero.jpg)" role="img" aria-label="Estudiante en práctica clínica con scrubs VITRO">Foto: práctica clínica, luz natural<br><small>(img/hero.jpg)</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="careers" id="carreras">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Encuéntrate</div>
+      <h2>Tu carrera, tu uniforme.</h2>
+      <p>Cada especialidad pide algo distinto. Elige la tuya y te llevamos a la tienda.</p>
+    </div>
+    <div class="grid">
+      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4 V10 A6 6 0 0 0 18 10 V4"/><circle cx="19" cy="4" r="2"/><path d="M12 16 V20"/></svg></span><b>Medicina</b><span>Pa' los de guardia</span></a>
+      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21 C7 17 3 13.5 3 9.4 A5 5 0 0 1 12 6.5 A5 5 0 0 1 21 9.4 C21 13.5 17 17 12 21 Z"/></svg></span><b>Enfermería</b><span>Pa' las que no paran</span></a>
+      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17" cy="6" r="2.4"/><path d="M9 5 C9 9 11 10 11 14 C11 18 8 19 6 17 C4 15 5 12 5 10"/></svg></span><b>Odontología</b><span>Pa' los de odonto</span></a>
+      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3 H14 L18 8 V21 H6 Z"/><path d="M14 3 V8 H18"/><path d="M9.5 12 H14.5 M9.5 15.5 H12.5"/></svg></span><b>Lab Clínico</b><span>Pa' los del microscopio</span></a>
+      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14 H7 L9 8 L13 18 L15 12 L17 14 H21"/></svg></span><b>Fisioterapia</b><span>Pa' los del movimiento</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="tienda">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">La tienda</div>
+      <h2>Scrubs que aguantan.</h2>
+      <p>Cada set incluye top y pantalón. Elige modelo, color y talla, y paga aquí mismo. Si estudias ciencias de la salud, tienes precio estudiante en el carrito.</p>
+    </div>
+    <div class="products" id="products" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="colors dark" id="colores">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Colores núcleo</div>
+      <h2>Tres colores con nombre propio.</h2>
+      <p>No son "azul 3". Cada color de VITRO tiene su historia, porque lo elegiste con la práctica en mente.</p>
+      <div class="swatches" id="swatches" role="group" aria-label="Colores VITRO"></div>
+    </div>
+    <div>
+      <div class="eyebrow">Colección</div>
+      <h3 id="cname"></h3>
+      <p id="cdesc"></p>
+      <p id="cstatus" class="note" style="margin-top:14px;color:#B9C0D6"></p>
+    </div>
+  </div>
+</section>
+
+<section id="manifiesto">
+  <div class="wrap two">
+    <div class="ph" style="background-image:url(img/manifiesto.jpg)" role="img" aria-label="Estudiante estudiando de noche en la biblioteca">Foto: biblioteca a las 2am<br><small>(img/manifiesto.jpg)</small></div>
+    <div>
+      <div class="eyebrow">El manifiesto</div>
+      <h2>No es la ropa de tu tía.</h2>
+      <p class="muted">Empezó porque vimos a nuestros amigos llegar a guardias con uniformes que picaban, que se transparentaban, que no aguantaban un turno.</p>
+      <p><b>Somos estudiantes de ingeniería.</b> No sabíamos hacer ropa, pero sabíamos de materiales, de tolerancias y de lo que se siente ver a alguien que admiras incómodo en su propio uniforme. Así nació VITRO: un vial de vidrio que se transforma en la persona que ya está llegando.</p>
+      <div class="amanc">El 10% de nuestras ganancias va a AMANC, para la lucha contra el cáncer infantil.</div>
+    </div>
+  </div>
+</section>
+
+<section class="tribe" id="tribu">
+  <div class="wrap two">
+    <div>
+      <div class="eyebrow">La tribu VITRO</div>
+      <h2>Los que ya llegaron, contigo.</h2>
+      <p class="muted">Queremos embajadores por campus, por carrera, por turno. No modelos: gente real que se pone el uniforme cada día. Si estudias ciencias de la salud y quieres ser de los primeros, escríbenos.</p>
+      <p style="margin-top:22px"><a class="btn" id="ambassador" href="#">Quiero ser embajador(a)</a></p>
+    </div>
+    <div class="ph" style="background-image:url(img/tribu.jpg)" role="img" aria-label="Estudiantes con scrubs VITRO en el campus">Foto: estudiantes en campus<br><small>(img/tribu.jpg)</small></div>
+  </div>
+</section>
+
+<section class="quiz dark" id="quiz">
+  <div class="wrap">
+    <div class="box">
+      <div class="eyebrow">Quiz de la tribu</div>
+      <h2>¿Qué bata eres?</h2>
+      <div id="quizbody" style="display:flex;flex-direction:column;align-items:center;gap:18px;width:100%"></div>
+    </div>
+  </div>
+</section>
+
+<section class="news" id="newsletter">
+  <div class="wrap">
+    <div class="eyebrow">El newsletter</div>
+    <h2 style="font-size:clamp(28px,3.6vw,36px);font-weight:800;margin:10px 0">Los Botes de VITRO.</h2>
+    <p style="color:var(--muted);max-width:480px;margin:0 auto">Drops nuevos, colores de temporada y cosas de la tribu. Sin spam.</p>
+    <form id="nform" novalidate>
+      <label class="sr" for="nmail">Tu correo</label>
+      <input id="nmail" type="email" placeholder="tu@correo.com" autocomplete="email" required>
+      <button class="btn" type="submit">Unirme</button>
+    </form>
+    <p class="msg" id="nmsg" role="status"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="logo" style="color:#fff">VITRO</div>
+        <p>Scrubs de ingeniería para estudiantes de ciencias de la salud.</p>
+        <a class="btn wa" id="fwa" href="#" style="display:inline-flex;margin:0">WhatsApp directo</a>
+      </div>
+      <div>
+        <h4>Tienda</h4>
+        <a href="#tienda">Scrubs</a>
+        <a href="#carreras">Por carrera</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+      <div>
+        <h4>Síguenos</h4>
+        <a id="fig" href="#">Instagram</a>
+        <a id="ftt" href="#">TikTok</a>
+      </div>
+    </div>
+    <div class="legal"><span>© 2026 VITRO. De estudiantes para estudiantes.</span><span>Pagos: Mercado Pago · transferencia</span></div>
+  </div>
+</footer>
+
+<script src="catalog.js"></script>
+<script>
+/* ============================================================
+   CONFIGURACIÓN — contacto. Precios, stock y envío están en catalog.js
+   ============================================================ */
+const CONFIG = {
+  WHATSAPP: "52XXXXXXXXXX",          // tu número con lada país, sin + ni espacios. Ej: 524421234567
+  INSTAGRAM: "https://instagram.com/vitroscrubs",
+  TIKTOK: "https://www.tiktok.com/@vitroscrubs",
+  EMAIL: "hola@vitroscrubs.com",     // se usa si NEWSLETTER_URL está vacío
+  NEWSLETTER_URL: ""                 // URL de Formspree / Google Forms (POST con campo "email"); vacío = abre correo
+};
+/* ============================================================ */
+
+const CAT = window.VITRO_CATALOG;
+const $ = (s, el = document) => el.querySelector(s);
+const money = n => "$" + n.toLocaleString("es-MX");
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const waLink = text => "https://wa.me/" + CONFIG.WHATSAPP + "?text=" + encodeURIComponent(text);
+const MODELS = Object.keys(CAT.models), COLORS = Object.keys(CAT.colors);
+const stockOf = (m, c, s) => ((CAT.stock[m + "-" + c] || {})[s]) || 0;
+const colorStock = (m, c) => CAT.sizes.reduce((t, s) => t + stockOf(m, c, s), 0);
+const unitPrice = (c, stu) => (stu ? CAT.studentPrice : CAT.price)[c];
+
+let student = false;
+try { student = localStorage.getItem("vitro-student") === "1"; } catch (_) {}
+const setStudent = v => { student = v; try { localStorage.setItem("vitro-student", v ? "1" : "0"); } catch (_) {} };
+
+/* selección inicial: primer color y talla con existencias */
+const sel = {};
+function firstAvail(m) {
+  for (const c of COLORS) for (const s of CAT.sizes) if (stockOf(m, c, s) > 0) return { color: c, size: s };
+  return { color: COLORS[0], size: CAT.sizes[0] };
+}
+MODELS.forEach(m => sel[m] = firstAvail(m));
+
+/* ---------- Tienda ---------- */
+function renderProducts() {
+  const root = $("#products");
+  root.innerHTML = "";
+  MODELS.forEach(m => {
+    const M = CAT.models[m], s = sel[m], col = CAT.colors[s.color];
+    const left = stockOf(m, s.color, s.size);
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="ph" style="background-image:url(img/${m}-${s.color}.jpg)" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
+        ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
+        <span>Foto: ${esc(M.name)} ${esc(col.name)}<br><small>(img/${m}-${s.color}.jpg)</small></span>
+      </div>
+      <div class="row"><h3>${esc(M.name)}</h3>
+        <span class="price">${money(unitPrice(s.color, false))}<small class="mxn"> MXN</small></span></div>
+      <p class="stu">Precio estudiante: <b>${money(unitPrice(s.color, true))}</b></p>
+      <p class="desc">${esc(M.desc)}</p>
+      <div><div class="lbl">Color: ${esc(col.name)}</div>
+        <div class="dots" role="group" aria-label="Color de ${esc(M.name)}"></div></div>
+      <div><div class="lbl">Talla: ${esc(s.size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
+        <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)}"></div></div>
+      <div class="buy"></div>`;
+    const dots = $(".dots", card);
+    COLORS.forEach(c => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "dot";
+      const out = colorStock(m, c) === 0;
+      b.setAttribute("aria-pressed", c === s.color);
+      b.setAttribute("aria-label", CAT.colors[c].name + (out ? " (agotado)" : ""));
+      if (out) b.disabled = true;
+      b.innerHTML = `<i style="background:${CAT.colors[c].hex}"></i><span>${out ? "Agotado" : ""}</span>`;
+      b.onclick = () => {
+        sel[m].color = c;
+        if (stockOf(m, c, sel[m].size) === 0) { const ok = CAT.sizes.find(z => stockOf(m, c, z) > 0); if (ok) sel[m].size = ok; }
+        renderProducts();
+      };
+      dots.appendChild(b);
+    });
+    const sizes = $(".sizes", card);
+    CAT.sizes.forEach(z => {
+      const b = document.createElement("button");
+      const out = stockOf(m, s.color, z) === 0;
+      b.type = "button"; b.className = "size"; b.textContent = z;
+      if (out) { b.disabled = true; b.title = "Agotada"; b.style.opacity = ".4"; b.style.textDecoration = "line-through"; }
+      b.setAttribute("aria-pressed", z === s.size);
+      b.onclick = () => { s.size = z; renderProducts(); };
+      sizes.appendChild(b);
+    });
+    const buy = $(".buy", card);
+    const add = document.createElement("button");
+    add.type = "button"; add.className = "btn";
+    add.textContent = left > 0 ? "Agregar al carrito" : "Agotado";
+    if (left === 0) add.disabled = true;
+    add.onclick = () => addToCart(m, s.color, s.size);
+    buy.appendChild(add);
+    const n = document.createElement("p");
+    n.className = "note";
+    n.textContent = "Pago seguro con Mercado Pago: tarjeta, OXXO o transferencia.";
+    buy.appendChild(n);
+    root.appendChild(card);
+  });
+}
+
+/* ---------- Colores ---------- */
+let curColor = "navy";
+function renderColors() {
+  const box = $("#swatches"); box.innerHTML = "";
+  COLORS.forEach(c => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "sw";
+    b.setAttribute("aria-pressed", c === curColor);
+    b.innerHTML = `<i style="background:${CAT.colors[c].hex}"></i><span>${esc(CAT.colors[c].name)}</span>`;
+    b.onclick = () => { curColor = c; renderColors(); };
+    box.appendChild(b);
+  });
+  const C = CAT.colors[curColor];
+  const total = MODELS.reduce((t, m) => t + colorStock(m, curColor), 0);
+  $("#cname").textContent = C.name;
+  $("#cdesc").textContent = C.desc;
+  $("#cstatus").textContent = `${money(CAT.price[curColor])} · estudiantes ${money(CAT.studentPrice[curColor])}. Primer lote: ${total} sets en este color.`;
+}
+
+/* ---------- Quiz ---------- */
+const QUESTIONS = [
+  { q: "¿Qué corte prefieres?", o: [["Slim, de mujer", "mujer"], ["Unisex", "unisex"]] },
+  { q: "¿Qué te importa más de tu uniforme?", o: [["Que repela líquidos y salpicaduras", "liquidos"], ["Que se vea impecable", "look"], ["Que sea cómodo todo el día", "comodo"]] },
+  { q: "¿Qué color te representa?", o: [["Serio y clásico", "navy"], ["Con carácter, memorable", "vino"], ["Fresco y ligero", "verde"]] }
+];
+let qi = 0, answers = [];
+function renderQuiz() {
+  const box = $("#quizbody"); box.innerHTML = "";
+  if (qi < QUESTIONS.length) {
+    const Q = QUESTIONS[qi];
+    box.innerHTML = `<div class="bar" aria-hidden="true">${QUESTIONS.map((_, i) => `<i class="${i <= qi ? "on" : ""}"></i>`).join("")}</div>
+      <div class="eyebrow" style="color:#B9C0D6">Pregunta ${qi + 1} de ${QUESTIONS.length}</div>
+      <h3 class="q">${Q.q}</h3><div class="opts"></div>`;
+    Q.o.forEach(([label, val]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "opt"; b.textContent = label;
+      b.onclick = () => { answers.push(val); qi++; renderQuiz(); };
+      $(".opts", box).appendChild(b);
+    });
+    return;
+  }
+  const model = answers[0];
+  let color = answers[1] === "liquidos" ? "navy" : answers[2];
+  if (colorStock(model, color) === 0) color = COLORS.find(c => colorStock(model, c) > 0) || color;
+  const M = CAT.models[model], C = CAT.colors[color];
+  box.innerHTML = `<div class="result"><div class="eyebrow" style="color:#B9C0D6">Tu resultado</div>
+    <h3>${esc(M.name)} en ${esc(C.name)}</h3>
+    <p>${esc(C.desc)}</p>
+    <div class="opts"><a class="btn" id="goshop" href="#tienda">Ver mi recomendación</a><button type="button" class="btn ghost" id="again">Repetir quiz</button></div></div>`;
+  $("#goshop").onclick = () => {
+    sel[model].color = color;
+    if (stockOf(model, color, sel[model].size) === 0) { const ok = CAT.sizes.find(z => stockOf(model, color, z) > 0); if (ok) sel[model].size = ok; }
+    renderProducts();
+  };
+  $("#again").onclick = () => { qi = 0; answers = []; renderQuiz(); };
+}
+
+/* ---------- Newsletter ---------- */
+$("#nform").addEventListener("submit", async e => {
+  e.preventDefault();
+  const mail = $("#nmail").value.trim(), msg = $("#nmsg");
+  if (!/^\S+@\S+\.\S+$/.test(mail)) { msg.textContent = "Escribe un correo válido."; return; }
+  if (CONFIG.NEWSLETTER_URL) {
+    try {
+      const r = await fetch(CONFIG.NEWSLETTER_URL, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify({ email: mail }) });
+      msg.textContent = r.ok ? "Listo, ya eres parte de Los Botes de VITRO." : "No pudimos registrarte. Intenta de nuevo.";
+      if (r.ok) $("#nmail").value = "";
+    } catch (_) { msg.textContent = "No pudimos registrarte. Intenta de nuevo."; }
+  } else {
+    location.href = "mailto:" + CONFIG.EMAIL + "?subject=" + encodeURIComponent("Quiero entrar al newsletter") + "&body=" + encodeURIComponent("Mi correo: " + mail);
+  }
+});
+
+/* ---------- Enlaces ---------- */
+$("#fwa").href = waLink("Hola VITRO, tengo una duda.");
+$("#fwa").target = "_blank"; $("#fwa").rel = "noopener";
+$("#fig").href = CONFIG.INSTAGRAM; $("#ftt").href = CONFIG.TIKTOK;
+$("#ambassador").href = waLink("Hola VITRO, quiero ser embajador(a). Estudio: ___ en la universidad: ___");
+$("#ambassador").target = "_blank"; $("#ambassador").rel = "noopener";
+
+/* ---------- Carrito ---------- */
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("vitro-cart") || "[]"); } catch (_) { cart = []; }
+cart = cart.filter(i => CAT.models[i.model] && CAT.colors[i.color] && CAT.sizes.includes(i.size) && stockOf(i.model, i.color, i.size) > 0)
+           .map(i => ({ ...i, qty: Math.min(i.qty, stockOf(i.model, i.color, i.size), 10) }));
+const saveCart = () => { try { localStorage.setItem("vitro-cart", JSON.stringify(cart)); } catch (_) {} };
+const units = () => cart.reduce((t, i) => t + i.qty, 0);
+const listTotal = () => cart.reduce((t, i) => t + unitPrice(i.color, false) * i.qty, 0);
+const payTotal = () => cart.reduce((t, i) => t + unitPrice(i.color, student) * i.qty, 0);
+const shipCost = () => (units() >= CAT.freeShippingFrom ? 0 : CAT.shipping);
+const isStudentEmail = email => {
+  const d = String(email).toLowerCase().split("@")[1] || "";
+  return CAT.studentDomains.some(x => x.startsWith(".") ? d.endsWith(x) : d === x || d.endsWith("." + x));
+};
+let step = "cart", lastFocus = null;
+
+function addToCart(model, color, size) {
+  const max = Math.min(10, stockOf(model, color, size));
+  const f = cart.find(i => i.model === model && i.color === color && i.size === size);
+  if (f) f.qty = Math.min(max, f.qty + 1); else cart.push({ model, color, size, qty: 1 });
+  saveCart(); step = "cart"; openCart();
+}
+function openCart() {
+  lastFocus = document.activeElement;
+  $("#veil").hidden = false; $("#drawer").hidden = false;
+  document.body.style.overflow = "hidden";
+  renderCart();
+  $("#closecart").focus();
+}
+function closeCart() {
+  $("#veil").hidden = true; $("#drawer").hidden = true;
+  document.body.style.overflow = "";
+  if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+}
+function updateBadge() {
+  const n = units(), b = $("#cartcount");
+  b.textContent = n; b.hidden = n === 0;
+}
+function totalsHtml() {
+  const disc = listTotal() - payTotal(), ship = shipCost();
+  return `<div class="tot"><span>Subtotal</span><span>${money(listTotal())}</span></div>
+    ${student ? `<div class="tot" style="color:#2F7D57"><span>Precio estudiante</span><span>−${money(disc)}</span></div>` : ""}
+    <div class="tot"><span>Envío</span><span>${ship ? money(ship) : "Gratis"}</span></div>
+    <div class="tot big"><span>Total</span><span>${money(payTotal() + ship)} MXN</span></div>
+    ${ship ? `<p class="note">Envío gratis desde ${CAT.freeShippingFrom} sets.</p>` : ""}`;
+}
+function renderCart() {
+  updateBadge();
+  const body = $("#dbody"), foot = $("#dfoot");
+  body.innerHTML = ""; foot.innerHTML = "";
+  if (!cart.length) {
+    body.innerHTML = '<p class="empty">Tu carrito está vacío.</p>';
+    foot.innerHTML = '<a class="btn" href="#tienda" id="goshop2">Ver los scrubs</a>';
+    $("#goshop2").onclick = closeCart;
+    return;
+  }
+  if (step === "cart") {
+    cart.forEach((it, idx) => {
+      const M = CAT.models[it.model], C = CAT.colors[it.color];
+      const max = Math.min(10, stockOf(it.model, it.color, it.size));
+      const row = document.createElement("div"); row.className = "line";
+      row.innerHTML = `<div><b>${esc(M.name)}</b><small>${esc(C.name)} · Talla ${esc(it.size)}</small></div>
+        <div style="text-align:right"><b>${money(unitPrice(it.color, student) * it.qty)}</b></div>
+        <div class="qty"><button type="button" aria-label="Quitar una pieza">−</button><span>${it.qty}</span><button type="button" aria-label="Agregar una pieza"${it.qty >= max ? " disabled" : ""}>+</button></div>
+        <div style="text-align:right"><button type="button" class="rm">Quitar</button></div>`;
+      const [minus, plus] = row.querySelectorAll(".qty button");
+      minus.onclick = () => { it.qty = Math.max(1, it.qty - 1); saveCart(); renderCart(); };
+      plus.onclick = () => { it.qty = Math.min(max, it.qty + 1); saveCart(); renderCart(); };
+      $(".rm", row).onclick = () => { cart.splice(idx, 1); saveCart(); renderCart(); };
+      body.appendChild(row);
+    });
+    body.insertAdjacentHTML("beforeend", `<label class="chk"><input type="checkbox" id="stu"${student ? " checked" : ""}>
+      <span><b>Soy estudiante de ciencias de la salud</b><br><small>Precio estudiante: ${money(CAT.studentPrice.vino)} (Navy ${money(CAT.studentPrice.navy)}). Necesitas tu correo escolar y mandarnos tu credencial vigente antes del envío.</small></span></label>`);
+    $("#stu").onchange = e => { setStudent(e.target.checked); renderCart(); };
+    foot.innerHTML = totalsHtml() + `<button type="button" class="btn" id="tocheck">Continuar con el envío</button>`;
+    $("#tocheck").onclick = () => { step = "form"; renderCart(); };
+    return;
+  }
+  /* paso: datos de envío */
+  const states = ["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"];
+  body.innerHTML = `<form id="cform" novalidate style="display:flex;flex-direction:column;gap:12px">
+    <div class="field"><label for="f-name">Nombre completo</label><input id="f-name" name="name" autocomplete="name" required></div>
+    <div class="f2">
+      <div class="field"><label for="f-mail">Correo${student ? " escolar" : ""}</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
+    </div>
+    ${student ? `<div class="field"><label for="f-school">Escuela y carrera</label><input id="f-school" name="school" placeholder="Ej. Tec de Monterrey, Medicina" required></div>
+    <label class="chk"><input type="checkbox" id="f-cred"><span><small>Me comprometo a mandar por WhatsApp una foto de mi credencial vigente antes del envío. Si no se puede comprobar, pagaré la diferencia al precio de lista.</small></span></label>` : ""}
+    <div class="field"><label for="f-street">Calle y número</label><input id="f-street" name="street" autocomplete="address-line1" required></div>
+    <div class="field"><label for="f-col">Colonia</label><input id="f-col" name="colonia" autocomplete="address-level3" required></div>
+    <div class="f2">
+      <div class="field"><label for="f-zip">Código postal</label><input id="f-zip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required></div>
+      <div class="field"><label for="f-city">Ciudad</label><input id="f-city" name="city" autocomplete="address-level2" required></div>
+    </div>
+    <div class="field"><label for="f-state">Estado</label><select id="f-state" name="state" required><option value="">Elige tu estado</option>${states.map(s => `<option>${s}</option>`).join("")}</select></div>
+    <div class="field"><label for="f-notes">Referencias (opcional)</label><input id="f-notes" name="notes"></div>
+  </form>`;
+  foot.innerHTML = `<div class="tot big"><span>Total</span><span>${money(payTotal() + shipCost())} MXN</span></div>
+    <p class="err" id="cerr" role="alert"></p>
+    <button type="button" class="btn" id="paybtn">Pagar con Mercado Pago</button>
+    <button type="button" class="rm" id="backcart">Volver al carrito</button>
+    <p class="note">Te llevamos a Mercado Pago para pagar. Tus datos de pago nunca pasan por esta página.</p>`;
+  $("#backcart").onclick = () => { step = "cart"; renderCart(); };
+  $("#paybtn").onclick = pay;
+}
+async function pay() {
+  const f = $("#cform"), err = $("#cerr"), btn = $("#paybtn");
+  const d = Object.fromEntries(new FormData(f).entries());
+  const req = ["name","email","phone","street","colonia","zip","city","state"].concat(student ? ["school"] : []);
+  if (req.some(k => !String(d[k] || "").trim())) { err.textContent = "Completa todos los campos obligatorios."; return; }
+  if (!/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = "Escribe un correo válido."; return; }
+  if (!/^\d{5}$/.test(d.zip)) { err.textContent = "El código postal debe tener 5 dígitos."; return; }
+  if (d.phone.replace(/\D/g, "").length < 10) { err.textContent = "Escribe un teléfono de 10 dígitos."; return; }
+  if (student) {
+    if (!isStudentEmail(d.email)) { err.innerHTML = 'Para el precio estudiante usa tu correo escolar, o <a href="' + waLink("Hola VITRO, soy estudiante y mi correo escolar no se reconoce. Les mando mi credencial.") + '" target="_blank" rel="noopener" style="text-decoration:underline">escríbenos por WhatsApp</a>.'; return; }
+    if (!$("#f-cred").checked) { err.textContent = "Acepta mandar tu credencial para usar el precio estudiante."; return; }
+  }
+  err.textContent = ""; btn.disabled = true; btn.textContent = "Preparando tu pago…";
+  try {
+    const r = await fetch("/api/checkout", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student, items: cart.map(i => ({ model: i.model, color: i.color, size: i.size, qty: i.qty })), customer: d })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.url) throw new Error(j.error || "No pudimos iniciar el pago.");
+    try { localStorage.setItem("vitro-last-order", j.orderId || ""); } catch (_) {}
+    location.href = j.url;
+  } catch (e) {
+    err.textContent = (e.message || "No pudimos iniciar el pago.") + " Si sigue fallando, pídelo por WhatsApp.";
+    btn.disabled = false; btn.textContent = "Pagar con Mercado Pago";
+  }
+}
+$("#opencart").onclick = () => { step = "cart"; openCart(); };
+$("#closecart").onclick = closeCart;
+$("#veil").onclick = closeCart;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#drawer").hidden) closeCart(); });
+if (new URLSearchParams(location.search).get("pedido") === "ok") { cart = []; saveCart(); }
+
+renderProducts(); renderColors(); renderQuiz(); updateBadge();
+</script>
+</body>
+</html>

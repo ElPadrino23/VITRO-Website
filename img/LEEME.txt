@@ -1,0 +1,9 @@
+Pon aquí tus fotos con estos nombres exactos (JPG). Si falta alguna, el sitio muestra un recuadro gris con el nombre del archivo.
+
+hero.jpg            Foto principal (práctica clínica, luz natural)
+manifiesto.jpg      Biblioteca / estudiando de noche
+tribu.jpg           Estudiantes en campus
+
+Productos (modelo-color):
+mujer-navy.jpg    mujer-vino.jpg    mujer-verde.jpg
+unisex-navy.jpg   unisex-vino.jpg   unisex-verde.jpg
