@@ -238,7 +238,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
       <div class="tags"><span>Resiste el cloro</span><span>V-Shield en Traction Navy</span><span>Precio estudiante desde $800</span></div>
     </div>
     <div class="rel">
-      <div class="ph" style="background-image:url(img/hero.jpg)" role="img" aria-label="Estudiante en práctica clínica con scrubs VITRO">Foto: práctica clínica, luz natural<br><small>(img/hero.jpg)</small></div>
+      <div class="ph" style="background-image:url(img/hero.jpg)" role="img" aria-label="Estudiante en práctica clínica con scrubs VITRO"></div>
     </div>
   </div>
 </section>
@@ -290,7 +290,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
 
 <section id="manifiesto">
   <div class="wrap two">
-    <div class="ph" style="background-image:url(img/manifiesto.jpg)" role="img" aria-label="Estudiante estudiando de noche en la biblioteca">Foto: biblioteca a las 2am<br><small>(img/manifiesto.jpg)</small></div>
+    <div class="ph" style="background-image:url(img/manifiesto.jpg)" role="img" aria-label="Estudiante estudiando de noche en la biblioteca"></div>
     <div>
       <div class="eyebrow">El manifiesto</div>
       <h2>No es la ropa de tu tía.</h2>
@@ -309,7 +309,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
       <p class="muted">Queremos embajadores por campus, por carrera, por turno. No modelos: gente real que se pone el uniforme cada día. Si estudias ciencias de la salud y quieres ser de los primeros, escríbenos.</p>
       <p style="margin-top:22px"><a class="btn" id="ambassador" href="#">Quiero ser embajador(a)</a></p>
     </div>
-    <div class="ph" style="background-image:url(img/tribu.jpg)" role="img" aria-label="Estudiantes con scrubs VITRO en el campus">Foto: estudiantes en campus<br><small>(img/tribu.jpg)</small></div>
+    <div class="ph" style="background-image:url(img/tribu.jpg)" role="img" aria-label="Estudiantes con scrubs VITRO en el campus"></div>
   </div>
 </section>
 
@@ -411,7 +411,6 @@ function renderProducts() {
     card.innerHTML = `
       <div class="ph" style="background-image:url(img/${m}-${s.color}.jpg)" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
         ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
-        <span>Foto: ${esc(M.name)} ${esc(col.name)}<br><small>(img/${m}-${s.color}.jpg)</small></span>
       </div>
       <div class="row"><h3>${esc(M.name)}</h3>
         <span class="price">${money(unitPrice(s.color, false))}<small class="mxn"> MXN</small></span></div>
