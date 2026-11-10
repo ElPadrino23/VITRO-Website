@@ -1,12 +1,12 @@
-// Cloudflare Pages Function: POST /api/checkout
+// Cobro: POST /api/checkout (lo llama src/worker.js)
 // Crea una preferencia de pago en Mercado Pago y devuelve la URL de pago.
 // Precios, descuento, envío y existencias se calculan AQUÍ con catalog.js, nunca con lo que mande el navegador.
 //
 // Variables de entorno (Cloudflare Pages > Settings > Variables and secrets):
-//   MP_ACCESS_TOKEN  (secreta)  Access Token de producción de Mercado Pago
-//   SITE_URL                    https://vitroscrubs.com   (sin diagonal final)
+//   MP_ACCESS_TOKEN  (secreto)  Access Token de Mercado Pago (se guarda como Secret en Cloudflare)
+//   SITE_URL                    se define en wrangler.jsonc (sin diagonal final)
 
-import CATALOG from "../../catalog.js";
+import CATALOG from "../public/catalog.js";
 
 const MAX_QTY = 10, MAX_LINES = 12;
 
