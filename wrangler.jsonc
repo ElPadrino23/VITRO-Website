@@ -2,13 +2,11 @@
   "name": "vitro-website",
   "main": "src/worker.js",
   "compatibility_date": "2025-10-01",
-  "assets": {
-    "directory": "./public",
-    "binding": "ASSETS"
-  },
+  "assets": { "directory": "./public", "binding": "ASSETS" },
   "keep_vars": true,
-  "vars": {
-    // Cámbialo por tu dominio cuando lo conectes. Sin diagonal final.
-    "SITE_URL": "https://vitro-website.REEMPLAZA-TU-SUBDOMINIO.workers.dev"
-  }
+  "vars": { "SITE_URL": "https://vitroscrubs.com" },
+  "routes": [
+    { "pattern": "vitroscrubs.com", "custom_domain": true },
+    { "pattern": "www.vitroscrubs.com", "custom_domain": true }
+  ]
 }
