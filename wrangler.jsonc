@@ -6,6 +6,7 @@
   "keep_vars": true,
   "vars": { "SITE_URL": "https://www.vitroscrubs.com" },
   "routes": [
-    { "pattern": "www.vitroscrubs.com", "custom_domain": true }
+    { "pattern": "www.vitroscrubs.com", "custom_domain": true },
+    { "pattern": "vitroscrubs.com/*", "zone_name": "vitroscrubs.com" }
   ]
 }
