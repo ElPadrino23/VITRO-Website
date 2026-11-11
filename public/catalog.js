@@ -19,8 +19,9 @@
 
     // Se venden como set completo (top + pantalón)
     models: {
-      mujer:  { name: "Set Mujer",  desc: "Corte slim femenino, manga larga. Top y pantalón." },
-      unisex: { name: "Set Unisex", desc: "Corte unisex, manga corta. Top y pantalón." }
+      // name = nombre del modelo (cámbialo aquí cuando quieras); kind = tipo de set
+      mujer:  { name: "Prisma",  kind: "Set Mujer",  desc: "Corte slim femenino, manga larga. Top y pantalón." },
+      unisex: { name: "Cristal", kind: "Set Unisex", desc: "Corte unisex, manga corta. Top y pantalón." }
     },
 
     // Precio de lista (MXN) por color

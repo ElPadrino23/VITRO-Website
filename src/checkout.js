@@ -62,12 +62,12 @@ export async function onRequestPost({ request, env }) {
     perKey[key + "|" + it.size] = (perKey[key + "|" + it.size] || 0) + qty;
     const available = (CATALOG.stock[key] || {})[it.size] || 0;
     if (perKey[key + "|" + it.size] > available) {
-      return json({ error: `${model.name} ${color.name} talla ${it.size}: solo quedan ${available}.` }, 400);
+      return json({ error: `${model.name} (${model.kind}) ${color.name} talla ${it.size}: solo quedan ${available}.` }, 400);
     }
     const unit = (student ? CATALOG.studentPrice : CATALOG.price)[it.color];
     mpItems.push({
       id: `${it.model}-${it.color}-${it.size}`,
-      title: `${model.name} · ${color.name} · Talla ${it.size}${student ? " (precio estudiante)" : ""}`,
+      title: `${model.name} (${model.kind}) · ${color.name} · Talla ${it.size}${student ? " (precio estudiante)" : ""}`,
       quantity: qty,
       unit_price: unit,
       currency_id: "MXN"

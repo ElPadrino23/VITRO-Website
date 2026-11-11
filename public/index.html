@@ -71,9 +71,12 @@ nav.main a:hover{text-decoration:underline;text-underline-offset:6px}
 
 /* tienda */
 .shop{background:var(--bg2)}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:32px auto 0;max-width:880px}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:32px auto 0;max-width:1120px}
 .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px}
-.card .ph{height:280px;position:relative}
+.card .ph{height:340px;position:relative;background-position:var(--pos,center)}
+.card.pick{box-shadow:0 0 0 3px var(--ink)}
+.card .kind{font-size:13px;color:var(--muted);margin-top:-8px}
+.ph.nophoto::after{content:"Foto próximamente"}
 .card .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .card h3{font-size:18px;font-weight:700}
 .price{font:700 18px var(--head)}
@@ -184,10 +187,14 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
   .hero .wrap,.colors .wrap,.two{grid-template-columns:1fr;gap:32px}
   .hero .ph{min-height:360px}
   .careers .grid{grid-template-columns:repeat(2,1fr)}
-  .products{grid-template-columns:1fr}
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
   section{padding:56px 0}
   footer .cols{grid-template-columns:1fr}
   .news form{flex-direction:column}
+}
+@media (max-width:600px){
+  .products{grid-template-columns:1fr}
+  .card .ph{height:360px}
 }
 </style>
 </head>
@@ -391,75 +398,65 @@ let student = false;
 try { student = localStorage.getItem("vitro-student") === "1"; } catch (_) {}
 const setStudent = v => { student = v; try { localStorage.setItem("vitro-student", v ? "1" : "0"); } catch (_) {} };
 
-/* selección inicial: primer color y talla con existencias */
+/* selección: solo la talla, por cada modelo-color (las 6 opciones se ven a la vez) */
 const sel = {};
-function firstAvail(m) {
-  for (const c of COLORS) for (const s of CAT.sizes) if (stockOf(m, c, s) > 0) return { color: c, size: s };
-  return { color: COLORS[0], size: CAT.sizes[0] };
-}
-MODELS.forEach(m => sel[m] = firstAvail(m));
+const keyOf = (m, c) => m + "-" + c;
+MODELS.forEach(m => COLORS.forEach(c => {
+  sel[keyOf(m, c)] = CAT.sizes.find(z => stockOf(m, c, z) > 0) || CAT.sizes[0];
+}));
+/* posición del recorte de cada foto (ajústala si el encuadre no te gusta): "x% y%" */
+const PHOTO_POS = {};
 
 /* ---------- Tienda ---------- */
 function renderProducts() {
   const root = $("#products");
   root.innerHTML = "";
-  MODELS.forEach(m => {
-    const M = CAT.models[m], s = sel[m], col = CAT.colors[s.color];
-    const left = stockOf(m, s.color, s.size);
+  MODELS.forEach(m => COLORS.forEach(c => {
+    const M = CAT.models[m], col = CAT.colors[c], key = keyOf(m, c), size = sel[key];
+    const left = stockOf(m, c, size);
+    const soldOut = colorStock(m, c) === 0;
+    const img = "img/" + key + ".jpg";
     const card = document.createElement("article");
-    card.className = "card";
+    card.className = "card"; card.id = "card-" + key;
     card.innerHTML = `
-      <div class="ph" style="background-image:url(img/${m}-${s.color}.jpg)" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
+      <div class="ph" style="background-image:url(${img});${PHOTO_POS[key] ? "--pos:" + PHOTO_POS[key] : ""}" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
         ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
       </div>
       <div class="row"><h3>${esc(M.name)}</h3>
-        <span class="price">${money(unitPrice(s.color, false))}<small class="mxn"> MXN</small></span></div>
-      <p class="stu">Precio estudiante: <b>${money(unitPrice(s.color, true))}</b></p>
+        <span class="price">${money(unitPrice(c, false))}<small class="mxn"> MXN</small></span></div>
+      <p class="kind">${esc(M.kind)} · ${esc(col.name)}</p>
+      <p class="stu">Precio estudiante: <b>${money(unitPrice(c, true))}</b></p>
       <p class="desc">${esc(M.desc)}</p>
-      <div><div class="lbl">Color: ${esc(col.name)}</div>
-        <div class="dots" role="group" aria-label="Color de ${esc(M.name)}"></div></div>
-      <div><div class="lbl">Talla: ${esc(s.size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
-        <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)}"></div></div>
+      <div><div class="lbl">Talla: ${esc(size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
+        <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)} ${esc(col.name)}"></div></div>
       <div class="buy"></div>`;
-    const dots = $(".dots", card);
-    COLORS.forEach(c => {
-      const b = document.createElement("button");
-      b.type = "button"; b.className = "dot";
-      const out = colorStock(m, c) === 0;
-      b.setAttribute("aria-pressed", c === s.color);
-      b.setAttribute("aria-label", CAT.colors[c].name + (out ? " (agotado)" : ""));
-      if (out) b.disabled = true;
-      b.innerHTML = `<i style="background:${CAT.colors[c].hex}"></i><span>${out ? "Agotado" : ""}</span>`;
-      b.onclick = () => {
-        sel[m].color = c;
-        if (stockOf(m, c, sel[m].size) === 0) { const ok = CAT.sizes.find(z => stockOf(m, c, z) > 0); if (ok) sel[m].size = ok; }
-        renderProducts();
-      };
-      dots.appendChild(b);
-    });
+    /* si la foto aún no existe, muestra un aviso en lugar de un hueco vacío */
+    const probe = new Image();
+    probe.onerror = () => $(".ph", card).classList.add("nophoto");
+    probe.src = img;
     const sizes = $(".sizes", card);
     CAT.sizes.forEach(z => {
       const b = document.createElement("button");
-      const out = stockOf(m, s.color, z) === 0;
+      const out = stockOf(m, c, z) === 0;
       b.type = "button"; b.className = "size"; b.textContent = z;
       if (out) { b.disabled = true; b.title = "Agotada"; b.style.opacity = ".4"; b.style.textDecoration = "line-through"; }
-      b.setAttribute("aria-pressed", z === s.size);
-      b.onclick = () => { s.size = z; renderProducts(); };
+      b.setAttribute("aria-pressed", z === size);
+      b.onclick = () => { sel[key] = z; renderProducts(); };
       sizes.appendChild(b);
     });
     const buy = $(".buy", card);
     const add = document.createElement("button");
     add.type = "button"; add.className = "btn";
-    add.textContent = left > 0 ? "Agregar al carrito" : "Agotado";
-    if (left === 0) add.disabled = true;
-    add.onclick = () => addToCart(m, s.color, s.size);
+    add.textContent = soldOut || left === 0 ? "Agotado" : "Agregar al carrito";
+    if (soldOut || left === 0) add.disabled = true;
+    add.onclick = () => addToCart(m, c, size);
     buy.appendChild(add);
     const n = document.createElement("p");
     n.className = "note";
     n.textContent = "Pago seguro con Mercado Pago: tarjeta, OXXO o transferencia.";
     buy.appendChild(n);
     root.appendChild(card);
-  });
+  }));
 }
 
 /* ---------- Colores ---------- */
@@ -508,13 +505,14 @@ function renderQuiz() {
   if (colorStock(model, color) === 0) color = COLORS.find(c => colorStock(model, c) > 0) || color;
   const M = CAT.models[model], C = CAT.colors[color];
   box.innerHTML = `<div class="result"><div class="eyebrow" style="color:#B9C0D6">Tu resultado</div>
-    <h3>${esc(M.name)} en ${esc(C.name)}</h3>
+    <h3>${esc(M.name)} · ${esc(M.kind)} en ${esc(C.name)}</h3>
     <p>${esc(C.desc)}</p>
     <div class="opts"><a class="btn" id="goshop" href="#tienda">Ver mi recomendación</a><button type="button" class="btn ghost" id="again">Repetir quiz</button></div></div>`;
-  $("#goshop").onclick = () => {
-    sel[model].color = color;
-    if (stockOf(model, color, sel[model].size) === 0) { const ok = CAT.sizes.find(z => stockOf(model, color, z) > 0); if (ok) sel[model].size = ok; }
-    renderProducts();
+  $("#goshop").onclick = e => {
+    e.preventDefault();
+    const card = document.getElementById("card-" + keyOf(model, color));
+    $("#tienda").scrollIntoView({ behavior: "smooth" });
+    if (card) { card.classList.add("pick"); setTimeout(() => card.classList.remove("pick"), 3000); }
   };
   $("#again").onclick = () => { qi = 0; answers = []; renderQuiz(); };
 }
@@ -603,7 +601,7 @@ function renderCart() {
       const M = CAT.models[it.model], C = CAT.colors[it.color];
       const max = Math.min(10, stockOf(it.model, it.color, it.size));
       const row = document.createElement("div"); row.className = "line";
-      row.innerHTML = `<div><b>${esc(M.name)}</b><small>${esc(C.name)} · Talla ${esc(it.size)}</small></div>
+      row.innerHTML = `<div><b>${esc(M.name)}</b><small>${esc(M.kind)} · ${esc(C.name)} · Talla ${esc(it.size)}</small></div>
         <div style="text-align:right"><b>${money(unitPrice(it.color, student) * it.qty)}</b></div>
         <div class="qty"><button type="button" aria-label="Quitar una pieza">−</button><span>${it.qty}</span><button type="button" aria-label="Agregar una pieza"${it.qty >= max ? " disabled" : ""}>+</button></div>
         <div style="text-align:right"><button type="button" class="rm">Quitar</button></div>`;
