@@ -53,7 +53,7 @@ nav.main a:hover{text-decoration:underline;text-underline-offset:6px}
 .hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
 .hero .tags{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
 .hero .tags span+span::before{content:"";display:inline-block;width:4px;height:4px;border-radius:2px;background:#C9C4B4;margin-right:14px;vertical-align:middle}
-.hero .ph{min-height:520px}
+.hero .ph{min-height:600px}
 .hero .badge{position:absolute;left:20px;bottom:20px;background:#fff;border-radius:14px;padding:12px 18px;box-shadow:0 20px 40px -20px rgba(18,24,43,.35);text-align:left}
 .badge small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
 .badge b{font-size:15px}
@@ -210,7 +210,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
       <a href="#tienda">Scrubs</a>
       <a href="#carreras">Por carrera</a>
       <a href="#tribu">La tribu</a>
-      <a href="#manifiesto">Manifiesto</a>
+      <a href="#photoshoot">Photoshoot</a>
       <a href="#quiz">Quiz</a>
     </nav>
     <div style="display:flex;align-items:center;gap:8px">
@@ -278,6 +278,46 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
   </div>
 </section>
 
+<section id="fichas" style="background:var(--bg2);padding:56px 0">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:40px">
+      <div class="eyebrow">Especificaciones</div>
+      <h2>Cada prenda, documentada.</h2>
+      <p>Tela técnica certificada, composición y cuidados. Todo lo que necesitas saber.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px;max-width:1000px">
+      <article style="background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px">
+        <h3 style="font-size:20px;font-weight:700">Montserrat · Set Mujer</h3>
+        <p style="color:var(--muted);font-size:14px">Corte slim femenino, manga larga. Pensado para quien quiere un uniforme que se ajuste a su silueta.</p>
+        <div style="border-top:1px solid var(--line);padding-top:14px">
+          <p style="font-size:13px;color:var(--soft);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:10px">Especificaciones</p>
+          <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.6;color:var(--ink)">
+            <li>Corte slim entallado a la cintura</li>
+            <li>Manga larga con puño</li>
+            <li>Bolsillos funcionales</li>
+            <li>Acabados en blanco o gris claro</li>
+          </ul>
+        </div>
+        <a href="#" style="display:inline-block;margin-top:auto;padding:12px 0;color:var(--ink);font-weight:600;text-decoration:underline;font-size:14px">Ver ficha completa →</a>
+      </article>
+      <article style="background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px">
+        <h3 style="font-size:20px;font-weight:700">Rafaello · Set Unisex</h3>
+        <p style="color:var(--muted);font-size:14px">Corte unisex moderno con cuello tipo mandarín. Una silueta limpia y diferente al scrub tradicional.</p>
+        <div style="border-top:1px solid var(--line);padding-top:14px">
+          <p style="font-size:13px;color:var(--soft);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:10px">Especificaciones</p>
+          <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.6;color:var(--ink)">
+            <li>Corte unisex amplio y cómodo</li>
+            <li>Manga corta, cuello tipo mandarín</li>
+            <li>Bolsillos laterales</li>
+            <li>Acabados en blanco o gris claro</li>
+          </ul>
+        </div>
+        <a href="#" style="display:inline-block;margin-top:auto;padding:12px 0;color:var(--ink);font-weight:600;text-decoration:underline;font-size:14px">Ver ficha completa →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
 <section class="colors dark" id="colores">
   <div class="wrap">
     <div>
@@ -319,6 +359,32 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
     <div class="ph" style="background-image:url(img/tribu.jpg)" role="img" aria-label="Estudiantes con scrubs VITRO en el campus"></div>
   </div>
 </section>
+
+<section id="photoshoot" style="background:var(--bg);padding:72px 0">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:40px">
+      <div class="eyebrow">Sesión de fotos</div>
+      <h2>La tribu en acción.</h2>
+      <p>Estudiantes reales con VITRO. Sin filtros, sin modelos: solo gente que usa nuestros scrubs cada día.</p>
+    </div>
+    <div id="photogrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px"></div>
+  </div>
+</section>
+
+<!-- Lightbox para fotoshoot -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:60;padding:20px;overflow:auto" role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div style="max-width:1000px;margin:0 auto;position:relative">
+    <button id="lb-close" type="button" style="position:absolute;top:-50px;right:0;width:44px;height:44px;border:none;background:none;color:#fff;font-size:32px;cursor:pointer;z-index:70" aria-label="Cerrar">&times;</button>
+    <div id="lb-content" style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap">
+      <button id="lb-prev" type="button" style="width:44px;height:44px;border:1px solid #fff;background:none;color:#fff;cursor:pointer;border-radius:8px;font-size:20px;display:flex;align-items:center;justify-content:center" aria-label="Anterior">‹</button>
+      <div style="flex:1;min-width:300px;display:flex;align-items:center;justify-content:center">
+        <img id="lb-img" src="" alt="" style="max-width:100%;max-height:70vh;border-radius:8px">
+      </div>
+      <button id="lb-next" type="button" style="width:44px;height:44px;border:1px solid #fff;background:none;color:#fff;cursor:pointer;border-radius:8px;font-size:20px;display:flex;align-items:center;justify-content:center" aria-label="Siguiente">›</button>
+    </div>
+    <p id="lb-title" style="color:#fff;text-align:center;margin-top:20px;font-size:14px"></p>
+  </div>
+</div>
 
 <section class="quiz dark" id="quiz">
   <div class="wrap">
@@ -405,7 +471,9 @@ MODELS.forEach(m => COLORS.forEach(c => {
   sel[keyOf(m, c)] = CAT.sizes.find(z => stockOf(m, c, z) > 0) || CAT.sizes[0];
 }));
 /* posición del recorte de cada foto (ajústala si el encuadre no te gusta): "x% y%" */
-const PHOTO_POS = {};
+const PHOTO_POS = {
+  "mujer-verde": "35% 50%" // Sujeto un poco más a la izquierda
+};
 
 /* ---------- Tienda ---------- */
 function renderProducts() {
@@ -678,7 +746,79 @@ $("#veil").onclick = closeCart;
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#drawer").hidden) closeCart(); });
 if (new URLSearchParams(location.search).get("pedido") === "ok") { cart = []; saveCart(); }
 
-renderProducts(); renderColors(); renderQuiz(); updateBadge();
+/* ---------- Photoshoot ---------- */
+// Lista de fotos de la sesión (Fernando añade aquí sus fotos)
+const PHOTOSHOOT = [
+  // { src: "img/photoshoot/foto1.jpg", alt: "Descripcíón de la foto" },
+  // { src: "img/photoshoot/foto2.jpg", alt: "Otra foto" },
+];
+
+let currentPhotoIndex = 0;
+
+function renderPhotogrid() {
+  const grid = $("#photogrid");
+  if (!PHOTOSHOOT.length) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px;font-size:14px">Las fotos de la sesión vienen pronto. Síguenos en @vitroscrubs para ver adelantos.</p>';
+    return;
+  }
+  grid.innerHTML = "";
+  PHOTOSHOOT.forEach((photo, idx) => {
+    const thumb = document.createElement("button");
+    thumb.type = "button";
+    thumb.style.cssText = "border:none;background:none;cursor:pointer;border-radius:12px;overflow:hidden;padding:0;height:240px;background:var(--line);position:relative";
+    thumb.innerHTML = `<img src="${esc(photo.src)}" alt="${esc(photo.alt)}" style="width:100%;height:100%;object-fit:cover" loading="lazy">`;
+    thumb.onclick = () => { currentPhotoIndex = idx; openLightbox(); };
+    grid.appendChild(thumb);
+  });
+}
+
+function openLightbox() {
+  const lb = $("#lightbox");
+  lb.style.display = "flex";
+  lb.style.alignItems = "center";
+  lb.style.justifyContent = "center";
+  updateLightboxImage();
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  $("#lightbox").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+function updateLightboxImage() {
+  if (!PHOTOSHOOT.length) return;
+  const photo = PHOTOSHOOT[currentPhotoIndex];
+  $("#lb-img").src = photo.src;
+  $("#lb-img").alt = photo.alt;
+  $("#lb-title").textContent = `${currentPhotoIndex + 1} de ${PHOTOSHOOT.length}`;
+}
+
+function nextPhoto() {
+  currentPhotoIndex = (currentPhotoIndex + 1) % PHOTOSHOOT.length;
+  updateLightboxImage();
+}
+
+function prevPhoto() {
+  currentPhotoIndex = (currentPhotoIndex - 1 + PHOTOSHOOT.length) % PHOTOSHOOT.length;
+  updateLightboxImage();
+}
+
+// Lightbox controles
+$("#lb-close").onclick = closeLightbox;
+$("#lb-next").onclick = nextPhoto;
+$("#lb-prev").onclick = prevPhoto;
+$("#lightbox").onclick = e => { if (e.target === $("#lightbox")) closeLightbox(); };
+
+// Teclado en lightbox
+document.addEventListener("keydown", e => {
+  if ($("#lightbox").style.display === "none") return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowRight") nextPhoto();
+  if (e.key === "ArrowLeft") prevPhoto();
+});
+
+renderProducts(); renderColors(); renderPhotogrid(); renderQuiz(); updateBadge();
 </script>
 </body>
 </html>
