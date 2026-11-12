@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tienda Completa | VITRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFAF5; --bg2:#F3F1EA; --ink:#12182B; --muted:#53565E; --soft:#7A7C82;
+  --line:#E4E0D3; --ph:#E7E3D9; --navy:#0E1830; --gold:#E8B84B;
+  --head:'Montserrat','Verdana',sans-serif; --body:'Instrument Sans','Segoe UI',Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+h1,h2,h3{font-family:var(--head);margin:0;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:14px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;font:600 15px var(--body);cursor:pointer}
+.btn:hover{opacity:.9}
+.btn.ghost{background:transparent;color:var(--ink)}
+.ph{background:var(--ph) center/cover no-repeat;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#8B8778;font-size:14px;font-weight:600;text-align:center;padding:16px}
+section{padding:72px 0}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em}
+.top .btn{min-height:44px;border-radius:22px;padding:0 20px;font-size:14px}
+
+/* tienda */
+.shop{background:var(--bg2)}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:32px auto 0;max-width:1120px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.card .ph{height:340px;position:relative;background-position:var(--pos,center)}
+.card h3{font-size:18px;font-weight:700}
+.price{font:700 18px var(--head)}
+.card .desc{font-size:14px;color:var(--muted)}
+.card .kind{font-size:13px;color:var(--muted);margin-top:-8px}
+.mxn{font:500 12px var(--body);color:var(--soft)}
+.stu{font-size:14px;color:#2F7D57}.stu b{font-weight:700}
+.few{color:#9C5A1F;font-weight:600}
+.lbl{font-size:13px;font-weight:600}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.size{min-width:48px;min-height:44px;border-radius:12px;border:1px solid #C9C4B4;background:#fff;font:600 14px var(--body);cursor:pointer}
+.size[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.buy{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.note{font-size:12px;color:var(--soft)}
+.chip{position:absolute;top:12px;left:12px;background:var(--ink);color:#fff;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 10px}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.ph.nophoto::after{content:"Foto próximamente"}
+
+/* carrito */
+.cartbtn{position:relative;min-height:44px;min-width:44px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.cartbtn b{position:absolute;top:2px;right:0;min-width:18px;height:18px;border-radius:9px;background:var(--ink);color:#fff;font:700 11px var(--body);display:flex;align-items:center;justify-content:center;padding:0 4px}
+.cartbtn b[hidden]{display:none}
+.veil{position:fixed;inset:0;background:rgba(18,24,43,.45);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;z-index:50;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(18,24,43,.35)}
+.drawer[hidden],.veil[hidden]{display:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.drawer header h2{font-size:20px;font-weight:800}
+.x{min-width:44px;min-height:44px;border:0;background:none;font-size:26px;cursor:pointer;color:var(--ink)}
+.dbody{flex:1;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.line{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.line b{font-size:15px}.line small{display:block;color:var(--muted);font-size:13px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:36px;height:36px;border-radius:10px;border:1px solid #C9C4B4;background:#fff;font:600 16px var(--body);cursor:pointer}
+.qty span{min-width:22px;text-align:center;font-weight:600}
+.rm{border:0;background:none;color:var(--soft);font:500 13px var(--body);text-decoration:underline;cursor:pointer;min-height:36px}
+.dfoot{border-top:1px solid var(--line);padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.tot{display:flex;justify-content:space-between;font-size:15px}
+.tot.big{font:800 18px var(--head)}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select{min-height:46px;border:1px solid #C9C4B4;border-radius:10px;padding:0 12px;font:15px var(--body);background:#fff;color:var(--ink);width:100%}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:#9B1C1C;font-size:13px;min-height:18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+footer{background:var(--ink);color:#fff;padding:28px 0}
+footer p{color:#B9C0D6;font-size:14px}
+
+@media (max-width:900px){
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .products{grid-template-columns:1fr}
+  .card .ph{height:360px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="VITRO, inicio">
+      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#12182B"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#12182B" stroke-width="3" stroke-linecap="round"/></svg>
+      VITRO
+    </a>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button type="button" class="cartbtn" id="opencart" aria-label="Abrir carrito">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V 8"/></svg>
+        <b id="cartcount" hidden>0</b>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="veil" id="veil" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" hidden>
+  <header><h2 id="dtitle">Tu pedido</h2><button type="button" class="x" id="closecart" aria-label="Cerrar carrito">&times;</button></header>
+  <div class="dbody" id="dbody"></div>
+  <div class="dfoot" id="dfoot"></div>
+</aside>
+
+<main>
+<section class="shop" style="padding-top:56px">
+  <div class="wrap">
+    <div style="margin-bottom:40px">
+      <div class="eyebrow" style="display:flex;gap:10px;align-items:center"><a href="index.html" style="text-decoration:underline">← Volver</a></div>
+      <h2 style="font-size:clamp(28px,3.4vw,36px);font-weight:800;margin:10px 0">Todos nuestros scrubs.</h2>
+      <p style="color:var(--muted);max-width:640px">Los 6 modelos en todos los colores y tallas disponibles. Elige tu estilo.</p>
+    </div>
+    <div class="products" id="products" aria-live="polite"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 VITRO. De estudiantes para estudiantes.</p>
+  </div>
+</footer>
+
+<script src="catalog.js"></script>
+<script>
+const CAT = window.VITRO_CATALOG;
+const $ = (s, el = document) => el.querySelector(s);
+const money = n => "$" + n.toLocaleString("es-MX");
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const keyOf = (m, c) => m + "-" + c;
+const MODELS = Object.keys(CAT.models), COLORS = Object.keys(CAT.colors);
+const stockOf = (m, c, s) => ((CAT.stock[m + "-" + c] || {})[s]) || 0;
+const colorStock = (m, c) => CAT.sizes.reduce((t, s) => t + stockOf(m, c, s), 0);
+const unitPrice = (c, stu) => (stu ? CAT.studentPrice : CAT.price)[c];
+
+let student = false;
+try { student = localStorage.getItem("vitro-student") === "1"; } catch (_) {}
+const setStudent = v => { student = v; try { localStorage.setItem("vitro-student", v ? "1" : "0"); } catch (_) {} };
+
+const sel = {};
+const PHOTO_POS = { "mujer-verde": "35% 50%" };
+const IMAGE_NAMES = {
+  "unisex-navy": "rafaello navy.jpg",
+  "unisex-verde": "loggg.jpg"
+};
+MODELS.forEach(m => COLORS.forEach(c => {
+  sel[keyOf(m, c)] = CAT.sizes.find(z => stockOf(m, c, z) > 0) || CAT.sizes[0];
+}));
+
+function renderProducts() {
+  const root = $("#products");
+  root.innerHTML = "";
+  MODELS.forEach(m => COLORS.forEach(c => {
+    const M = CAT.models[m], col = CAT.colors[c], key = keyOf(m, c), size = sel[key];
+    const left = stockOf(m, c, size);
+    const soldOut = colorStock(m, c) === 0;
+    const img = "img/" + key + ".jpg";
+    const card = document.createElement("article");
+    card.className = "card"; card.id = "card-" + key;
+    card.innerHTML = `
+      <div class="ph" style="background-image:url(${img});${PHOTO_POS[key] ? "--pos:" + PHOTO_POS[key] : ""}" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
+        ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
+      </div>
+      <div class="row"><h3>${esc(M.name)}</h3>
+        <span class="price">${money(unitPrice(c, false))}<small class="mxn"> MXN</small></span></div>
+      <p class="kind">${esc(M.kind)} · ${esc(col.name)}</p>
+      <p class="stu">Precio estudiante: <b>${money(unitPrice(c, true))}</b></p>
+      <p class="desc">${esc(M.desc)}</p>
+      <div><div class="lbl">Talla: ${esc(size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
+        <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)} ${esc(col.name)}"></div></div>
+      <div class="buy"></div>`;
+    const probe = new Image();
+    probe.onerror = () => $(".ph", card).classList.add("nophoto");
+    probe.src = img;
+    const sizes = $(".sizes", card);
+    CAT.sizes.forEach(z => {
+      const b = document.createElement("button");
+      const out = stockOf(m, c, z) === 0;
+      b.type = "button"; b.className = "size"; b.textContent = z;
+      if (out) { b.disabled = true; b.title = "Agotada"; b.style.opacity = ".4"; b.style.textDecoration = "line-through"; }
+      b.setAttribute("aria-pressed", z === size);
+      b.onclick = () => { sel[key] = z; renderProducts(); };
+      sizes.appendChild(b);
+    });
+    const buy = $(".buy", card);
+    const add = document.createElement("button");
+    add.type = "button"; add.className = "btn";
+    add.textContent = soldOut || left === 0 ? "Agotado" : "Agregar al carrito";
+    if (soldOut || left === 0) add.disabled = true;
+    add.onclick = () => addToCart(m, c, size);
+    buy.appendChild(add);
+    const n = document.createElement("p");
+    n.className = "note";
+    n.textContent = "Pago seguro con Mercado Pago: tarjeta, OXXO o transferencia.";
+    buy.appendChild(n);
+    root.appendChild(card);
+  }));
+}
+
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("vitro-cart") || "[]"); } catch (_) { cart = []; }
+cart = cart.filter(i => CAT.models[i.model] && CAT.colors[i.color] && CAT.sizes.includes(i.size) && stockOf(i.model, i.color, i.size) > 0)
+           .map(i => ({ ...i, qty: Math.min(i.qty, stockOf(i.model, i.color, i.size), 10) }));
+const saveCart = () => { try { localStorage.setItem("vitro-cart", JSON.stringify(cart)); } catch (_) {} };
+const units = () => cart.reduce((t, i) => t + i.qty, 0);
+const listTotal = () => cart.reduce((t, i) => t + unitPrice(i.color, false) * i.qty, 0);
+const payTotal = () => cart.reduce((t, i) => t + unitPrice(i.color, student) * i.qty, 0);
+const shipCost = () => (units() >= CAT.freeShippingFrom ? 0 : CAT.shipping);
+const isStudentEmail = email => {
+  const d = String(email).toLowerCase().split("@")[1] || "";
+  return CAT.studentDomains.some(x => x.startsWith(".") ? d.endsWith(x) : d === x || d.endsWith("." + x));
+};
+
+function addToCart(model, color, size) {
+  const max = Math.min(10, stockOf(model, color, size));
+  const f = cart.find(i => i.model === model && i.color === color && i.size === size);
+  if (f) f.qty = Math.min(max, f.qty + 1); else cart.push({ model, color, size, qty: 1 });
+  saveCart(); openCart();
+}
+
+function openCart() {
+  $("#veil").hidden = false; $("#drawer").hidden = false;
+  document.body.style.overflow = "hidden";
+  renderCart();
+  $("#closecart").focus();
+}
+
+function closeCart() {
+  $("#veil").hidden = true; $("#drawer").hidden = true;
+  document.body.style.overflow = "";
+}
+
+function updateBadge() {
+  const n = units(), b = $("#cartcount");
+  b.textContent = n; b.hidden = n === 0;
+}
+
+function renderCart() {
+  updateBadge();
+  const body = $("#dbody"), foot = $("#dfoot");
+  body.innerHTML = ""; foot.innerHTML = "";
+  if (!cart.length) {
+    body.innerHTML = '<p class="empty">Tu carrito está vacío.</p>';
+    foot.innerHTML = '<a class="btn" href="#">Volver a la tienda</a>';
+    return;
+  }
+  cart.forEach((item, idx) => {
+    const M = CAT.models[item.model], C = CAT.colors[item.color];
+    const line = document.createElement("div");
+    line.className = "line";
+    line.innerHTML = `<div><b>${esc(M.name)} · ${esc(C.name)}</b><small>Talla ${esc(item.size)}</small></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end">
+        <div class="qty">
+          <button id="qty-minus-${idx}" type="button">−</button>
+          <span id="qty-val-${idx}">${item.qty}</span>
+          <button id="qty-plus-${idx}" type="button">+</button>
+        </div>
+        <div style="font-size:14px;margin-top:4px">${money(unitPrice(item.color, false) * item.qty)}</div>
+      </div>`;
+    body.appendChild(line);
+    const max = Math.min(10, stockOf(item.model, item.color, item.size));
+    $(`#qty-minus-${idx}`).onclick = () => { item.qty = Math.max(1, item.qty - 1); saveCart(); renderCart(); };
+    $(`#qty-plus-${idx}`).onclick = () => { item.qty = Math.min(max, item.qty + 1); saveCart(); renderCart(); };
+  });
+  foot.innerHTML = `<div class="tot"><span>Subtotal</span><span>${money(listTotal())}</span></div>
+    ${student ? `<div class="tot" style="color:#2F7D57"><span>Precio estudiante</span><span>−${money(listTotal() - payTotal())}</span></div>` : ""}
+    <div class="tot"><span>Envío</span><span>${shipCost() ? money(shipCost()) : "Gratis"}</span></div>
+    <div class="tot big"><span>Total</span><span>${money(payTotal() + shipCost())} MXN</span></div>
+    ${shipCost() ? `<p class="note">Envío gratis desde ${CAT.freeShippingFrom} sets.</p>` : ""}
+    <button class="btn" style="width:100%" onclick="location.href='index.html#tienda'">Continuar al pago</button>`;
+}
+
+$("#opencart").onclick = openCart;
+$("#closecart").onclick = closeCart;
+$("#veil").onclick = closeCart;
+renderProducts(); updateBadge();
+</script>
+</body>
+</html>

@@ -245,7 +245,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
       <div class="tags"><span>Resiste el cloro</span><span>V-Shield en Traction Navy</span><span>Precio estudiante desde $800</span></div>
     </div>
     <div class="rel">
-      <div class="ph" style="background-image:url(img/hero.jpg)" role="img" aria-label="Estudiante en práctica clínica con scrubs VITRO"></div>
+      <div class="ph" style="background-image:url(img/hero.jpg);background-position:20% 50%" role="img" aria-label="Estudiante en práctica clínica con scrubs VITRO"></div>
     </div>
   </div>
 </section>
@@ -260,7 +260,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
     <div class="grid">
       <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4 V10 A6 6 0 0 0 18 10 V4"/><circle cx="19" cy="4" r="2"/><path d="M12 16 V20"/></svg></span><b>Medicina</b><span>Pa' los de guardia</span></a>
       <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21 C7 17 3 13.5 3 9.4 A5 5 0 0 1 12 6.5 A5 5 0 0 1 21 9.4 C21 13.5 17 17 12 21 Z"/></svg></span><b>Enfermería</b><span>Pa' las que no paran</span></a>
-      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="17" cy="6" r="2.4"/><path d="M9 5 C9 9 11 10 11 14 C11 18 8 19 6 17 C4 15 5 12 5 10"/></svg></span><b>Odontología</b><span>Pa' los de odonto</span></a>
+      <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 C6.48 2 2 6.48 2 12 C2 17.52 6.48 22 12 22 C17.52 22 22 17.52 22 12 C22 6.48 17.52 2 12 2 Z"/><path d="M8 12 L12 16 L16 8"/></svg></span><b>Odontología</b><span>Pa' los de odonto</span></a>
       <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3 H14 L18 8 V21 H6 Z"/><path d="M14 3 V8 H18"/><path d="M9.5 12 H14.5 M9.5 15.5 H12.5"/></svg></span><b>Lab Clínico</b><span>Pa' los del microscopio</span></a>
       <a class="career" href="#tienda"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12182B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14 H7 L9 8 L13 18 L15 12 L17 14 H21"/></svg></span><b>Fisioterapia</b><span>Pa' los del movimiento</span></a>
     </div>
@@ -298,7 +298,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
             <li>Acabados en blanco o gris claro</li>
           </ul>
         </div>
-        <a href="#" style="display:inline-block;margin-top:auto;padding:12px 0;color:var(--ink);font-weight:600;text-decoration:underline;font-size:14px">Ver ficha completa →</a>
+        <a href="fichas.html" style="display:inline-block;margin-top:auto;padding:12px 0;color:var(--ink);font-weight:600;text-decoration:underline;font-size:14px">Ver ficha completa →</a>
       </article>
       <article style="background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px">
         <h3 style="font-size:20px;font-weight:700">Rafaello · Set Unisex</h3>
@@ -312,7 +312,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
             <li>Acabados en blanco o gris claro</li>
           </ul>
         </div>
-        <a href="#" style="display:inline-block;margin-top:auto;padding:12px 0;color:var(--ink);font-weight:600;text-decoration:underline;font-size:14px">Ver ficha completa →</a>
+        <a href="fichas.html" style="display:inline-block;margin-top:auto;padding:12px 0;color:var(--ink);font-weight:600;text-decoration:underline;font-size:14px">Ver ficha completa →</a>
       </article>
     </div>
   </div>
@@ -475,15 +475,29 @@ const PHOTO_POS = {
   "mujer-verde": "35% 50%" // Sujeto un poco más a la izquierda
 };
 
+/* Mostrar solo estos productos en la tienda principal */
+const SHOP_PREVIEW = ["mujer-navy", "mujer-verde", "unisex-vino"];
+
+/* Mapeo de archivos especiales para algunas imágenes */
+const IMAGE_NAMES = {
+  "unisex-navy": "rafaello navy.jpg",
+  "unisex-verde": "loggg.jpg"
+};
+
 /* ---------- Tienda ---------- */
 function renderProducts() {
   const root = $("#products");
   root.innerHTML = "";
-  MODELS.forEach(m => COLORS.forEach(c => {
-    const M = CAT.models[m], col = CAT.colors[c], key = keyOf(m, c), size = sel[key];
+  const productsToShow = SHOP_PREVIEW || MODELS.flatMap(m => COLORS.map(c => keyOf(m, c)));
+
+  productsToShow.forEach(key => {
+    const [m, c] = [key.split("-")[0], key.split("-")[1]];
+    if (!CAT.models[m] || !CAT.colors[c]) return;
+
+    const M = CAT.models[m], col = CAT.colors[c], size = sel[key];
     const left = stockOf(m, c, size);
     const soldOut = colorStock(m, c) === 0;
-    const img = "img/" + key + ".jpg";
+    const img = "img/" + (IMAGE_NAMES[key] || key + ".jpg");
     const card = document.createElement("article");
     card.className = "card"; card.id = "card-" + key;
     card.innerHTML = `
@@ -498,7 +512,6 @@ function renderProducts() {
       <div><div class="lbl">Talla: ${esc(size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
         <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)} ${esc(col.name)}"></div></div>
       <div class="buy"></div>`;
-    /* si la foto aún no existe, muestra un aviso en lugar de un hueco vacío */
     const probe = new Image();
     probe.onerror = () => $(".ph", card).classList.add("nophoto");
     probe.src = img;
@@ -524,7 +537,15 @@ function renderProducts() {
     n.textContent = "Pago seguro con Mercado Pago: tarjeta, OXXO o transferencia.";
     buy.appendChild(n);
     root.appendChild(card);
-  }));
+  });
+
+  // Si hay preview, agregar botón a tienda completa
+  if (SHOP_PREVIEW) {
+    const viewAll = document.createElement("div");
+    viewAll.style.cssText = "grid-column:1/-1;text-align:center;padding:40px 0";
+    viewAll.innerHTML = '<a class="btn" href="tienda.html" style="display:inline-flex">Ver la tienda completa</a>';
+    root.appendChild(viewAll);
+  }
 }
 
 /* ---------- Colores ---------- */
@@ -541,9 +562,24 @@ function renderColors() {
   });
   const C = CAT.colors[curColor];
   const total = MODELS.reduce((t, m) => t + colorStock(m, curColor), 0);
+  const colorModule = document.querySelector("section[id='colores'] > .wrap > div:last-child");
+  if (colorModule) {
+    // Cambiar fondo del módulo al color seleccionado
+    colorModule.style.background = C.hex;
+    colorModule.style.color = "#fff";
+    colorModule.style.borderRadius = "16px";
+    colorModule.style.padding = "28px";
+    // Ajustar colores de texto secundarios
+    colorModule.querySelectorAll("p").forEach(p => {
+      if (!p.id.includes("status")) p.style.color = "rgba(255,255,255,.75)";
+    });
+  }
   $("#cname").textContent = C.name;
+  $("#cname").style.color = "#fff";
   $("#cdesc").textContent = C.desc;
+  $("#cdesc").style.color = "rgba(255,255,255,.85)";
   $("#cstatus").textContent = `${money(CAT.price[curColor])} · estudiantes ${money(CAT.studentPrice[curColor])}. Primer lote: ${total} sets en este color.`;
+  $("#cstatus").style.color = "rgba(255,255,255,.65)";
 }
 
 /* ---------- Quiz ---------- */
