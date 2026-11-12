@@ -160,6 +160,11 @@ footer p{color:#B9C0D6;font-size:14px;max-width:340px;margin:12px 0 16px}
 footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:#7C8299}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
+/* photoshoot */
+.psduo{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.psduo img{width:100%;height:auto;display:block;border-radius:16px}
+@media (max-width:600px){.psduo{grid-template-columns:1fr}}
+
 /* carrito */
 .cartbtn{position:relative;min-height:44px;min-width:44px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
 .cartbtn b{position:absolute;top:2px;right:0;min-width:18px;height:18px;border-radius:9px;background:var(--ink);color:#fff;font:700 11px var(--body);display:flex;align-items:center;justify-content:center;padding:0 4px}
@@ -372,24 +377,13 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
       <h2>La tribu en acción.</h2>
       <p>Estudiantes reales con VITRO. Sin filtros, sin modelos: solo gente que usa nuestros scrubs cada día.</p>
     </div>
-    <div id="photogrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px"></div>
+    <div class="psduo">
+      <img src="img/photoshoot/ps11111.jpg" alt="Estudiante con scrubs vino de VITRO junto a un modelo anatómico" loading="lazy">
+      <img src="img/photoshoot/ps1.jpg" alt="Grupo de estudiantes con scrubs VITRO en un salón de clase" loading="lazy">
+    </div>
+    <p style="text-align:center;margin-top:32px"><a class="btn" href="sesion.html">Ver la sesión completa</a></p>
   </div>
 </section>
-
-<!-- Lightbox para fotoshoot -->
-<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:60;padding:20px;overflow:auto" role="dialog" aria-modal="true" aria-labelledby="lb-title">
-  <div style="max-width:1000px;margin:0 auto;position:relative">
-    <button id="lb-close" type="button" style="position:absolute;top:-50px;right:0;width:44px;height:44px;border:none;background:none;color:#fff;font-size:32px;cursor:pointer;z-index:70" aria-label="Cerrar">&times;</button>
-    <div id="lb-content" style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap">
-      <button id="lb-prev" type="button" style="width:44px;height:44px;border:1px solid #fff;background:none;color:#fff;cursor:pointer;border-radius:8px;font-size:20px;display:flex;align-items:center;justify-content:center" aria-label="Anterior">‹</button>
-      <div style="flex:1;min-width:300px;display:flex;align-items:center;justify-content:center">
-        <img id="lb-img" src="" alt="" style="max-width:100%;max-height:70vh;border-radius:8px">
-      </div>
-      <button id="lb-next" type="button" style="width:44px;height:44px;border:1px solid #fff;background:none;color:#fff;cursor:pointer;border-radius:8px;font-size:20px;display:flex;align-items:center;justify-content:center" aria-label="Siguiente">›</button>
-    </div>
-    <p id="lb-title" style="color:#fff;text-align:center;margin-top:20px;font-size:14px"></p>
-  </div>
-</div>
 
 <section class="quiz dark" id="quiz">
   <div class="wrap">
@@ -485,7 +479,6 @@ const SHOP_PREVIEW = ["mujer-navy", "mujer-verde", "unisex-vino"];
 
 /* Mapeo de archivos especiales para algunas imágenes */
 const IMAGE_NAMES = {
-  "unisex-navy": "rafaello navy.jpg",
   "unisex-verde": "loggg.jpg"
 };
 
@@ -786,79 +779,7 @@ $("#veil").onclick = closeCart;
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#drawer").hidden) closeCart(); });
 if (new URLSearchParams(location.search).get("pedido") === "ok") { cart = []; saveCart(); }
 
-/* ---------- Photoshoot ---------- */
-// Lista de fotos de la sesión (Fernando añade aquí sus fotos)
-const PHOTOSHOOT = [
-  // { src: "img/photoshoot/foto1.jpg", alt: "Descripcíón de la foto" },
-  // { src: "img/photoshoot/foto2.jpg", alt: "Otra foto" },
-];
-
-let currentPhotoIndex = 0;
-
-function renderPhotogrid() {
-  const grid = $("#photogrid");
-  if (!PHOTOSHOOT.length) {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px;font-size:14px">Las fotos de la sesión vienen pronto. Síguenos en @vitroscrubs para ver adelantos.</p>';
-    return;
-  }
-  grid.innerHTML = "";
-  PHOTOSHOOT.forEach((photo, idx) => {
-    const thumb = document.createElement("button");
-    thumb.type = "button";
-    thumb.style.cssText = "border:none;background:none;cursor:pointer;border-radius:12px;overflow:hidden;padding:0;height:240px;background:var(--line);position:relative";
-    thumb.innerHTML = `<img src="${esc(photo.src)}" alt="${esc(photo.alt)}" style="width:100%;height:100%;object-fit:cover" loading="lazy">`;
-    thumb.onclick = () => { currentPhotoIndex = idx; openLightbox(); };
-    grid.appendChild(thumb);
-  });
-}
-
-function openLightbox() {
-  const lb = $("#lightbox");
-  lb.style.display = "flex";
-  lb.style.alignItems = "center";
-  lb.style.justifyContent = "center";
-  updateLightboxImage();
-  document.body.style.overflow = "hidden";
-}
-
-function closeLightbox() {
-  $("#lightbox").style.display = "none";
-  document.body.style.overflow = "";
-}
-
-function updateLightboxImage() {
-  if (!PHOTOSHOOT.length) return;
-  const photo = PHOTOSHOOT[currentPhotoIndex];
-  $("#lb-img").src = photo.src;
-  $("#lb-img").alt = photo.alt;
-  $("#lb-title").textContent = `${currentPhotoIndex + 1} de ${PHOTOSHOOT.length}`;
-}
-
-function nextPhoto() {
-  currentPhotoIndex = (currentPhotoIndex + 1) % PHOTOSHOOT.length;
-  updateLightboxImage();
-}
-
-function prevPhoto() {
-  currentPhotoIndex = (currentPhotoIndex - 1 + PHOTOSHOOT.length) % PHOTOSHOOT.length;
-  updateLightboxImage();
-}
-
-// Lightbox controles
-$("#lb-close").onclick = closeLightbox;
-$("#lb-next").onclick = nextPhoto;
-$("#lb-prev").onclick = prevPhoto;
-$("#lightbox").onclick = e => { if (e.target === $("#lightbox")) closeLightbox(); };
-
-// Teclado en lightbox
-document.addEventListener("keydown", e => {
-  if ($("#lightbox").style.display === "none") return;
-  if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowRight") nextPhoto();
-  if (e.key === "ArrowLeft") prevPhoto();
-});
-
-renderProducts(); renderColors(); renderPhotogrid(); renderQuiz(); updateBadge();
+renderProducts(); renderColors(); renderQuiz(); updateBadge();
 </script>
 </body>
 </html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sesión de fotos | VITRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBFAF5;--ink:#12182B;--muted:#53565E;--navy:#0E1830;--head:'Montserrat','Verdana',sans-serif;--body:'Instrument Sans','Segoe UI',Helvetica,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:3px solid #E8B84B;outline-offset:3px}
+h1{font-family:var(--head);font-size:clamp(32px,5vw,48px);letter-spacing:-.02em;margin:0 0 12px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header{background:var(--navy);padding:20px 0;position:sticky;top:0;z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between}
+.logo{font:800 21px var(--head);letter-spacing:.14em;color:#fff}
+.back{color:#fff;font-size:14px;font-weight:500}
+.back:hover{text-decoration:underline}
+main{padding:40px 0 72px}
+.intro{color:var(--muted);max-width:560px;margin:0 0 32px}
+.masonry{columns:3 300px;column-gap:16px}
+.ph-item{display:block;break-inside:avoid;margin-bottom:16px;border-radius:14px;overflow:hidden;background:#E7E3D9}
+.ph-item img{display:block;width:100%;height:auto;transition:transform .3s}
+.ph-item:hover img{transform:scale(1.02)}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:60;display:none;align-items:center;justify-content:center;padding:56px 64px}
+#lb.open{display:flex}
+#lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+#lb button{position:absolute;border:0;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;border-radius:22px;width:44px;height:44px;font-size:26px;line-height:1}
+#lb button:hover{background:rgba(255,255,255,.25)}
+#lb .x{top:12px;right:12px}#lb .pv{left:10px;top:50%;margin-top:-22px}#lb .nx{right:10px;top:50%;margin-top:-22px}
+#lb .ct{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#fff;font-size:14px}
+@media (max-width:600px){#lb{padding:56px 8px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="index.html">VITRO</a>
+    <a class="back" href="index.html#photoshoot">← Volver</a>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <h1>La sesión completa</h1>
+    <p class="intro">Estudiantes reales con VITRO. Toca una foto para verla en grande.</p>
+    <div class="masonry" id="g">
+    <a href="img/photoshoot/ps8.jpg" class="ph-item"><img src="img/photoshoot/ps8.jpg" alt="Sesión de fotos VITRO, foto 1 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps13.jpg" class="ph-item"><img src="img/photoshoot/ps13.jpg" alt="Sesión de fotos VITRO, foto 2 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps19.jpg" class="ph-item"><img src="img/photoshoot/ps19.jpg" alt="Sesión de fotos VITRO, foto 3 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps1.jpg" class="ph-item"><img src="img/photoshoot/ps1.jpg" alt="Sesión de fotos VITRO, foto 4 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps6.jpg" class="ph-item"><img src="img/photoshoot/ps6.jpg" alt="Sesión de fotos VITRO, foto 5 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps10.jpg" class="ph-item"><img src="img/photoshoot/ps10.jpg" alt="Sesión de fotos VITRO, foto 6 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps21.jpg" class="ph-item"><img src="img/photoshoot/ps21.jpg" alt="Sesión de fotos VITRO, foto 7 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps3.jpg" class="ph-item"><img src="img/photoshoot/ps3.jpg" alt="Sesión de fotos VITRO, foto 8 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps11111.jpg" class="ph-item"><img src="img/photoshoot/ps11111.jpg" alt="Sesión de fotos VITRO, foto 9 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps17.jpg" class="ph-item"><img src="img/photoshoot/ps17.jpg" alt="Sesión de fotos VITRO, foto 10 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps4.jpg" class="ph-item"><img src="img/photoshoot/ps4.jpg" alt="Sesión de fotos VITRO, foto 11 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps14.jpg" class="ph-item"><img src="img/photoshoot/ps14.jpg" alt="Sesión de fotos VITRO, foto 12 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps9.jpg" class="ph-item"><img src="img/photoshoot/ps9.jpg" alt="Sesión de fotos VITRO, foto 13 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps20.jpg" class="ph-item"><img src="img/photoshoot/ps20.jpg" alt="Sesión de fotos VITRO, foto 14 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps2.jpg" class="ph-item"><img src="img/photoshoot/ps2.jpg" alt="Sesión de fotos VITRO, foto 15 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps12.jpg" class="ph-item"><img src="img/photoshoot/ps12.jpg" alt="Sesión de fotos VITRO, foto 16 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps18.jpg" class="ph-item"><img src="img/photoshoot/ps18.jpg" alt="Sesión de fotos VITRO, foto 17 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps7.jpg" class="ph-item"><img src="img/photoshoot/ps7.jpg" alt="Sesión de fotos VITRO, foto 18 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps23.jpg" class="ph-item"><img src="img/photoshoot/ps23.jpg" alt="Sesión de fotos VITRO, foto 19 de 20" loading="lazy"></a>
+    <a href="img/photoshoot/ps15.jpg" class="ph-item"><img src="img/photoshoot/ps15.jpg" alt="Sesión de fotos VITRO, foto 20 de 20" loading="lazy"></a>
+    </div>
+  </div>
+</main>
+<div id="lb" role="dialog" aria-modal="true" aria-label="Visor de fotos" aria-hidden="true">
+  <button class="x" type="button" aria-label="Cerrar">&times;</button>
+  <button class="pv" type="button" aria-label="Anterior">&#8249;</button>
+  <img src="" alt="">
+  <button class="nx" type="button" aria-label="Siguiente">&#8250;</button>
+  <div class="ct"></div>
+</div>
+<script>
+const links=[...document.querySelectorAll(".ph-item")],lb=document.getElementById("lb"),im=lb.querySelector("img"),ct=lb.querySelector(".ct");
+let i=0,opener=null;
+function show(){const a=links[i];im.src=a.href;im.alt=a.querySelector("img").alt;ct.textContent=(i+1)+" de "+links.length}
+function open(n,el){i=n;opener=el;show();lb.classList.add("open");lb.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";lb.querySelector(".x").focus()}
+function close(){lb.classList.remove("open");lb.setAttribute("aria-hidden","true");document.body.style.overflow="";if(opener)opener.focus()}
+function step(d){i=(i+d+links.length)%links.length;show()}
+links.forEach((a,n)=>a.addEventListener("click",e=>{e.preventDefault();open(n,a)}));
+lb.querySelector(".x").onclick=close;lb.querySelector(".pv").onclick=()=>step(-1);lb.querySelector(".nx").onclick=()=>step(1);
+lb.addEventListener("click",e=>{if(e.target===lb)close()});
+document.addEventListener("keydown",e=>{if(!lb.classList.contains("open"))return;if(e.key==="Escape")close();if(e.key==="ArrowRight")step(1);if(e.key==="ArrowLeft")step(-1)});
+let sx=0;lb.addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});
+lb.addEventListener("touchend",e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)step(d<0?1:-1)});
+</script>
+</body>
+</html>
