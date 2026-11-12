@@ -172,7 +172,7 @@ function renderProducts() {
     const M = CAT.models[m], col = CAT.colors[c], key = keyOf(m, c), size = sel[key];
     const left = stockOf(m, c, size);
     const soldOut = colorStock(m, c) === 0;
-    const img = "img/" + key + ".jpg";
+    const img = "img/" + (IMAGE_NAMES[key] || key + ".jpg");
     const card = document.createElement("article");
     card.className = "card"; card.id = "card-" + key;
     card.innerHTML = `
