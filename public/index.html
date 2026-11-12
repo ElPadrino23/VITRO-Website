@@ -38,22 +38,26 @@ p{margin:0}
 section{padding:72px 0}
 
 /* header */
-header.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+header.top{position:sticky;top:0;z-index:20;background:var(--navy);border-bottom:none}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
-.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em}
+.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em;color:#fff}
 nav.main{display:flex;gap:28px}
-nav.main a{font-size:15px;font-weight:500}
+nav.main a{font-size:15px;font-weight:500;color:#fff}
 nav.main a:hover{text-decoration:underline;text-underline-offset:6px}
-.top .btn{min-height:44px;border-radius:22px;padding:0 20px;font-size:14px}
+.top .btn{min-height:44px;border-radius:22px;padding:0 20px;font-size:14px;background:#fff;color:var(--navy);border-color:#fff}
+.top .btn:hover{opacity:.9}
+.cartbtn{color:#fff}
 
 /* hero */
-.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero .wrap{display:grid;grid-template-columns:1fr;gap:40px;align-items:start}
 .hero h1{font-size:clamp(38px,5.4vw,60px);line-height:1.05;font-weight:800;margin:18px 0 22px}
 .hero p.lead{font-size:18px;color:var(--muted);max-width:480px}
 .hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}
 .hero .tags{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
 .hero .tags span+span::before{content:"";display:inline-block;width:4px;height:4px;border-radius:2px;background:#C9C4B4;margin-right:14px;vertical-align:middle}
-.hero .ph{min-height:600px}
+.hero .ph{min-height:500px;width:100%}
+.hero .rel{width:100%;grid-column:1;order:1}
+.hero > .wrap > div:first-child{order:2}
 .hero .badge{position:absolute;left:20px;bottom:20px;background:#fff;border-radius:14px;padding:12px 18px;box-shadow:0 20px 40px -20px rgba(18,24,43,.35);text-align:left}
 .badge small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
 .badge b{font-size:15px}
@@ -102,16 +106,17 @@ nav.main a:hover{text-decoration:underline;text-underline-offset:6px}
 .soon{font-size:12px;color:var(--soft)}
 
 /* colores */
-.colors{background:var(--navy);color:#fff}
+.colors{background:var(--navy);color:#fff;transition:background-color .3s ease}
 .colors .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:center}
-.colors h2{font-size:clamp(30px,4vw,40px);font-weight:800;margin:14px 0}
-.colors p{color:#B9C0D6}
+.colors h2{font-size:clamp(30px,4vw,40px);font-weight:800;margin:14px 0;color:#fff}
+.colors p{color:rgba(255,255,255,.85)}
+.colors .eyebrow{color:rgba(255,255,255,.7)}
 .swatches{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
 .sw{border:0;background:none;cursor:pointer;color:#fff;display:flex;flex-direction:column;align-items:center;gap:10px;font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;min-height:44px}
 .sw i{width:48px;height:48px;border-radius:24px;display:block}
-.sw[aria-pressed=true] i{box-shadow:0 0 0 3px var(--navy),0 0 0 5px var(--gold)}
-.sw span{color:#8890A6}.sw[aria-pressed=true] span{color:#fff}
-.colors h3{font-size:28px;font-weight:800;margin:10px 0 12px}
+.sw[aria-pressed=true] i{box-shadow:0 0 0 3px rgba(255,255,255,.3),0 0 0 5px #fff}
+.sw span{color:rgba(255,255,255,.65)}.sw[aria-pressed=true] span{color:#fff}
+.colors h3{font-size:28px;font-weight:800;margin:10px 0 12px;color:#fff}
 
 /* manifiesto / tribu */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
@@ -203,7 +208,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#inicio" aria-label="VITRO, inicio">
-      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#12182B"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#12182B" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#fff"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
       VITRO
     </a>
     <nav class="main" aria-label="Principal">
@@ -562,17 +567,16 @@ function renderColors() {
   });
   const C = CAT.colors[curColor];
   const total = MODELS.reduce((t, m) => t + colorStock(m, curColor), 0);
+  const section = document.querySelector("section[id='colores']");
+  if (section) {
+    // Cambiar fondo de toda la sección al color seleccionado
+    section.style.background = C.hex;
+    section.style.color = "#fff";
+  }
   const colorModule = document.querySelector("section[id='colores'] > .wrap > div:last-child");
   if (colorModule) {
-    // Cambiar fondo del módulo al color seleccionado
-    colorModule.style.background = C.hex;
-    colorModule.style.color = "#fff";
-    colorModule.style.borderRadius = "16px";
-    colorModule.style.padding = "28px";
-    // Ajustar colores de texto secundarios
-    colorModule.querySelectorAll("p").forEach(p => {
-      if (!p.id.includes("status")) p.style.color = "rgba(255,255,255,.75)";
-    });
+    colorModule.style.background = "transparent";
+    colorModule.style.padding = "0";
   }
   $("#cname").textContent = C.name;
   $("#cname").style.color = "#fff";
