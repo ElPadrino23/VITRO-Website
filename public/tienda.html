@@ -29,9 +29,9 @@ p{margin:0}
 section{padding:72px 0}
 
 /* header */
-header.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+header.top{position:sticky;top:0;z-index:20;background:var(--navy);border-bottom:none}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
-.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em}
+.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em;color:#fff}
 .top .btn{min-height:44px;border-radius:22px;padding:0 20px;font-size:14px}
 
 /* tienda */
@@ -156,7 +156,7 @@ try { student = localStorage.getItem("vitro-student") === "1"; } catch (_) {}
 const setStudent = v => { student = v; try { localStorage.setItem("vitro-student", v ? "1" : "0"); } catch (_) {} };
 
 const sel = {};
-const PHOTO_POS = { "mujer-verde": "35% 50%" };
+const PHOTO_POS = { "mujer-verde": "50% 50%" };
 const IMAGE_NAMES = {
   "mujer-navy": "rafaello navy.jpg",
   "unisex-verde": "loggg.jpg"
