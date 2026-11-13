@@ -6,20 +6,107 @@
 <title>Tienda Completa | VITRO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="vitro.css">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFAF5; --bg2:#F3F1EA; --ink:#12182B; --muted:#53565E; --soft:#7A7C82;
+  --line:#E4E0D3; --ph:#E7E3D9; --navy:#0E1830; --gold:#E8B84B;
+  --head:'Montserrat','Verdana',sans-serif; --body:'Instrument Sans','Segoe UI',Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+h1,h2,h3{font-family:var(--head);margin:0;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:14px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;font:600 15px var(--body);cursor:pointer}
+.btn:hover{opacity:.9}
+.btn.ghost{background:transparent;color:var(--ink)}
+.ph{background:var(--ph) center/cover no-repeat;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#8B8778;font-size:14px;font-weight:600;text-align:center;padding:16px}
+section{padding:72px 0}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:var(--navy);border-bottom:none}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font:800 21px var(--head);letter-spacing:.14em;color:#fff}
+.top .btn{min-height:44px;border-radius:22px;padding:0 20px;font-size:14px}
+
+/* tienda */
+.shop{background:var(--bg2)}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:32px auto 0;max-width:1120px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.card .ph{height:340px;position:relative;background-position:var(--pos,center)}
+.card h3{font-size:18px;font-weight:700}
+.price{font:700 18px var(--head)}
+.card .desc{font-size:14px;color:var(--muted)}
+.card .kind{font-size:13px;color:var(--muted);margin-top:-8px}
+.mxn{font:500 12px var(--body);color:var(--soft)}
+.stu{font-size:14px;color:#2F7D57}.stu b{font-weight:700}
+.few{color:#9C5A1F;font-weight:600}
+.lbl{font-size:13px;font-weight:600}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.size{min-width:48px;min-height:44px;border-radius:12px;border:1px solid #C9C4B4;background:#fff;font:600 14px var(--body);cursor:pointer}
+.size[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.buy{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.note{font-size:12px;color:var(--soft)}
+.chip{position:absolute;top:12px;left:12px;background:var(--ink);color:#fff;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 10px}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.ph.nophoto::after{content:"Foto próximamente"}
+
+/* carrito */
+.cartbtn{position:relative;min-height:44px;min-width:44px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.cartbtn b{position:absolute;top:2px;right:0;min-width:18px;height:18px;border-radius:9px;background:var(--ink);color:#fff;font:700 11px var(--body);display:flex;align-items:center;justify-content:center;padding:0 4px}
+.cartbtn b[hidden]{display:none}
+.veil{position:fixed;inset:0;background:rgba(18,24,43,.45);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;z-index:50;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(18,24,43,.35)}
+.drawer[hidden],.veil[hidden]{display:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.drawer header h2{font-size:20px;font-weight:800}
+.x{min-width:44px;min-height:44px;border:0;background:none;font-size:26px;cursor:pointer;color:var(--ink)}
+.dbody{flex:1;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.line{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.line b{font-size:15px}.line small{display:block;color:var(--muted);font-size:13px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:36px;height:36px;border-radius:10px;border:1px solid #C9C4B4;background:#fff;font:600 16px var(--body);cursor:pointer}
+.qty span{min-width:22px;text-align:center;font-weight:600}
+.rm{border:0;background:none;color:var(--soft);font:500 13px var(--body);text-decoration:underline;cursor:pointer;min-height:36px}
+.dfoot{border-top:1px solid var(--line);padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.tot{display:flex;justify-content:space-between;font-size:15px}
+.tot.big{font:800 18px var(--head)}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select{min-height:46px;border:1px solid #C9C4B4;border-radius:10px;padding:0 12px;font:15px var(--body);background:#fff;color:var(--ink);width:100%}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:#9B1C1C;font-size:13px;min-height:18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+footer{background:var(--ink);color:#fff;padding:28px 0}
+footer p{color:#B9C0D6;font-size:14px}
+
+@media (max-width:900px){
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .products{grid-template-columns:1fr}
+  .card .ph{height:360px}
+}
+</style>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
     <a class="logo" href="index.html" aria-label="VITRO, inicio">
-      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#fff"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#FF5B2E" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#fff"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
       VITRO
     </a>
     <div style="display:flex;align-items:center;gap:8px">
       <button type="button" class="cartbtn" id="opencart" aria-label="Abrir carrito">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V8"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V 8"/></svg>
         <b id="cartcount" hidden>0</b>
       </button>
     </div>
@@ -34,22 +121,21 @@
 </aside>
 
 <main>
-<section class="shop" style="padding-top:48px">
+<section class="shop" style="padding-top:56px">
   <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow"><a href="index.html" style="text-decoration:underline;text-underline-offset:4px">Volver al inicio</a></div>
-      <h2>Los 6 sets del primer lote</h2>
-      <p>Dos modelos en tres colores. Elige talla y agrégalo al carrito; ahí activas el precio estudiante.</p>
+    <div style="margin-bottom:40px">
+      <div class="eyebrow" style="display:flex;gap:10px;align-items:center"><a href="index.html" style="text-decoration:underline">← Volver</a></div>
+      <h2 style="font-size:clamp(28px,3.4vw,36px);font-weight:800;margin:10px 0">Todos nuestros scrubs.</h2>
+      <p style="color:var(--muted);max-width:640px">Los 6 modelos en todos los colores y tallas disponibles. Elige tu estilo.</p>
     </div>
-    <div class="products all" id="products" aria-live="polite"></div>
+    <div class="products" id="products" aria-live="polite"></div>
   </div>
 </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <div class="legal" style="margin-top:0"><span>&copy; 2026 VITRO &middot; Lote 01</span><span>Pagos: Mercado Pago &middot; transferencia</span></div>
-    <div class="wordmark" aria-hidden="true">VITRO</div>
+    <p>&copy; 2026 VITRO. De estudiantes para estudiantes.</p>
   </div>
 </footer>
 
@@ -78,12 +164,6 @@ MODELS.forEach(m => COLORS.forEach(c => {
   sel[keyOf(m, c)] = CAT.sizes.find(z => stockOf(m, c, z) > 0) || CAT.sizes[0];
 }));
 
-const FABRIC = {
-  navy:  { tela: "78% poliéster · 20% rayón · 2% spandex", peso: "160 g/m²", liq: "Antifluido V-Shield" },
-  other: { tela: "65% poliéster · 35% algodón", peso: "150 g/m²", liq: "Sin tratamiento antifluido" }
-};
-const SAMPLE_ORDER = MODELS.flatMap(m => COLORS.map(c => keyOf(m, c)));
-
 function renderProducts() {
   const root = $("#products");
   root.innerHTML = "";
@@ -94,25 +174,18 @@ function renderProducts() {
     const img = "img/" + (IMAGE_NAMES[key] || key + ".jpg");
     const card = document.createElement("article");
     card.className = "card"; card.id = "card-" + key;
-    const fab = c === "navy" ? FABRIC.navy : FABRIC.other;
-    const no = String(SAMPLE_ORDER.indexOf(key) + 1).padStart(2, "0");
-    const code = M.name.slice(0, 3).toUpperCase() + "-" + c.slice(0, 3).toUpperCase();
     card.innerHTML = `
       <div class="ph" style="background-image:url(${img});${PHOTO_POS[key] ? "--pos:" + PHOTO_POS[key] : ""}" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
         ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
-        <span class="lab"><b>Muestra ${no}/${String(SAMPLE_ORDER.length).padStart(2, "0")} · Lote 01</b>${code}</span>
       </div>
-      <div class="cinfo">
-        <div class="row"><h3><small>Modelo</small>${esc(M.name)}</h3>
-          <span class="price">${money(unitPrice(c, false))}<small class="mxn"> MXN</small></span></div>
-        <p class="kind">${esc(M.kind)} · ${esc(col.name)}</p>
-        <p class="stu">Precio estudiante: <b>${money(unitPrice(c, true))}</b></p>
-        <p class="desc">${esc(M.desc)}</p>
-        <dl class="spec"><dt>Tela</dt><dd>${fab.tela}</dd><dt>Peso</dt><dd>${fab.peso}</dd><dt>Líquidos</dt><dd>${fab.liq}</dd></dl>
-        <div><div class="lbl">Talla: ${esc(size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
-          <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)} ${esc(col.name)}"></div></div>
-        <div class="buy"></div>
-      </div>`;
+      <div class="row"><h3>Modelo: ${esc(M.name)}</h3>
+        <span class="price">${money(unitPrice(c, false))}<small class="mxn"> MXN</small></span></div>
+      <p class="kind">${esc(M.kind)} · ${esc(col.name)}</p>
+      <p class="stu">Precio estudiante: <b>${money(unitPrice(c, true))}</b></p>
+      <p class="desc">${esc(M.desc)}</p>
+      <div><div class="lbl">Talla: ${esc(size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
+        <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)} ${esc(col.name)}"></div></div>
+      <div class="buy"></div>`;
     const probe = new Image();
     probe.onerror = () => $(".ph", card).classList.add("nophoto");
     probe.src = img;
