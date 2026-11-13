@@ -60,19 +60,19 @@ var require_catalog = __commonJS({
         // Colores (hex tomados de las muestras de la proforma de ANNO)
         colors: {
           navy: {
-            name: "Traction Navy",
+            name: "Navy Blue",
             hex: "#21355A",
             vshield: true,
             desc: "El azul que aguantas 12 horas sin verlo sucio. Con V-Shield: repele salpicaduras de l\xEDquidos."
           },
           vino: {
-            name: "Vino de Guardia",
+            name: "Cold Wine",
             hex: "#530020",
             vshield: false,
             desc: "Serio en el pase de visita. Inconfundible en la foto de generaci\xF3n."
           },
           verde: {
-            name: "Verde de Turno",
+            name: "Clear Green",
             hex: "#C3D184",
             vshield: false,
             desc: "Fresco para el turno matutino, el laboratorio y la cl\xEDnica."
@@ -111,10 +111,10 @@ var require_catalog = __commonJS({
   }
 });
 
-// .wrangler/tmp/bundle-W63fmb/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-3SQTlK/middleware-loader.entry.ts
 init_modules_watch_stub();
 
-// .wrangler/tmp/bundle-W63fmb/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-3SQTlK/middleware-insertion-facade.js
 init_modules_watch_stub();
 
 // src/worker.js
@@ -295,7 +295,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-W63fmb/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-3SQTlK/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -328,7 +328,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-W63fmb/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-3SQTlK/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

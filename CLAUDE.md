@@ -15,18 +15,18 @@ Se venden **sets completos** (top + pantalón), no piezas sueltas. Dos modelos �
 
 | Modelo (id) | Nombre | Tipo | Corte |
 |---|---|---|---|
-| `mujer` | **Prisma** | Set Mujer | Slim femenino, manga larga |
-| `unisex` | **Cristal** | Set Unisex | Unisex, manga corta |
+| `mujer` | **Montserrat** | Set Mujer | Slim femenino, manga larga |
+| `unisex` | **Rafaello** | Set Unisex | Unisex, manga corta |
 
 Colores (ids `navy`, `vino`, `verde`):
 
 | id | Nombre | Hex | Nota |
 |---|---|---|---|
-| `navy` | Traction Navy | `#21355A` | Único con **V-Shield** (repele salpicaduras). Precio mayor |
-| `vino` | Vino de Guardia | `#530020` | |
-| `verde` | Verde de Turno | `#C3D184` | |
+| `navy` | Navy Blue | `#21355A` | Único con **V-Shield** (repele salpicaduras). Precio mayor |
+| `vino` | Cold Wine | `#530020` | |
+| `verde` | Clear Green | `#C3D184` | |
 
-Los nombres Prisma y Cristal vienen del vidrio (VITRO). Fernando los puede cambiar; se cambian solo en `catalog.js`.
+Los nombres de modelos y colores se cambian solo en `catalog.js`.
 
 **Precios (MXN)**, siempre definidos en `public/catalog.js`:
 - Lista: Navy $1,150 · Vino $950 · Verde $950.
@@ -47,7 +47,16 @@ Un **Cloudflare Worker con assets estáticos**. Sin base de datos, sin build, si
 wrangler.jsonc        config del Worker, SITE_URL y rutas de dominio
 src/worker.js         router: redirige apex→www, POST /api/checkout, el resto → env.ASSETS
 src/checkout.js       crea la preferencia de Mercado Pago (valida todo en servidor)
-public/index.html     sitio de una página + carrito + checkout (HTML/CSS/JS vanilla)
+public/index.html     página principal (HTML/CSS/JS vanilla)
+public/tienda.html    los 6 productos
+public/producto.html  un producto (`producto.html?id=mujer-navy`): descripción, tela, laboratorio, certificaciones
+public/carrito.html   carrito + datos de envío + botón de pago (único lugar desde donde se paga)
+public/cuenta.html    registro / inicio de sesión con Supabase Auth ("Mis pedidos" pendiente)
+public/fichas.html    fichas técnicas · public/sesion.html  galería de la sesión de fotos
+public/site.js        COMPARTIDO: CONFIG (WhatsApp, redes, llaves públicas de Supabase), carrito, panel lateral, tarjeta de producto
+public/site.css       estilos de producto, carrito y cuenta (index y tienda traen su CSS en línea)
+public/ascii.js       animación ASCII del logo; se reproduce al tocar "Continuar con el pago", antes de ir a Mercado Pago
+supabase/schema.sql   tabla `profiles` + RLS + trigger (se pega en el SQL Editor de Supabase)
 public/gracias.html   página de "gracias por tu pedido" (se ve como /gracias)
 public/catalog.js     FUENTE ÚNICA: precios, nombres, colores, stock, dominios escolares
 public/img/           fotos (ver sección 6)
@@ -138,3 +147,10 @@ Un banner o franja destacada **a la mitad del sitio** (sugerencia: entre la tien
 - `gracias.html` se sirve como `/gracias` (Cloudflare quita `.html`); `SITE_URL` no lleva diagonal final.
 - Wrangler: los dominios se declaran en `wrangler.jsonc`; el diálogo "Add Domain" del panel falló con subdominios. Evita cambiarlos desde el panel porque el siguiente deploy los pisa.
 - Algunos cambios de dominio tardan 10–15 minutos en reflejarse.
+## 7. Cambios del 13-nov-2026 (mandan sobre lo anterior si se contradicen)
+
+- El pago ya **no** se hace desde el panel lateral: el panel es un resumen con botón a `carrito.html`, y `pay()` vive ahí. Tras crear la preferencia se reproduce `VitroAscii.play()` y al terminar se redirige a Mercado Pago.
+- `CONFIG` se movió de `index.html` a `public/site.js`. Ahí van `SUPABASE_URL` y `SUPABASE_ANON_KEY` (públicas). **Nunca** la llave `service_role`.
+- Cuentas: `cuenta.html` muestra "se activan muy pronto" mientras las llaves estén vacías. No se guardan datos de pago en ningún lado.
+- Las tarjetas ya no muestran "quedan N". Logo del encabezado: `img/logo-vitro-blanco.png` (recorte de la imagen oficial).
+- Fotos de producto: nombres de archivo **sin espacios** (rompen el `url()` del CSS).

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Producto | VITRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="VITRO, inicio"><img src="img/logo-vitro-blanco.png" alt="VITRO" width="113" height="28"></a>
+    <div class="hbtns">
+      <a class="cartbtn" href="cuenta.html" aria-label="Mi cuenta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21 C4 16.5 7.5 14 12 14 C16.5 14 20 16.5 20 21"/></svg></a>
+      <button type="button" class="cartbtn" id="opencart" aria-label="Abrir carrito">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V8"/></svg>
+        <b id="cartcount" hidden>0</b>
+      </button>
+      <a class="btn alt" href="carrito.html">Ir al carrito</a>
+      <a class="btn" href="tienda.html">Ver tienda</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <a class="back" href="tienda.html">← Volver a la tienda</a>
+    <div id="p"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 VITRO. De estudiantes para estudiantes.</p>
+  </div>
+</footer>
+
+<script src="catalog.js"></script>
+<script src="site.js"></script>
+<script>
+/* Datos de las fichas técnicas del fabricante (los mismos de fichas.html). No inventar ni cambiar sin la ficha. */
+const FABRIC = {
+  navy:  { tela: "78% poliéster, 20% rayón, 2% spandex", peso: "160 g/m²", elast: "Con spandex, estira ligeramente", liq: "Sí: tratamiento antifluido V-Shield, repele salpicaduras" },
+  other: { tela: "65% poliéster, 35% algodón", peso: "150 g/m²", elast: "Tejido plano, sin elasticidad adicional", liq: "No tiene tratamiento antifluido" }
+};
+const MODEL_INFO = {
+  mujer:  "Más femenino y entallado a la cintura. Cuello con detalle de contraste, pensado para quien quiere un uniforme que realmente se ajuste a su silueta.",
+  unisex: "Cuello alto tipo mandarín. Una silueta moderna y limpia, diferente al scrub tradicional con cuello en V."
+};
+const LAB = [
+  ["Solidez del color al cloro", "Grado 4-5", "Escala de 1 a 5"],
+  ["Solidez al frote en seco", "Grado 4-5", "Mínimo exigido: 3"],
+  ["Solidez al lavado (60°C, 30 min)", "Cambio de color 4-5", "Escala de 1 a 5"],
+  ["Solidez a la transpiración", "Grado 4-5", "Mínimo exigido: 3"],
+  ["Formaldehído", "No detectado", "Límite: 75 mg/kg"],
+  ["Aminas aromáticas cancerígenas", "No detectadas", "Límite: 20 mg/kg"],
+  ["pH", "4.5", "Rango aceptable: 4.0 a 8.5"],
+  ["Pilling (bolitas)", "Grado 3-4", "Escala de 1 a 5"],
+  ["Cambio de tamaño tras lavado", "-1.9% a lo largo, -0.1% a lo ancho", "Estable"]
+];
+
+const id = new URLSearchParams(location.search).get("id") || "";
+const [pm, pc] = id.split("-");
+
+function renderProduct() {
+  const root = $("#p");
+  const M = CAT.models[pm], col = CAT.colors[pc];
+  if (!M || !col) {
+    root.innerHTML = '<div class="panel"><h2>No encontramos ese producto</h2><p style="margin-bottom:16px;color:var(--muted)">Puede que el enlace esté incompleto.</p><a class="btn" href="tienda.html">Ver la tienda completa</a></div>';
+    return;
+  }
+  const key = keyOf(pm, pc), size = sel[key], left = stockOf(pm, pc, size), soldOut = colorStock(pm, pc) === 0;
+  const fab = pc === "navy" ? FABRIC.navy : FABRIC.other, img = imgOf(key);
+  document.title = M.name + " · " + col.name + " | VITRO";
+  root.innerHTML = `<div class="pgrid">
+    <div class="pphoto">
+      <div class="ph" style="background-image:url(${img});${PHOTO_POS[key] ? "--pos:" + PHOTO_POS[key] : ""}" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
+        ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
+      </div>
+    </div>
+    <div class="pinfo">
+      <div class="eyebrow">${esc(M.kind)}</div>
+      <h1>Modelo: ${esc(M.name)}</h1>
+      <p class="kind">${esc(col.name)} · ${esc(M.desc)}</p>
+      <div class="pprice"><span class="price">${money(unitPrice(pc, false))}<small class="mxn"> MXN</small></span>
+        <span class="stu">Precio estudiante: <b>${money(unitPrice(pc, true))}</b></span></div>
+      <p>${esc(col.desc)}</p>
+
+      <div><div class="lbl">Color: ${esc(col.name)}</div><div class="variants" id="pcolors"></div></div>
+      <div><div class="lbl">Modelo</div><div class="variants" id="pmodels"></div></div>
+      <div><div class="lbl">Talla: ${esc(size)}</div><div class="sizes" role="group" aria-label="Talla"></div></div>
+
+      <div class="pbuy">
+        <button type="button" class="btn" id="padd"${soldOut || left === 0 ? " disabled" : ""}>${soldOut || left === 0 ? "Agotado" : "Agregar al carrito"}</button>
+        <a class="btn ghost" href="carrito.html">Ir al carrito</a>
+      </div>
+      <p class="note">Pago seguro con Mercado Pago: tarjeta, OXXO o transferencia. Envío ${money(CAT.shipping)}, gratis desde ${CAT.freeShippingFrom} sets. El precio estudiante se activa en el carrito.</p>
+
+      <section class="psec"><h2>Descripción</h2>
+        <p>${esc(MODEL_INFO[pm] || M.desc)} Se vende como set completo: top y pantalón. Acabados en blanco o gris claro en cuello, dobladillo y detalles. Tallas ${CAT.sizes.join(", ")}.</p></section>
+
+      <section class="psec"><h2>Tela</h2>
+        <dl class="spec"><dt>Composición</dt><dd>${fab.tela}</dd><dt>Peso</dt><dd>${fab.peso}</dd><dt>Elasticidad</dt><dd>${fab.elast}</dd><dt>Líquidos</dt><dd>${fab.liq}</dd></dl></section>
+
+      <section class="psec"><h2>Propiedades</h2>
+        <ul><li><b>Anticloro:</b> resiste cloro y desinfectantes.</li><li><b>Antibacterial</b> y <b>antiestático</b>.</li><li><b>Opaca:</b> no se transparenta al agacharse o estirarse.</li><li>Resiste el lavado industrial.</li><li>Libre de formaldehído y de aminas aromáticas cancerígenas, con pH adecuado para contacto prolongado con la piel.</li></ul></section>
+
+      ${pc === "navy" ? "" : `<section class="psec"><h2>Resultados de laboratorio</h2>
+        <table class="lab"><thead><tr><th>Prueba</th><th>Resultado</th><th>Referencia</th></tr></thead>
+        <tbody>${LAB.map(r => `<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("")}</tbody></table>
+        <p class="note" style="margin-top:10px">Reporte de la tela de 65% poliéster y 35% algodón, emitido en abril de 2025 por el Centro Nacional de Inspección y Pruebas de Textiles y Prendas (Fujian). Clasificación de seguridad Clase B, apta para contacto directo con la piel (norma GB 18401-2010).</p></section>`}
+
+      <section class="psec"><h2>Certificaciones y respaldo</h2>
+        <ul><li>Fabricante con ISO 9001 (gestión de la calidad) e ISO 14001 (gestión ambiental).</li><li>Más de 25 años de experiencia en productos para el sector salud.</li><li>Laboratorio con acreditación CNAS e ILAC-MRA.</li></ul>
+        <p style="margin-top:12px"><a href="fichas.html" style="font-weight:600;text-decoration:underline;text-underline-offset:4px">Abrir las fichas técnicas completas</a></p></section>
+    </div>
+  </div>`;
+  const probe = new Image();
+  probe.onerror = () => $(".ph", root).classList.add("nophoto");
+  probe.src = img;
+  COLORS.forEach(c => {
+    const a = document.createElement("a");
+    a.className = "variant"; a.href = productUrl(keyOf(pm, c));
+    if (c === pc) a.setAttribute("aria-current", "true");
+    a.innerHTML = `<i style="background:${CAT.colors[c].hex}"></i>${esc(CAT.colors[c].name)}`;
+    $("#pcolors").appendChild(a);
+  });
+  MODELS.forEach(m => {
+    const a = document.createElement("a");
+    a.className = "variant"; a.style.paddingLeft = "14px"; a.href = productUrl(keyOf(m, pc));
+    if (m === pm) a.setAttribute("aria-current", "true");
+    a.textContent = CAT.models[m].name + " · " + CAT.models[m].kind;
+    $("#pmodels").appendChild(a);
+  });
+  CAT.sizes.forEach(z => {
+    const b = document.createElement("button");
+    const out = stockOf(pm, pc, z) === 0;
+    b.type = "button"; b.className = "size"; b.textContent = z;
+    if (out) { b.disabled = true; b.title = "Agotada"; b.style.opacity = ".4"; b.style.textDecoration = "line-through"; }
+    b.setAttribute("aria-pressed", z === size);
+    b.onclick = () => { sel[key] = z; renderProduct(); };
+    $(".sizes", root).appendChild(b);
+  });
+  $("#padd").onclick = () => addToCart(pm, pc, size);
+}
+renderProduct();
+</script>
+</body>
+</html>

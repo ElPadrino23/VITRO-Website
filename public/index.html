@@ -127,7 +127,7 @@ nav.main a:hover{text-decoration:underline;text-underline-offset:6px}
 .colors .eyebrow{color:var(--fg,#fff);opacity:.75}
 .swatches{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
 .sw{border:0;background:none;cursor:pointer;color:var(--fg,#fff);display:flex;flex-direction:column;align-items:center;gap:10px;font:500 12px var(--mono);min-height:44px;padding:4px}
-.sw i{width:34px;height:88px;border-radius:5px 5px 17px 17px;border:2px solid var(--fg,#fff);display:block;background:linear-gradient(to bottom,transparent 24%,var(--liq) 24%);transition:transform .2s}
+.sw i{width:56px;height:56px;border-radius:50%;border:2px solid var(--fg,#fff);display:block;background:var(--liq);transition:transform .2s}
 .sw:hover i{transform:translateY(-4px)}
 .sw[aria-pressed=true] i{box-shadow:0 0 0 4px var(--acc)}
 .sw span{opacity:.7}.sw[aria-pressed=true] span{opacity:1}
@@ -262,16 +262,25 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
   .products{grid-template-columns:1fr}
   .card .ph{height:360px}
 }
+
+/* encabezado: logo en imagen, cuenta, carrito */
+.logo img{height:28px;width:auto;display:block}
+.hbtns{display:flex;align-items:center;gap:8px}
+.cartbtn{color:#fff}
+.cartbtn b{background:#fff;color:var(--navy)}
+.top .btn{background:#fff;color:var(--navy);border-color:#fff;white-space:nowrap}
+.top .btn.alt{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+@media (max-width:1100px){nav.main{gap:18px}}
+@media (max-width:700px){.top .btn.alt{display:none}}
+a.ph{color:#8B8778}
+.drawer .dfoot .btn{width:100%}
 </style>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#inicio" aria-label="VITRO, inicio">
-      <svg width="30" height="25" viewBox="0 0 48 40" aria-hidden="true"><polygon points="2,4 12,4 19,26 26,4 36,4 24,36 14,36" fill="#fff"/><path d="M40 4 L35.5 16 M45.5 4 L41 16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
-      VITRO
-    </a>
+    <a class="logo" href="#inicio" aria-label="VITRO, inicio"><img src="img/logo-vitro-blanco.png" alt="VITRO" width="113" height="28"></a>
     <nav class="main" aria-label="Principal">
       <a href="#tienda">Scrubs</a>
       <a href="#carreras">Por carrera</a>
@@ -279,11 +288,13 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
       <a href="#photoshoot">Photoshoot</a>
       <a href="#quiz">Quiz</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:8px">
+    <div class="hbtns">
+      <a class="cartbtn" href="cuenta.html" aria-label="Mi cuenta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21 C4 16.5 7.5 14 12 14 C16.5 14 20 16.5 20 21"/></svg></a>
       <button type="button" class="cartbtn" id="opencart" aria-label="Abrir carrito">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V8"/></svg>
         <b id="cartcount" hidden>0</b>
       </button>
+      <a class="btn alt" href="carrito.html">Ir al carrito</a>
       <a class="btn" href="#tienda">Ver tienda</a>
     </div>
   </div>
@@ -291,7 +302,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
 
 <div class="veil" id="veil" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" hidden>
-  <header><h2 id="dtitle">Tu pedido</h2><button type="button" class="x" id="closecart" aria-label="Cerrar carrito">&times;</button></header>
+  <header><h2 id="dtitle">Tu carrito</h2><button type="button" class="x" id="closecart" aria-label="Cerrar carrito">&times;</button></header>
   <div class="dbody" id="dbody"></div>
   <div class="dfoot" id="dfoot"></div>
 </aside>
@@ -308,7 +319,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
         <a class="btn" href="#tienda">Ver los scrubs</a>
         <a class="btn ghost" href="#quiz">¿Qué bata eres?</a>
       </div>
-      <div class="tags"><span>Resiste el cloro</span><span>V-Shield en Traction Navy</span><span>Precio estudiante desde $800</span></div>
+      <div class="tags"><span>Resiste el cloro</span><span>V-Shield en Navy Blue</span><span>Precio estudiante desde $800</span></div>
     </div>
     <div class="rel">
       <div class="ph" style="background-image:url(img/hero.jpg);background-position:20% 50%" role="img" aria-label="Estudiantes con scrubs VITRO navy, vino y verde en un salón de clase"></div>
@@ -353,7 +364,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
     </div>
     <div class="fx">
       <article class="sheet dk">
-        <div class="tagline"><span>Muestra A · Traction Navy</span><span>V-Shield</span></div>
+        <div class="tagline"><span>Muestra A · <span data-color="navy">Navy Blue</span></span><span>V-Shield</span></div>
         <div class="big">160<small>g/m²</small></div>
         <dl class="spec">
           <dt>Tela</dt><dd>78% poliéster · 20% rayón · 2% spandex</dd>
@@ -363,7 +374,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
         </dl>
       </article>
       <article class="sheet">
-        <div class="tagline"><span>Muestra B · Vino y verde</span><span>Sin antifluido</span></div>
+        <div class="tagline"><span>Muestra B · <span data-color="vino">Cold Wine</span> y <span data-color="verde">Clear Green</span></span><span>Sin antifluido</span></div>
         <div class="big">150<small>g/m²</small></div>
         <dl class="spec">
           <dt>Tela</dt><dd>65% poliéster · 35% algodón</dd>
@@ -386,7 +397,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
     <div>
       <div class="eyebrow">Colores núcleo</div>
       <h2>Tres colores del primer lote</h2>
-      <p>No son "azul 3". Elige un tubo para ver su historia y cuántos sets quedan.</p>
+      <p>No son "azul 3". Elige un color para ver su historia y cuántos sets quedan.</p>
       <div class="swatches" id="swatches" role="group" aria-label="Colores VITRO"></div>
     </div>
     <div>
@@ -504,114 +515,25 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255
 </footer>
 
 <script src="catalog.js"></script>
+<script src="site.js"></script>
 <script>
-/* ============================================================
-   CONFIGURACIÓN — contacto. Precios, stock y envío están en catalog.js
-   ============================================================ */
-const CONFIG = {
-  WHATSAPP: "525613321403",          // tu número con lada país, sin + ni espacios. Ej: 524421234567
-  INSTAGRAM: "https://instagram.com/vitroscrubs",
-  TIKTOK: "https://www.tiktok.com/@vitroscrubs",
-  EMAIL: "hola@vitroscrubs.com",     // se usa si NEWSLETTER_URL está vacío
-  NEWSLETTER_URL: ""                 // URL de Formspree / Google Forms (POST con campo "email"); vacío = abre correo
-};
-/* ============================================================ */
-
-const CAT = window.VITRO_CATALOG;
-const $ = (s, el = document) => el.querySelector(s);
-const money = n => "$" + n.toLocaleString("es-MX");
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const waLink = text => "https://wa.me/" + CONFIG.WHATSAPP + "?text=" + encodeURIComponent(text);
-const MODELS = Object.keys(CAT.models), COLORS = Object.keys(CAT.colors);
-const stockOf = (m, c, s) => ((CAT.stock[m + "-" + c] || {})[s]) || 0;
-const colorStock = (m, c) => CAT.sizes.reduce((t, s) => t + stockOf(m, c, s), 0);
-const unitPrice = (c, stu) => (stu ? CAT.studentPrice : CAT.price)[c];
-
-let student = false;
-try { student = localStorage.getItem("vitro-student") === "1"; } catch (_) {}
-const setStudent = v => { student = v; try { localStorage.setItem("vitro-student", v ? "1" : "0"); } catch (_) {} };
-
-/* selección: solo la talla, por cada modelo-color (las 6 opciones se ven a la vez) */
-const sel = {};
-const keyOf = (m, c) => m + "-" + c;
-MODELS.forEach(m => COLORS.forEach(c => {
-  sel[keyOf(m, c)] = CAT.sizes.find(z => stockOf(m, c, z) > 0) || CAT.sizes[0];
-}));
-/* posición del recorte de cada foto (ajústala si el encuadre no te gusta): "x% y%" */
-const PHOTO_POS = {
-  "mujer-verde": "50% 50%" // Centrado
-};
+/* Contacto (CONFIG), carrito y tarjetas de producto están en site.js */
 
 /* Mostrar solo estos productos en la tienda principal */
 const SHOP_PREVIEW = ["mujer-navy", "mujer-verde", "unisex-vino"];
-
-/* Mapeo de archivos especiales para algunas imágenes */
-const IMAGE_NAMES = {
-  "unisex-verde": "loggg.jpg"
-};
 
 /* ---------- Tienda ---------- */
 function renderProducts() {
   const root = $("#products");
   root.innerHTML = "";
-  const productsToShow = SHOP_PREVIEW || MODELS.flatMap(m => COLORS.map(c => keyOf(m, c)));
-
-  productsToShow.forEach(key => {
-    const [m, c] = [key.split("-")[0], key.split("-")[1]];
-    if (!CAT.models[m] || !CAT.colors[c]) return;
-
-    const M = CAT.models[m], col = CAT.colors[c], size = sel[key];
-    const left = stockOf(m, c, size);
-    const soldOut = colorStock(m, c) === 0;
-    const img = "img/" + (IMAGE_NAMES[key] || key + ".jpg");
-    const card = document.createElement("article");
-    card.className = "card"; card.id = "card-" + key;
-    card.innerHTML = `
-      <div class="ph" style="background-image:url(${img});${PHOTO_POS[key] ? "--pos:" + PHOTO_POS[key] : ""}" role="img" aria-label="${esc(M.name)} en ${esc(col.name)}">
-        ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
-      </div>
-      <div class="row"><h3>Modelo: ${esc(M.name)}</h3>
-        <span class="price">${money(unitPrice(c, false))}<small class="mxn"> MXN</small></span></div>
-      <p class="kind">${esc(M.kind)} · ${esc(col.name)}</p>
-      <p class="stu">Precio estudiante: <b>${money(unitPrice(c, true))}</b></p>
-      <p class="desc">${esc(M.desc)}</p>
-      <div><div class="lbl">Talla: ${esc(size)}${left > 0 && left <= 3 ? ` <span class="few">· quedan ${left}</span>` : ""}</div>
-        <div class="sizes" role="group" aria-label="Talla de ${esc(M.name)} ${esc(col.name)}"></div></div>
-      <div class="buy"></div>`;
-    const probe = new Image();
-    probe.onerror = () => $(".ph", card).classList.add("nophoto");
-    probe.src = img;
-    const sizes = $(".sizes", card);
-    CAT.sizes.forEach(z => {
-      const b = document.createElement("button");
-      const out = stockOf(m, c, z) === 0;
-      b.type = "button"; b.className = "size"; b.textContent = z;
-      if (out) { b.disabled = true; b.title = "Agotada"; b.style.opacity = ".4"; b.style.textDecoration = "line-through"; }
-      b.setAttribute("aria-pressed", z === size);
-      b.onclick = () => { sel[key] = z; renderProducts(); };
-      sizes.appendChild(b);
-    });
-    const buy = $(".buy", card);
-    const add = document.createElement("button");
-    add.type = "button"; add.className = "btn";
-    add.textContent = soldOut || left === 0 ? "Agotado" : "Agregar al carrito";
-    if (soldOut || left === 0) add.disabled = true;
-    add.onclick = () => addToCart(m, c, size);
-    buy.appendChild(add);
-    const n = document.createElement("p");
-    n.className = "note";
-    n.textContent = "Pago seguro con Mercado Pago: tarjeta, OXXO o transferencia.";
-    buy.appendChild(n);
-    root.appendChild(card);
+  SHOP_PREVIEW.forEach(key => {
+    const [m, c] = key.split("-");
+    if (CAT.models[m] && CAT.colors[c]) root.appendChild(buildCard(m, c, renderProducts));
   });
-
-  // Si hay preview, agregar botón a tienda completa
-  if (SHOP_PREVIEW) {
-    const viewAll = document.createElement("div");
-    viewAll.style.cssText = "grid-column:1/-1;text-align:center;padding:40px 0";
-    viewAll.innerHTML = '<a class="btn" href="tienda.html" style="display:inline-flex">Ver la tienda completa</a>';
-    root.appendChild(viewAll);
-  }
+  const viewAll = document.createElement("div");
+  viewAll.style.cssText = "grid-column:1/-1;text-align:center;padding:40px 0";
+  viewAll.innerHTML = '<a class="btn" href="tienda.html" style="display:inline-flex">Ver la tienda completa</a>';
+  root.appendChild(viewAll);
 }
 
 /* ---------- Colores ---------- */
@@ -708,146 +630,9 @@ $("#fig").href = CONFIG.INSTAGRAM; $("#ftt").href = CONFIG.TIKTOK;
 $("#ambassador").href = waLink("Hola VITRO, quiero ser embajador(a). Estudio: ___ en la universidad: ___");
 $("#ambassador").target = "_blank"; $("#ambassador").rel = "noopener";
 
-/* ---------- Carrito ---------- */
-let cart = [];
-try { cart = JSON.parse(localStorage.getItem("vitro-cart") || "[]"); } catch (_) { cart = []; }
-cart = cart.filter(i => CAT.models[i.model] && CAT.colors[i.color] && CAT.sizes.includes(i.size) && stockOf(i.model, i.color, i.size) > 0)
-           .map(i => ({ ...i, qty: Math.min(i.qty, stockOf(i.model, i.color, i.size), 10) }));
-const saveCart = () => { try { localStorage.setItem("vitro-cart", JSON.stringify(cart)); } catch (_) {} };
-const units = () => cart.reduce((t, i) => t + i.qty, 0);
-const listTotal = () => cart.reduce((t, i) => t + unitPrice(i.color, false) * i.qty, 0);
-const payTotal = () => cart.reduce((t, i) => t + unitPrice(i.color, student) * i.qty, 0);
-const shipCost = () => (units() >= CAT.freeShippingFrom ? 0 : CAT.shipping);
-const isStudentEmail = email => {
-  const d = String(email).toLowerCase().split("@")[1] || "";
-  return CAT.studentDomains.some(x => x.startsWith(".") ? d.endsWith(x) : d === x || d.endsWith("." + x));
-};
-let step = "cart", lastFocus = null;
-
-function addToCart(model, color, size) {
-  const max = Math.min(10, stockOf(model, color, size));
-  const f = cart.find(i => i.model === model && i.color === color && i.size === size);
-  if (f) f.qty = Math.min(max, f.qty + 1); else cart.push({ model, color, size, qty: 1 });
-  saveCart(); step = "cart"; openCart();
-}
-function openCart() {
-  lastFocus = document.activeElement;
-  $("#veil").hidden = false; $("#drawer").hidden = false;
-  document.body.style.overflow = "hidden";
-  renderCart();
-  $("#closecart").focus();
-}
-function closeCart() {
-  $("#veil").hidden = true; $("#drawer").hidden = true;
-  document.body.style.overflow = "";
-  if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
-}
-function updateBadge() {
-  const n = units(), b = $("#cartcount");
-  b.textContent = n; b.hidden = n === 0;
-}
-function totalsHtml() {
-  const disc = listTotal() - payTotal(), ship = shipCost();
-  return `<div class="tot"><span>Subtotal</span><span>${money(listTotal())}</span></div>
-    ${student ? `<div class="tot" style="color:#2F7D57"><span>Precio estudiante</span><span>−${money(disc)}</span></div>` : ""}
-    <div class="tot"><span>Envío</span><span>${ship ? money(ship) : "Gratis"}</span></div>
-    <div class="tot big"><span>Total</span><span>${money(payTotal() + ship)} MXN</span></div>
-    ${ship ? `<p class="note">Envío gratis desde ${CAT.freeShippingFrom} sets.</p>` : ""}`;
-}
-function renderCart() {
-  updateBadge();
-  const body = $("#dbody"), foot = $("#dfoot");
-  body.innerHTML = ""; foot.innerHTML = "";
-  if (!cart.length) {
-    body.innerHTML = '<p class="empty">Tu carrito está vacío.</p>';
-    foot.innerHTML = '<a class="btn" href="#tienda" id="goshop2">Ver los scrubs</a>';
-    $("#goshop2").onclick = closeCart;
-    return;
-  }
-  if (step === "cart") {
-    cart.forEach((it, idx) => {
-      const M = CAT.models[it.model], C = CAT.colors[it.color];
-      const max = Math.min(10, stockOf(it.model, it.color, it.size));
-      const row = document.createElement("div"); row.className = "line";
-      row.innerHTML = `<div><b>${esc(M.name)}</b><small>${esc(M.kind)} · ${esc(C.name)} · Talla ${esc(it.size)}</small></div>
-        <div style="text-align:right"><b>${money(unitPrice(it.color, student) * it.qty)}</b></div>
-        <div class="qty"><button type="button" aria-label="Quitar una pieza">−</button><span>${it.qty}</span><button type="button" aria-label="Agregar una pieza"${it.qty >= max ? " disabled" : ""}>+</button></div>
-        <div style="text-align:right"><button type="button" class="rm">Quitar</button></div>`;
-      const [minus, plus] = row.querySelectorAll(".qty button");
-      minus.onclick = () => { it.qty = Math.max(1, it.qty - 1); saveCart(); renderCart(); };
-      plus.onclick = () => { it.qty = Math.min(max, it.qty + 1); saveCart(); renderCart(); };
-      $(".rm", row).onclick = () => { cart.splice(idx, 1); saveCart(); renderCart(); };
-      body.appendChild(row);
-    });
-    body.insertAdjacentHTML("beforeend", `<label class="chk"><input type="checkbox" id="stu"${student ? " checked" : ""}>
-      <span><b>Soy estudiante de ciencias de la salud</b><br><small>Precio estudiante: ${money(CAT.studentPrice.vino)} (Navy ${money(CAT.studentPrice.navy)}). Necesitas tu correo escolar y mandarnos tu credencial vigente antes del envío.</small></span></label>`);
-    $("#stu").onchange = e => { setStudent(e.target.checked); renderCart(); };
-    foot.innerHTML = totalsHtml() + `<button type="button" class="btn" id="tocheck">Continuar con el envío</button>`;
-    $("#tocheck").onclick = () => { step = "form"; renderCart(); };
-    return;
-  }
-  /* paso: datos de envío */
-  const states = ["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"];
-  body.innerHTML = `<form id="cform" novalidate style="display:flex;flex-direction:column;gap:12px">
-    <div class="field"><label for="f-name">Nombre completo</label><input id="f-name" name="name" autocomplete="name" required></div>
-    <div class="f2">
-      <div class="field"><label for="f-mail">Correo${student ? " escolar" : ""}</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-    </div>
-    ${student ? `<div class="field"><label for="f-school">Escuela y carrera</label><input id="f-school" name="school" placeholder="Ej. Tec de Monterrey, Medicina" required></div>
-    <label class="chk"><input type="checkbox" id="f-cred"><span><small>Me comprometo a mandar por WhatsApp una foto de mi credencial vigente antes del envío. Si no se puede comprobar, pagaré la diferencia al precio de lista.</small></span></label>` : ""}
-    <div class="field"><label for="f-street">Calle y número</label><input id="f-street" name="street" autocomplete="address-line1" required></div>
-    <div class="field"><label for="f-col">Colonia</label><input id="f-col" name="colonia" autocomplete="address-level3" required></div>
-    <div class="f2">
-      <div class="field"><label for="f-zip">Código postal</label><input id="f-zip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required></div>
-      <div class="field"><label for="f-city">Ciudad</label><input id="f-city" name="city" autocomplete="address-level2" required></div>
-    </div>
-    <div class="field"><label for="f-state">Estado</label><select id="f-state" name="state" required><option value="">Elige tu estado</option>${states.map(s => `<option>${s}</option>`).join("")}</select></div>
-    <div class="field"><label for="f-notes">Referencias (opcional)</label><input id="f-notes" name="notes"></div>
-  </form>`;
-  foot.innerHTML = `<div class="tot big"><span>Total</span><span>${money(payTotal() + shipCost())} MXN</span></div>
-    <p class="err" id="cerr" role="alert"></p>
-    <button type="button" class="btn" id="paybtn">Pagar con Mercado Pago</button>
-    <button type="button" class="rm" id="backcart">Volver al carrito</button>
-    <p class="note">Te llevamos a Mercado Pago para pagar. Tus datos de pago nunca pasan por esta página.</p>`;
-  $("#backcart").onclick = () => { step = "cart"; renderCart(); };
-  $("#paybtn").onclick = pay;
-}
-async function pay() {
-  const f = $("#cform"), err = $("#cerr"), btn = $("#paybtn");
-  const d = Object.fromEntries(new FormData(f).entries());
-  const req = ["name","email","phone","street","colonia","zip","city","state"].concat(student ? ["school"] : []);
-  if (req.some(k => !String(d[k] || "").trim())) { err.textContent = "Completa todos los campos obligatorios."; return; }
-  if (!/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = "Escribe un correo válido."; return; }
-  if (!/^\d{5}$/.test(d.zip)) { err.textContent = "El código postal debe tener 5 dígitos."; return; }
-  if (d.phone.replace(/\D/g, "").length < 10) { err.textContent = "Escribe un teléfono de 10 dígitos."; return; }
-  if (student) {
-    if (!isStudentEmail(d.email)) { err.innerHTML = 'Para el precio estudiante usa tu correo escolar, o <a href="' + waLink("Hola VITRO, soy estudiante y mi correo escolar no se reconoce. Les mando mi credencial.") + '" target="_blank" rel="noopener" style="text-decoration:underline">escríbenos por WhatsApp</a>.'; return; }
-    if (!$("#f-cred").checked) { err.textContent = "Acepta mandar tu credencial para usar el precio estudiante."; return; }
-  }
-  err.textContent = ""; btn.disabled = true; btn.textContent = "Preparando tu pago…";
-  try {
-    const r = await fetch("/api/checkout", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ student, items: cart.map(i => ({ model: i.model, color: i.color, size: i.size, qty: i.qty })), customer: d })
-    });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok || !j.url) throw new Error(j.error || "No pudimos iniciar el pago.");
-    try { localStorage.setItem("vitro-last-order", j.orderId || ""); } catch (_) {}
-    location.href = j.url;
-  } catch (e) {
-    err.textContent = (e.message || "No pudimos iniciar el pago.") + " Si sigue fallando, pídelo por WhatsApp.";
-    btn.disabled = false; btn.textContent = "Pagar con Mercado Pago";
-  }
-}
-$("#opencart").onclick = () => { step = "cart"; openCart(); };
-$("#closecart").onclick = closeCart;
-$("#veil").onclick = closeCart;
-document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#drawer").hidden) closeCart(); });
-if (new URLSearchParams(location.search).get("pedido") === "ok") { cart = []; saveCart(); }
-
-/* nombres de modelo en las fichas, desde catalog.js */
+/* nombres de modelo y de color en las fichas, desde catalog.js */
 document.querySelectorAll("[data-model]").forEach(el => { const m = CAT.models[el.dataset.model]; if (m) el.textContent = m.name; });
+document.querySelectorAll("[data-color]").forEach(el => { const c = CAT.colors[el.dataset.color]; if (c) el.textContent = c.name; });
 
 /* ---------- Gesto: el vial del manifiesto se llena con el scroll ---------- */
 (function () {

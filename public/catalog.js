@@ -7,11 +7,11 @@
   var CATALOG = {
     // Colores (hex tomados de las muestras de la proforma de ANNO)
     colors: {
-      navy:  { name: "Traction Navy",   hex: "#21355A", vshield: true,
+      navy:  { name: "Navy Blue",    hex: "#21355A", vshield: true,
                desc: "El azul que aguantas 12 horas sin verlo sucio. Con V-Shield: repele salpicaduras de líquidos." },
-      vino:  { name: "Vino de Guardia", hex: "#530020", vshield: false,
+      vino:  { name: "Cold Wine",   hex: "#530020", vshield: false,
                desc: "Serio en el pase de visita. Inconfundible en la foto de generación." },
-      verde: { name: "Verde de Turno",  hex: "#C3D184", vshield: false,
+      verde: { name: "Clear Green", hex: "#C3D184", vshield: false,
                desc: "Fresco para el turno matutino, el laboratorio y la clínica." }
     },
 

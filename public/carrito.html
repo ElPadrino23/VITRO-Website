@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Tu carrito | VITRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="VITRO, inicio"><img src="img/logo-vitro-blanco.png" alt="VITRO" width="113" height="28"></a>
+    <div class="hbtns">
+      <a class="cartbtn" href="cuenta.html" aria-label="Mi cuenta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21 C4 16.5 7.5 14 12 14 C16.5 14 20 16.5 20 21"/></svg></a>
+      <a class="btn" href="tienda.html">Ver tienda</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <a class="back" href="tienda.html">← Seguir comprando</a>
+    <h1 style="font-size:clamp(30px,4vw,44px);font-weight:800;margin-bottom:24px">Tu carrito</h1>
+
+    <div class="panel" id="emptybox" hidden>
+      <p class="empty">Tu carrito está vacío.</p>
+      <p style="text-align:center"><a class="btn" href="tienda.html">Ver los scrubs</a></p>
+    </div>
+
+    <div class="cartpage" id="cartpage" hidden>
+      <div class="col">
+        <section class="panel">
+          <h2>Tus scrubs</h2>
+          <div id="items" style="display:flex;flex-direction:column;gap:14px"></div>
+          <label class="chk" style="margin-top:16px"><input type="checkbox" id="stu">
+            <span><b>Soy estudiante de ciencias de la salud</b><br><small id="stunote"></small></span></label>
+        </section>
+
+        <section class="panel">
+          <h2>Datos de envío</h2>
+          <form id="cform" novalidate>
+            <div class="field"><label for="f-name">Nombre completo</label><input id="f-name" name="name" autocomplete="name" required></div>
+            <div class="f2">
+              <div class="field"><label for="f-mail" id="l-mail">Correo</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
+              <div class="field"><label for="f-tel">Teléfono</label><input id="f-tel" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
+            </div>
+            <div class="stubox" id="stubox" hidden>
+              <div class="field"><label for="f-school">Escuela y carrera</label><input id="f-school" name="school" placeholder="Ej. Tec de Monterrey, Medicina"></div>
+              <label class="chk"><input type="checkbox" id="f-cred"><span><small>Me comprometo a mandar por WhatsApp una foto de mi credencial vigente antes del envío. Si no se puede comprobar, pagaré la diferencia al precio de lista.</small></span></label>
+            </div>
+            <div class="field"><label for="f-street">Calle y número</label><input id="f-street" name="street" autocomplete="address-line1" required></div>
+            <div class="field"><label for="f-col">Colonia</label><input id="f-col" name="colonia" autocomplete="address-level3" required></div>
+            <div class="f2">
+              <div class="field"><label for="f-zip">Código postal</label><input id="f-zip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required></div>
+              <div class="field"><label for="f-city">Ciudad</label><input id="f-city" name="city" autocomplete="address-level2" required></div>
+            </div>
+            <div class="field"><label for="f-state">Estado</label><select id="f-state" name="state" required><option value="">Elige tu estado</option></select></div>
+            <div class="field"><label for="f-notes">Referencias (opcional)</label><input id="f-notes" name="notes"></div>
+          </form>
+        </section>
+      </div>
+
+      <aside class="panel summary" aria-label="Resumen del pedido">
+        <h2>Resumen</h2>
+        <div id="totals" style="display:flex;flex-direction:column;gap:10px"></div>
+        <p class="err" id="cerr" role="alert"></p>
+        <button type="button" class="btn" id="paybtn">Continuar con el pago</button>
+        <div class="safe">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11 V8 A4 4 0 0 1 16 8 V11"/></svg>
+          <span>El pago se hace en Mercado Pago. VITRO no recibe ni guarda los datos de tu tarjeta ni de tu cuenta bancaria; solo usamos tus datos de contacto y envío para entregarte el pedido.</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 VITRO. De estudiantes para estudiantes.</p>
+  </div>
+</footer>
+
+<script src="catalog.js"></script>
+<script src="site.js"></script>
+<script src="ascii.js"></script>
+<script>
+const STATES = ["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"];
+$("#f-state").insertAdjacentHTML("beforeend", STATES.map(s => `<option>${s}</option>`).join(""));
+$("#stunote").textContent = `Precio estudiante: ${money(CAT.studentPrice.vino)} (Navy ${money(CAT.studentPrice.navy)}). Necesitas tu correo escolar y mandarnos tu credencial vigente antes del envío.`;
+
+function renderPage() {
+  const has = cart.length > 0;
+  $("#emptybox").hidden = has; $("#cartpage").hidden = !has;
+  if (!has) return;
+  const items = $("#items"); items.innerHTML = "";
+  cart.forEach((it, idx) => items.appendChild(cartLine(it, idx, renderPage)));
+  $("#stu").checked = student;
+  $("#stubox").hidden = !student;
+  $("#l-mail").textContent = student ? "Correo escolar" : "Correo";
+  const disc = listTotal() - payTotal(), ship = shipCost();
+  $("#totals").innerHTML = `<div class="tot"><span>Subtotal</span><span>${money(listTotal())}</span></div>
+    ${student ? `<div class="tot" style="color:#2F7D57"><span>Precio estudiante</span><span>−${money(disc)}</span></div>` : ""}
+    <div class="tot"><span>Envío</span><span>${ship ? money(ship) : "Gratis"}</span></div>
+    <div class="tot big"><span>Total</span><span>${money(payTotal() + ship)} MXN</span></div>
+    ${ship ? `<p class="note">Envío gratis desde ${CAT.freeShippingFrom} sets.</p>` : ""}`;
+}
+$("#stu").onchange = e => { setStudent(e.target.checked); renderPage(); };
+
+async function pay() {
+  const f = $("#cform"), err = $("#cerr"), btn = $("#paybtn");
+  const d = Object.fromEntries(new FormData(f).entries());
+  const req = ["name","email","phone","street","colonia","zip","city","state"].concat(student ? ["school"] : []);
+  if (req.some(k => !String(d[k] || "").trim())) { err.textContent = "Completa todos los datos de envío."; return; }
+  if (!/^\S+@\S+\.\S+$/.test(d.email)) { err.textContent = "Escribe un correo válido."; return; }
+  if (!/^\d{5}$/.test(d.zip)) { err.textContent = "El código postal debe tener 5 dígitos."; return; }
+  if (d.phone.replace(/\D/g, "").length < 10) { err.textContent = "Escribe un teléfono de 10 dígitos."; return; }
+  if (student) {
+    if (!isStudentEmail(d.email)) { err.innerHTML = 'Para el precio estudiante usa tu correo escolar, o <a href="' + waLink("Hola VITRO, soy estudiante y mi correo escolar no se reconoce. Les mando mi credencial.") + '" target="_blank" rel="noopener" style="text-decoration:underline">escríbenos por WhatsApp</a>.'; return; }
+    if (!$("#f-cred").checked) { err.textContent = "Acepta mandar tu credencial para usar el precio estudiante."; return; }
+  } else { delete d.school; }
+  err.textContent = ""; btn.disabled = true; btn.textContent = "Preparando tu pago…";
+  try {
+    const r = await fetch("/api/checkout", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student, items: cart.map(i => ({ model: i.model, color: i.color, size: i.size, qty: i.qty })), customer: d })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.url) throw new Error(j.error || "No pudimos iniciar el pago.");
+    try { localStorage.setItem("vitro-last-order", j.orderId || ""); } catch (_) {}
+    /* primero la animación, y al terminar (o al tocarla) se va a Mercado Pago */
+    VitroAscii.play({ onDone: () => { location.href = j.url; } });
+  } catch (e) {
+    err.textContent = (e.message || "No pudimos iniciar el pago.") + " Si sigue fallando, pídelo por WhatsApp.";
+    btn.disabled = false; btn.textContent = "Continuar con el pago";
+  }
+}
+$("#paybtn").onclick = pay;
+renderPage();
+</script>
+</body>
+</html>

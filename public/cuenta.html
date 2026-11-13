@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mi cuenta | VITRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="VITRO, inicio"><img src="img/logo-vitro-blanco.png" alt="VITRO" width="113" height="28"></a>
+    <div class="hbtns">
+      <button type="button" class="cartbtn" id="opencart" aria-label="Abrir carrito">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8 H19 L18 21 H6 Z"/><path d="M9 8 V6.5 A3 3 0 0 1 15 6.5 V8"/></svg>
+        <b id="cartcount" hidden>0</b>
+      </button>
+      <a class="btn alt" href="carrito.html">Ir al carrito</a>
+      <a class="btn" href="tienda.html">Ver tienda</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="acct">
+      <h1 id="atitle">Mi cuenta</h1>
+
+      <!-- Cuentas todavía no configuradas (faltan las llaves de Supabase en site.js) -->
+      <div class="panel" id="soon" hidden>
+        <p>Las cuentas de VITRO se activan muy pronto. Mientras tanto puedes comprar sin registrarte.</p>
+        <p style="margin-top:16px"><a class="btn" href="tienda.html">Ver los scrubs</a></p>
+      </div>
+
+      <!-- Sin sesión -->
+      <div class="panel" id="guest" hidden>
+        <div class="tabs" role="tablist" style="margin-bottom:18px">
+          <button type="button" class="tab" role="tab" id="t-in" aria-selected="true">Iniciar sesión</button>
+          <button type="button" class="tab" role="tab" id="t-up" aria-selected="false">Crear cuenta</button>
+        </div>
+
+        <form id="f-in" novalidate>
+          <div class="field"><label for="in-mail">Correo</label><input id="in-mail" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="in-pass">Contraseña</label><input id="in-pass" type="password" autocomplete="current-password" required></div>
+          <p class="err" id="in-err" role="alert"></p>
+          <button class="btn" type="submit">Entrar</button>
+          <button type="button" class="rm" id="forgot">Olvidé mi contraseña</button>
+        </form>
+
+        <form id="f-up" novalidate hidden>
+          <div class="field"><label for="up-name">Nombre completo</label><input id="up-name" autocomplete="name" required></div>
+          <div class="field"><label for="up-mail">Correo</label><input id="up-mail" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="up-pass">Contraseña (mínimo 8 caracteres)</label><input id="up-pass" type="password" autocomplete="new-password" minlength="8" required></div>
+          <div class="field"><label for="up-tel">Teléfono (opcional)</label><input id="up-tel" type="tel" inputmode="tel" autocomplete="tel"></div>
+          <div class="f2">
+            <div class="field"><label for="up-school">Escuela (opcional)</label><input id="up-school"></div>
+            <div class="field"><label for="up-career">Carrera (opcional)</label><input id="up-career"></div>
+          </div>
+          <p class="note">Solo guardamos estos datos. Los pagos se hacen en Mercado Pago: VITRO no guarda tarjetas ni datos bancarios.</p>
+          <p class="err" id="up-err" role="alert"></p>
+          <button class="btn" type="submit">Crear mi cuenta</button>
+        </form>
+        <p class="ok" id="guest-ok" role="status"></p>
+      </div>
+
+      <!-- Con sesión -->
+      <div id="member" hidden style="display:flex;flex-direction:column;gap:20px">
+        <div class="panel">
+          <h2>Mis datos</h2>
+          <form id="f-me" novalidate>
+            <div class="field"><label for="me-mail">Correo</label><input id="me-mail" type="email" disabled></div>
+            <div class="field"><label for="me-name">Nombre completo</label><input id="me-name" autocomplete="name" required></div>
+            <div class="field"><label for="me-tel">Teléfono</label><input id="me-tel" type="tel" inputmode="tel" autocomplete="tel"></div>
+            <div class="f2">
+              <div class="field"><label for="me-school">Escuela</label><input id="me-school"></div>
+              <div class="field"><label for="me-career">Carrera</label><input id="me-career"></div>
+            </div>
+            <p class="err" id="me-err" role="alert"></p>
+            <p class="ok" id="me-ok" role="status"></p>
+            <button class="btn" type="submit">Guardar cambios</button>
+          </form>
+        </div>
+        <div class="panel">
+          <h2>Mis pedidos</h2>
+          <p style="color:var(--muted)">Muy pronto vas a poder ver aquí tus pedidos. Por ahora, el folio de cada compra te llega al terminar el pago.</p>
+        </div>
+        <button type="button" class="btn ghost" id="logout">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 VITRO. De estudiantes para estudiantes.</p>
+  </div>
+</footer>
+
+<script src="catalog.js"></script>
+<script src="site.js"></script>
+<script>
+/* Cuentas con Supabase Auth. Las llaves van en CONFIG (site.js). La tabla "profiles" se crea con supabase/schema.sql */
+const show = id => ["soon", "guest", "member"].forEach(x => { $("#" + x).hidden = x !== id; });
+const AUTH_MSG = {
+  "Invalid login credentials": "Correo o contraseña incorrectos.",
+  "User already registered": "Ya existe una cuenta con ese correo. Inicia sesión.",
+  "Email not confirmed": "Confirma tu correo con el enlace que te mandamos y vuelve a intentar.",
+  "Password should be at least 6 characters": "La contraseña es muy corta."
+};
+const msg = e => AUTH_MSG[e && e.message] || (e && e.message) || "Algo salió mal. Intenta de nuevo.";
+
+function loadSdk() {
+  return new Promise((ok, fail) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js";
+    s.onload = ok; s.onerror = () => fail(new Error("No se pudo cargar el servicio de cuentas."));
+    document.head.appendChild(s);
+  });
+}
+
+async function start() {
+  if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) { show("soon"); return; }
+  try { await loadSdk(); } catch (_) { show("soon"); return; }
+  const sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+  const tab = up => {
+    $("#t-in").setAttribute("aria-selected", !up); $("#t-up").setAttribute("aria-selected", up);
+    $("#f-in").hidden = up; $("#f-up").hidden = !up; $("#guest-ok").textContent = "";
+  };
+  $("#t-in").onclick = () => tab(false);
+  $("#t-up").onclick = () => tab(true);
+
+  async function paint(session) {
+    if (!session) { $("#atitle").textContent = "Mi cuenta"; show("guest"); return; }
+    const u = session.user, meta = u.user_metadata || {};
+    const { data: p } = await sb.from("profiles").select("full_name, phone, school, career").eq("id", u.id).maybeSingle();
+    const d = p || meta;
+    $("#me-mail").value = u.email || "";
+    $("#me-name").value = d.full_name || ""; $("#me-tel").value = d.phone || "";
+    $("#me-school").value = d.school || ""; $("#me-career").value = d.career || "";
+    $("#atitle").textContent = d.full_name ? "Hola, " + d.full_name.split(" ")[0] : "Mi cuenta";
+    show("member");
+  }
+
+  $("#f-in").addEventListener("submit", async e => {
+    e.preventDefault();
+    const err = $("#in-err"); err.textContent = "";
+    const { error } = await sb.auth.signInWithPassword({ email: $("#in-mail").value.trim(), password: $("#in-pass").value });
+    if (error) err.textContent = msg(error);
+  });
+
+  $("#forgot").onclick = async () => {
+    const mail = $("#in-mail").value.trim(), err = $("#in-err");
+    if (!/^\S+@\S+\.\S+$/.test(mail)) { err.textContent = "Escribe tu correo arriba y vuelve a tocar el enlace."; return; }
+    const { error } = await sb.auth.resetPasswordForEmail(mail, { redirectTo: location.origin + "/cuenta.html" });
+    err.textContent = ""; $("#guest-ok").textContent = error ? msg(error) : "Te mandamos un correo para cambiar tu contraseña.";
+  };
+
+  $("#f-up").addEventListener("submit", async e => {
+    e.preventDefault();
+    const err = $("#up-err"); err.textContent = "";
+    const name = $("#up-name").value.trim(), mail = $("#up-mail").value.trim(), pass = $("#up-pass").value;
+    if (!name) { err.textContent = "Escribe tu nombre."; return; }
+    if (!/^\S+@\S+\.\S+$/.test(mail)) { err.textContent = "Escribe un correo válido."; return; }
+    if (pass.length < 8) { err.textContent = "La contraseña debe tener al menos 8 caracteres."; return; }
+    const { data, error } = await sb.auth.signUp({
+      email: mail, password: pass,
+      options: {
+        emailRedirectTo: location.origin + "/cuenta.html",
+        data: { full_name: name, phone: $("#up-tel").value.trim(), school: $("#up-school").value.trim(), career: $("#up-career").value.trim() }
+      }
+    });
+    if (error) { err.textContent = msg(error); return; }
+    if (!data.session) $("#guest-ok").textContent = "Cuenta creada. Revisa tu correo y confirma con el enlace que te mandamos.";
+  });
+
+  $("#f-me").addEventListener("submit", async e => {
+    e.preventDefault();
+    const err = $("#me-err"), ok = $("#me-ok"); err.textContent = ""; ok.textContent = "";
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) { show("guest"); return; }
+    const name = $("#me-name").value.trim();
+    if (!name) { err.textContent = "Escribe tu nombre."; return; }
+    const { error } = await sb.from("profiles").upsert({
+      id: user.id, full_name: name, phone: $("#me-tel").value.trim(),
+      school: $("#me-school").value.trim(), career: $("#me-career").value.trim()
+    });
+    if (error) err.textContent = msg(error); else ok.textContent = "Datos guardados.";
+  });
+
+  $("#logout").onclick = () => sb.auth.signOut();
+
+  sb.auth.onAuthStateChange((_event, session) => { setTimeout(() => paint(session), 0); });
+  const { data } = await sb.auth.getSession();
+  paint(data.session);
+}
+start();
+</script>
+</body>
+</html>
