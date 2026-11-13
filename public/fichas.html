@@ -6,19 +6,20 @@
 <title>Fichas Técnicas | VITRO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#FBFAF5; --bg2:#F3F1EA; --ink:#12182B; --muted:#53565E; --soft:#7A7C82;
-  --line:#E4E0D3; --ph:#E7E3D9;
-  --head:'Montserrat','Verdana',sans-serif; --body:'Instrument Sans','Segoe UI',Helvetica,sans-serif;
+  --bg:#FFFFFF; --bg2:#F1F3F6; --ink:#0B1226; --muted:#4F5A70; --soft:#68728A;
+  --line:#D5DAE2; --ph:#E3E6EB; --navy:#0E1830; --acc:#FF5B2E;
+  --head:'Bricolage Grotesque','Arial Narrow',Arial,sans-serif; --body:'Schibsted Grotesk','Segoe UI',Helvetica,sans-serif; --mono:'DM Mono',Consolas,monospace;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6}
-a{color:var(--ink);text-decoration:underline}
-h1,h2,h3,h4{font-family:var(--head);margin:0;letter-spacing:-.02em}
-h1{font-size:clamp(32px,5vw,48px);margin:20px 0}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:3px}
+.logo,.back{text-decoration:none}
+h1,h2,h3,h4{font-family:var(--head);margin:0;letter-spacing:-.035em;font-weight:800}
+h1{font-size:clamp(40px,7vw,84px);line-height:.92;letter-spacing:-.05em;margin:20px 0}
 h2{font-size:clamp(24px,4vw,32px);margin:28px 0 16px}
 h3{font-size:20px;margin:20px 0 12px}
 h4{font-size:16px;font-weight:700;margin:16px 0 8px}
@@ -27,21 +28,21 @@ ul,ol{margin:12px 0;padding-left:24px}
 li{margin:6px 0}
 table{width:100%;border-collapse:collapse;margin:20px 0}
 th,td{border:1px solid var(--line);padding:12px;text-align:left}
-th{background:var(--bg2);font-weight:700}
+th{background:var(--bg2);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase}
 td{font-size:14px}
 .wrap{max-width:900px;margin:0 auto;padding:0 24px}
-header{background:#0E1830;border-bottom:none;padding:20px 0;position:sticky;top:0;z-index:10}
+header{background:var(--navy);border-bottom:none;padding:20px 0;position:sticky;top:0;z-index:10}
 header .wrap{display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:8px;font:700 18px var(--head);color:#fff}
+.logo{display:flex;align-items:center;gap:8px;font:800 22px var(--head);letter-spacing:.08em;color:#fff}
 .back{color:#fff;text-decoration:none;font-size:14px;font-weight:500}
 .back:hover{text-decoration:underline}
 main{padding:40px 0}
 .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:32px 0}
-.spec-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px}
+.spec-box{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px}
 .spec-box h4{margin-top:0}
 .spec-box ul{padding-left:20px;font-size:14px}
 .spec-box li{margin:8px 0}
-.highlight{background:var(--bg2);padding:16px;border-radius:12px;margin:16px 0;border-left:4px solid var(--ink)}
+.highlight{background:var(--bg2);padding:16px;border-radius:6px;margin:16px 0;border-left:4px solid var(--acc)}
 .highlight strong{display:block;margin-bottom:8px;font-size:15px}
 
 @media (max-width:768px){
@@ -71,7 +72,7 @@ main{padding:40px 0}
     <h3>Rafaello · Set Unisex</h3>
     <p><strong>Corte unisex, manga corta.</strong> Cuello alto tipo mandarín. Una silueta moderna y limpia, diferente al scrub tradicional con cuello en V.</p>
 
-    <p style="background:var(--bg2);padding:16px;border-radius:12px;margin:24px 0">
+    <p style="background:var(--bg2);padding:16px;border-radius:6px;margin:24px 0">
       <strong>Acabados:</strong> Blanco o gris claro en cuello, dobladillo y detalles, para una identidad de marca consistente en todos los colores. Tallas disponibles: XS, S, M
     </p>
 
