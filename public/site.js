@@ -11,8 +11,8 @@ const CONFIG = {
   NEWSLETTER_URL: "",                // URL de Formspree / Google Forms (POST con campo "email"); vacío = abre correo
   /* Cuentas (Supabase). Pega aquí la "Project URL" y la llave "anon public".
      NUNCA pegues la llave "service_role": esa es secreta. */
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: ""
+  SUPABASE_URL: "https://hczdfyrjzpwsmnjogylv.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjemRmeXJqenB3c21uam9neWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1OTQ3NTksImV4cCI6MjExMDE3MDc1OX0.iINqe7OlQOKzv982S5s8M38BofRFr8nA3fW5ndCVaSM"
 };
 
 const CAT = window.VITRO_CATALOG;
