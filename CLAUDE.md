@@ -15,7 +15,7 @@ Se venden **sets completos** (top + pantal√≥n), no piezas sueltas. Dos modelos √
 
 | Modelo (id) | Nombre | Tipo | Corte |
 |---|---|---|---|
-| `mujer` | **Montserrat** | Set Mujer | Slim femenino, manga larga |
+| `mujer` | **Monserrat** | Set Mujer | Slim femenino, manga larga |
 | `unisex` | **Rafaello** | Set Unisex | Unisex, manga corta |
 
 Colores (ids `navy`, `vino`, `verde`):
