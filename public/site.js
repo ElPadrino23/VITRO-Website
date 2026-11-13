@@ -143,7 +143,7 @@ function buildCard(m, c, rerender) {
     <a class="ph" href="${productUrl(key)}" style="background-image:url(${img});${PHOTO_POS[key] ? "--pos:" + PHOTO_POS[key] : ""}" aria-label="Ver ${esc(M.name)} en ${esc(col.name)}">
       ${col.vshield ? '<span class="chip">V-SHIELD</span>' : ""}
     </a>
-    <div class="row"><h3>Modelo: ${esc(M.name)}</h3>
+    <div class="row"><h3>Set ${esc(M.name)}</h3>
       <span class="price">${money(unitPrice(c, false))}<small class="mxn"> MXN</small></span></div>
     <p class="kind">${esc(M.kind)} · ${esc(col.name)}</p>
     <p class="stu">Precio estudiante: <b>${money(unitPrice(c, true))}</b></p>
