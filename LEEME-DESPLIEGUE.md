@@ -34,7 +34,7 @@ Solo lo que está en `public/` es visible en internet. `src/` y `wrangler.jsonc`
 - Cuando todo funcione, cambia el secret por el token de producción.
 
 ## Existencias
-Salen de `public/catalog.js` (sección `stock`). Cuando se vende algo, réstalo ahí y sube el cambio a GitHub; Cloudflare se actualiza solo. El servidor rechaza pedidos que pasen de lo que dice `stock`, pero no descuenta solo.
+Viven en Supabase (tabla `stock`). Se editan en **/admin → Existencias** y se descuentan solas cuando Mercado Pago aprueba un pago. `public/catalog.js` → `stock` queda solo como semilla y respaldo: ya no lo toques para descontar ventas.
 
 ## Precio estudiante
 - El cliente marca "Soy estudiante", usa su correo escolar y escribe su escuela y carrera.
@@ -42,4 +42,11 @@ Salen de `public/catalog.js` (sección `stock`). Cuando se vende algo, réstalo 
 - El correo escolar no prueba que sea estudiante. Por eso cada pedido con descuento aparece en Mercado Pago con la nota **"SI - VERIFICAR CREDENCIAL POR WHATSAPP ANTES DE ENVIAR"**, y el título de cada pieza dice "(precio estudiante)". Antes de enviar, pídele la foto de su credencial vigente; si no la manda, cóbrale la diferencia.
 
 ## Dónde ves los pedidos
-En tu panel de Mercado Pago > Actividades. Cada cobro trae el folio (`external_reference`), el correo y los datos de envío. Mercado Pago también te manda correo por cada venta.
+En **https://www.vitroscrubs.com/admin** (con tu cuenta de administrador): cada pedido pagado con sus datos de envío, estado, paquetería y guía, y botones para avisar al cliente por correo o WhatsApp. También quedan en tu panel de Mercado Pago > Actividades con el folio (`external_reference`).
+
+## Puesta en marcha de pedidos y panel (una sola vez)
+1. **Supabase → SQL Editor**: pega y corre `supabase/schema.sql` (si no lo habías hecho) y luego `supabase/orders.sql`.
+2. Crea tu cuenta en `/cuenta`, confirma el correo y corre en el SQL Editor el bloque «Darte acceso de administrador» del final de `orders.sql` (con tu correo).
+3. **Cloudflare → tu Worker → Settings → Variables and Secrets**. Secrets: `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`. Variables de texto: `NOTIFY_EMAIL` (tu correo) y, cuando el dominio esté verificado en Resend, `MAIL_FROM` (p. ej. `VITRO <pedidos@vitroscrubs.com>`).
+4. **Mercado Pago → Tus integraciones → Webhooks**: URL `https://www.vitroscrubs.com/api/mp-webhook`, evento Pagos. Haz lo mismo en la pestaña de pruebas si vas a probar con cuentas de prueba (cada modo tiene su propia clave secreta).
+5. Prueba con una compra de prueba: debe aparecer en `/admin` como «Pagado · por enviar», bajar el stock y llegarte el correo.

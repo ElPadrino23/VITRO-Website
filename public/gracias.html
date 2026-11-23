@@ -32,6 +32,12 @@ if (q.get("pedido") === "pendiente") {
 const ref = (q.get("ref") || "").replace(/[^A-Z0-9-]/gi, "");
 if (ref) { const r = document.getElementById("r"); r.hidden = false; r.textContent = "Folio de tu pedido: " + ref; }
 try { if (q.get("pedido") === "ok") localStorage.removeItem("vitro-cart"); } catch (_) {}
+// Mercado Pago agrega payment_id al regresar. Se le pide al servidor que confirme el pago (él lo consulta a Mercado Pago;
+// el webhook hace lo mismo): así el pedido aparece como pagado aunque el webhook tarde.
+const payId = (q.get("payment_id") || q.get("collection_id") || "").replace(/\D/g, "");
+if (ref && payId) {
+  fetch("/api/order/confirm", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ref, payment_id: payId }) }).catch(() => {});
+}
 </script>
 </body>
 </html>

@@ -4,7 +4,15 @@
   "compatibility_date": "2025-10-01",
   "assets": { "directory": "./public", "binding": "ASSETS" },
   "keep_vars": true,
-  "vars": { "SITE_URL": "https://www.vitroscrubs.com" },
+  // Variables públicas. Los SECRETS (MP_ACCESS_TOKEN, MP_WEBHOOK_SECRET, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY)
+  // se guardan en el panel de Cloudflare, nunca aquí. Tampoco pongas aquí NOTIFY_EMAIL (tu correo personal) ni MAIL_FROM:
+  // van en el panel (Variables and Secrets, tipo Text); si estuvieran aquí, cada deploy pisaría lo que cambies allá.
+  // WHATSAPP debe ser el mismo número que CONFIG.WHATSAPP en public/site.js.
+  "vars": {
+    "SITE_URL": "https://www.vitroscrubs.com",
+    "SUPABASE_URL": "https://hczdfyrjzpwsmnjogylv.supabase.co",
+    "WHATSAPP": "525613321403"
+  },
   "routes": [
     { "pattern": "www.vitroscrubs.com", "custom_domain": true },
     { "pattern": "vitroscrubs.com/*", "zone_name": "vitroscrubs.com" }

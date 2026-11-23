@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel | VITRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="VITRO, inicio"><img src="img/logo-vitro-blanco.png" alt="VITRO" width="113" height="28"></a>
+    <div class="hbtns">
+      <span id="who" class="who" hidden></span>
+      <button type="button" class="btn alt out" id="logout" hidden>Salir</button>
+      <a class="btn" href="index.html">Ver el sitio</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h1 class="adm-h1">Panel de VITRO</h1>
+    <p class="err" id="fatal" role="alert"></p>
+    <p id="loading" class="note">Cargando…</p>
+
+    <!-- Sin sesión -->
+    <section class="panel" id="gate" hidden style="max-width:460px">
+      <h2>Entrar</h2>
+      <form id="f-login" novalidate class="stack">
+        <div class="field"><label for="a-mail">Correo</label><input id="a-mail" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="a-pass">Contraseña</label><input id="a-pass" type="password" autocomplete="current-password" required></div>
+        <p class="err" id="a-err" role="alert"></p>
+        <button class="btn" type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <!-- Con sesión, pero sin permiso -->
+    <section class="panel" id="denied" hidden style="max-width:560px">
+      <h2>Esta cuenta no tiene acceso</h2>
+      <p style="color:var(--muted)">Iniciaste sesión como <b id="denied-mail"></b>, pero ese correo no está dado de alta como administrador. Si eres tú, corre el bloque «Darte acceso de administrador» al final de <code>supabase/orders.sql</code> en el SQL Editor de Supabase.</p>
+    </section>
+
+    <!-- Panel -->
+    <section id="app" hidden>
+      <div class="tabs" role="tablist" style="max-width:420px;margin-bottom:20px">
+        <button type="button" class="tab" role="tab" id="tab-o" aria-selected="true">Pedidos</button>
+        <button type="button" class="tab" role="tab" id="tab-s" aria-selected="false">Existencias</button>
+      </div>
+
+      <div id="pane-o">
+        <div class="adm-bar">
+          <div class="adm-stats" id="stats"></div>
+          <div class="adm-refresh"><button type="button" class="btn ghost sm" id="refresh">Actualizar</button><span class="note" id="updated"></span></div>
+        </div>
+        <div id="notices"></div>
+        <p id="adm-flash" class="flash" role="status"></p>
+        <div class="chips" id="chips" role="group" aria-label="Filtrar pedidos"></div>
+        <div id="orders"></div>
+      </div>
+
+      <div id="pane-s" hidden>
+        <div class="panel">
+          <h2>Existencias por talla</h2>
+          <p class="note" style="margin-bottom:14px">Se descuentan solas cuando Mercado Pago aprueba un pago. Si vendes una pieza por fuera de la página (en persona, por WhatsApp), réstala aquí. Los cambios se ven en el sitio en unos segundos.</p>
+          <div style="overflow-x:auto"><table class="stk" id="stk"></table></div>
+          <p class="err" id="s-err" role="alert"></p>
+          <p class="ok" id="s-ok" role="status"></p>
+          <button type="button" class="btn" id="s-save">Guardar existencias</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 VITRO · Panel interno</p>
+  </div>
+</footer>
+
+<script src="catalog.js"></script>
+<script src="stock.js"></script>
+<script src="site.js"></script>
+<script>
+/* ---------- Utilidades ---------- */
+const STATUS = {
+  pending:   ["Esperando pago", "b-wait"],
+  paid:      ["Pagado · por enviar", "b-paid"],
+  preparing: ["Preparando", "b-paid"],
+  shipped:   ["Enviado", "b-ship"],
+  delivered: ["Entregado", "b-done"],
+  cancelled: ["Cancelado", "b-off"],
+  refunded:  ["Reembolsado", "b-off"]
+};
+const FILTERS = [
+  ["toship",  "Por enviar",     o => o.status === "paid" || o.status === "preparing"],
+  ["pending", "Esperando pago", o => o.status === "pending"],
+  ["shipped", "En camino",      o => o.status === "shipped"],
+  ["done",    "Entregados",     o => o.status === "delivered"],
+  ["off",     "Cancelados",     o => o.status === "cancelled" || o.status === "refunded"],
+  ["all",     "Todos",          () => true]
+];
+const E = v => esc(v == null ? "" : v);
+const fmt = ts => ts ? new Date(ts).toLocaleString("es-MX", { timeZone: "America/Mexico_City", dateStyle: "medium", timeStyle: "short" }) : "";
+const tick = ts => ts ? "✓ " + E(fmt(ts)) : "—";
+const waNumber = phone => { const d = String(phone || "").replace(/\D/g, ""); return d.length === 10 ? "52" + d : d; };
+
+let sb = null, orders = [], mailInfo = { customers: false, me: false }, filter = "toship", stockMap = {}, bootedFor = null;
+const openIds = new Set();
+const flash = {};   // mensajes por pedido
+
+function show(which) {
+  $("#loading").hidden = true;
+  ["gate", "denied", "app"].forEach(id => { $("#" + id).hidden = id !== which; });
+  $("#logout").hidden = which === "gate";
+  $("#who").hidden = which === "gate";
+}
+
+async function api(path, opts = {}) {
+  const { data } = await sb.auth.getSession();
+  const token = data.session && data.session.access_token;
+  const res = await fetch(path, { ...opts, headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) } });
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok) { const e = new Error(j.error || "No se pudo completar."); e.status = res.status; e.data = j; throw e; }
+  return j;
+}
+
+/* ---------- Pedidos ---------- */
+async function loadOrders() {
+  const j = await api("/api/admin/orders");
+  orders = j.orders || [];
+  mailInfo = j.email || mailInfo;
+  $("#updated").textContent = "Actualizado " + new Date().toLocaleTimeString("es-MX", { timeZone: "America/Mexico_City", hour: "2-digit", minute: "2-digit" });
+  renderOrders();
+}
+
+function renderStats() {
+  const paid = orders.filter(o => ["paid", "preparing", "shipped", "delivered"].includes(o.status));
+  const toship = orders.filter(FILTERS[0][2]).length;
+  const sales = paid.reduce((t, o) => t + (o.total || 0), 0);
+  $("#stats").innerHTML = `<div class="stat"><b>${toship}</b><span>por enviar</span></div>
+    <div class="stat"><b>${paid.length}</b><span>pedidos pagados</span></div>
+    <div class="stat"><b>${money(sales)}</b><span>vendido (MXN, con envío)</span></div>`;
+}
+
+function renderNotices() {
+  const n = [];
+  if (!mailInfo.me) n.push("No te llegan avisos por correo: en Cloudflare falta la llave <b>RESEND_API_KEY</b> o la variable <b>NOTIFY_EMAIL</b>. Los pedidos sí aparecen aquí.");
+  if (!mailInfo.customers) n.push("Los correos a clientes (confirmación y guía) están apagados hasta que verifiques tu dominio en Resend y pongas <b>MAIL_FROM</b>. Mientras tanto usa el botón <b>Avisar por WhatsApp</b>.");
+  $("#notices").innerHTML = n.map(t => `<div class="notice">${t}</div>`).join("");
+}
+
+function renderChips() {
+  $("#chips").innerHTML = FILTERS.map(([key, label, fn]) =>
+    `<button type="button" class="chipbtn" data-filter="${key}" aria-pressed="${key === filter}">${E(label)} (${orders.filter(fn).length})</button>`).join("");
+}
+
+function statusSelect(o, id) {
+  const paid = !!o.paid_at, cur = o.status;
+  const all = [["pending", "Esperando pago"], ["paid", "Pagado"], ["preparing", "Preparando"], ["shipped", "Enviado"], ["delivered", "Entregado"], ["cancelled", "Cancelado"], ["refunded", "Reembolsado"]];
+  const can = v => v === cur || (["paid", "preparing", "shipped", "delivered"].includes(v) ? paid : v === "cancelled");
+  return `<select name="status" id="${id}"${cur === "refunded" ? " disabled" : ""}>${all.filter(([v]) => can(v)).map(([v, l]) => `<option value="${v}"${v === cur ? " selected" : ""}>${l}</option>`).join("")}</select>`;
+}
+
+function orderHtml(o) {
+  const c = o.customer || {};
+  const [label, cls] = STATUS[o.status] || [o.status, ""];
+  const items = (o.items || []).map(it => `<li>${E(it.name || it.model + " " + it.color)} · Talla <b>${E(it.size)}</b> × ${E(it.qty)} <span class="muted">${money((it.unit_price || 0) * (it.qty || 0))}</span></li>`).join("") || '<li class="muted">Sin artículos registrados: revisa el pago en Mercado Pago.</li>';
+  const addr = [c.street, c.colonia, [c.zip, c.city].filter(Boolean).join(" "), c.state].filter(Boolean);
+  const wa = waNumber(c.phone);
+  const k = "f" + o.id.replace(/[^A-Z0-9]/g, "");
+  const flags = [
+    o.student ? `<span class="badge b-stu">Estudiante${o.student_verified ? " · credencial verificada" : " · verificar credencial"}</span>` : "",
+    o.stock_warning ? '<span class="badge b-off">Existencias insuficientes</span>' : ""
+  ].join("");
+  return `<details class="ord" data-oid="${E(o.id)}"${openIds.has(o.id) ? " open" : ""}>
+  <summary>
+    <span class="mono">${E(o.id)}</span>
+    <span><b>${E(c.name || "Sin nombre")}</b><br><span class="muted">${E(fmt(o.created_at))}</span></span>
+    <span class="tot-s">${money(o.total)}</span>
+    <span class="badges"><span class="badge ${cls}">${E(label)}</span>${flags}</span>
+  </summary>
+  <div class="ord-body">
+    <div>
+      <h3>Cliente</h3>
+      <p><b>${E(c.name)}</b><br><a href="mailto:${E(c.email)}">${E(c.email)}</a><br>${E(c.phone)}${wa ? ` · <a href="https://wa.me/${E(wa)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}${c.school ? `<br>Escuela y carrera: ${E(c.school)}` : ""}</p>
+      <h3>Enviar a</h3>
+      <p>${addr.map(esc).join("<br>")}${c.notes ? `<br><i>Referencias: ${E(c.notes)}</i>` : ""}</p>
+      <p><button type="button" class="btn ghost sm" data-act="copy">Copiar dirección y teléfono</button></p>
+      <h3>Artículos</h3>
+      <ul class="items">${items}</ul>
+      <p class="muted">Subtotal ${money(o.subtotal)} · Envío ${o.shipping ? money(o.shipping) : "gratis"} · <b>Total ${money(o.total)} MXN</b></p>
+      <h3>Pago</h3>
+      <p class="muted">${o.mp_status ? "Mercado Pago: " + E(o.mp_status) : "Sin pago registrado"}${o.mp_payment_id ? " · n.º " + E(o.mp_payment_id) : ""}${o.paid_at ? "<br>Pagado: " + E(fmt(o.paid_at)) : ""}</p>
+      ${o.status === "pending" ? '<p><button type="button" class="btn ghost sm" data-act="sync">Verificar pago en Mercado Pago</button></p>' : ""}
+      <h3>Avisos por correo</h3>
+      <p class="muted">A ti: ${tick(o.admin_notified_at)}<br>Confirmación al cliente: ${tick(o.customer_notified_at)}<br>Guía al cliente: ${tick(o.shipped_notified_at)}</p>
+      ${o.paid_at ? '<p><button type="button" class="btn ghost sm" data-act="resend-paid">Reenviar confirmación al cliente</button></p>' : ""}
+    </div>
+    <form data-form novalidate>
+      <h3>Gestión del pedido</h3>
+      ${o.student ? `<label class="chk"><input type="checkbox" name="student_verified"${o.student_verified ? " checked" : ""}><span><b>Credencial verificada</b><br><small>Marca esta casilla cuando ya viste su credencial por WhatsApp.</small></span></label>` : ""}
+      <div class="field"><label for="${k}st">Estado</label>${statusSelect(o, k + "st")}</div>
+      <div class="f2">
+        <div class="field"><label for="${k}ca">Paquetería</label><input id="${k}ca" name="carrier" list="carriers" maxlength="40" value="${E(o.carrier || "")}" placeholder="Estafeta, DHL…" autocomplete="off"></div>
+        <div class="field"><label for="${k}tn">Número de guía</label><input id="${k}tn" name="tracking_number" maxlength="60" value="${E(o.tracking_number || "")}" autocomplete="off"></div>
+      </div>
+      <div class="field"><label for="${k}tu">Enlace de rastreo (opcional)</label><input id="${k}tu" name="tracking_url" type="url" maxlength="300" value="${E(o.tracking_url || "")}" placeholder="https://…" autocomplete="off"></div>
+      <div class="field"><label for="${k}nt">Nota interna (solo tú la ves)</label><textarea id="${k}nt" name="admin_note" maxlength="500" rows="2">${E(o.admin_note || "")}</textarea></div>
+      <p class="err" data-msg role="alert"></p>
+      <div class="actions">
+        <button type="button" class="btn" data-act="save">Guardar</button>
+        <button type="button" class="btn" data-act="ship" ${o.paid_at ? "" : "disabled"}>Marcar enviado y avisar por correo</button>
+        <button type="button" class="btn ghost" data-act="wa" ${wa ? "" : "disabled"}>Avisar por WhatsApp</button>
+      </div>
+    </form>
+  </div>
+</details>`;
+}
+
+function renderOrders() {
+  renderStats(); renderNotices(); renderChips();
+  const fn = FILTERS.find(f => f[0] === filter)[2];
+  const list = orders.filter(fn);
+  $("#orders").innerHTML = list.length ? list.map(orderHtml).join("") : `<div class="panel"><p class="empty" style="padding:20px 0">No hay pedidos en esta vista.</p></div>`;
+  Object.keys(flash).forEach(id => { const el = $(`[data-oid="${id}"] [data-msg]`); if (el) { el.className = flash[id].ok ? "ok" : "err"; el.textContent = flash[id].text; } });
+}
+
+function readForm(card) {
+  const f = $("[data-form]", card), v = n => { const el = f.elements[n]; return el ? el.value : undefined; };
+  const body = { carrier: v("carrier"), tracking_number: v("tracking_number"), tracking_url: v("tracking_url"), admin_note: v("admin_note") };
+  const st = f.elements.status; if (st && !st.disabled) body.status = st.value;
+  if (f.elements.student_verified) body.student_verified = f.elements.student_verified.checked;
+  return body;
+}
+
+function setMsg(id, ok, text) {
+  const g = $("#adm-flash"); g.className = "flash " + (ok ? "ok" : "err"); g.textContent = id + ": " + text;
+  flash[id] = { ok, text }; const el = $(`[data-oid="${id}"] [data-msg]`); if (el) { el.className = ok ? "ok" : "err"; el.textContent = text; } }
+function replaceOrder(o) { const i = orders.findIndex(x => x.id === o.id); if (i >= 0) orders[i] = o; else orders.unshift(o); }
+
+async function onOrderAction(card, act, btn) {
+  const id = card.dataset.oid;
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  if (act === "copy") {
+    const c = o.customer || {};
+    const text = [c.name, [c.street, c.colonia].filter(Boolean).join(", "), [c.zip, c.city].filter(Boolean).join(" "), c.state, "Tel. " + c.phone, c.notes ? "Ref: " + c.notes : ""].filter(Boolean).join("\n");
+    try { await navigator.clipboard.writeText(text); setMsg(id, true, "Dirección copiada."); } catch { setMsg(id, false, "No se pudo copiar. Selecciónala a mano."); }
+    return;
+  }
+  if (act === "wa") {
+    const b = readForm(card), c = o.customer || {};
+    const first = String(c.name || "").trim().split(/\s+/)[0];
+    const text = `Hola${first ? " " + first : ""}, tu pedido ${o.id} de VITRO ya va en camino.` +
+      (b.carrier ? ` Paquetería: ${b.carrier}.` : "") + (b.tracking_number ? ` Guía: ${b.tracking_number}.` : "") + (b.tracking_url ? ` Rastreo: ${b.tracking_url}` : "") + " ¡Gracias por tu compra!";
+    window.open(`https://wa.me/${waNumber(c.phone)}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+    return;
+  }
+  openIds.add(id);
+  btn.disabled = true;
+  try {
+    if (act === "save" || act === "ship") {
+      const body = readForm(card);
+      if (act === "ship") body.notify = "shipped";
+      const j = await api(`/api/admin/orders/${id}`, { method: "POST", body: JSON.stringify(body) });
+      replaceOrder(j.order);
+      if (act === "ship") {
+        const e = j.email || {};
+        setMsg(id, !!e.sent, e.sent ? `Guardado y correo enviado a ${j.order.customer.email}.` : `Guardado como enviado. El correo NO salió${e.error ? " (" + e.error + ")" : ""}: usa «Avisar por WhatsApp».`);
+      } else setMsg(id, true, "Guardado.");
+    } else if (act === "sync") {
+      const j = await api(`/api/admin/orders/${id}/sync`, { method: "POST", body: "{}" });
+      replaceOrder(j.order);
+      setMsg(id, true, j.sync && j.sync.found ? `Mercado Pago: ${j.order.mp_status || "sin estado"}.` : "Mercado Pago todavía no tiene un pago con este folio.");
+    } else if (act === "resend-paid") {
+      const j = await api(`/api/admin/orders/${id}/notify`, { method: "POST", body: JSON.stringify({ kind: "paid" }) });
+      replaceOrder(j.order);
+      const e = j.email || {};
+      setMsg(id, !!e.sent, e.sent ? "Confirmación reenviada al cliente." : `No se pudo enviar${e.error ? ": " + e.error : "."}`);
+    }
+  } catch (e) { setMsg(id, false, e.message); }
+  renderOrders();
+}
+
+/* ---------- Existencias ---------- */
+async function loadStock() {
+  const j = await api("/api/admin/stock");
+  stockMap = {};
+  (j.rows || []).forEach(r => { stockMap[`${r.model}|${r.color}|${r.size}`] = r.qty; });
+  renderStock();
+}
+function renderStock() {
+  let html = `<thead><tr><th>Modelo</th><th>Color</th>${CAT.sizes.map(s => `<th>${E(s)}</th>`).join("")}</tr></thead><tbody>`;
+  MODELS.forEach(m => COLORS.forEach(c => {
+    html += `<tr><td>${E(CAT.models[m].name)} <span class="muted">${E(CAT.models[m].kind)}</span></td><td><i class="dot" style="background:${E(CAT.colors[c].hex)}"></i> ${E(CAT.colors[c].name)}</td>` +
+      CAT.sizes.map(s => `<td><input type="number" min="0" max="999" step="1" inputmode="numeric" data-m="${m}" data-c="${c}" data-s="${s}" aria-label="${E(CAT.models[m].name + " " + CAT.colors[c].name + " talla " + s)}" value="${stockMap[`${m}|${c}|${s}`] ?? 0}"></td>`).join("") + "</tr>";
+  }));
+  $("#stk").innerHTML = html + "</tbody>";
+}
+async function saveStock() {
+  const err = $("#s-err"), ok = $("#s-ok"); err.textContent = ""; ok.textContent = "";
+  const items = [...document.querySelectorAll("#stk input")].map(i => ({ model: i.dataset.m, color: i.dataset.c, size: i.dataset.s, qty: Number(i.value) }));
+  if (items.some(i => !Number.isInteger(i.qty) || i.qty < 0 || i.qty > 999)) { err.textContent = "Usa números enteros de 0 a 999."; return; }
+  const btn = $("#s-save"); btn.disabled = true;
+  try {
+    const j = await api("/api/admin/stock", { method: "POST", body: JSON.stringify({ items }) });
+    stockMap = {}; (j.rows || []).forEach(r => { stockMap[`${r.model}|${r.color}|${r.size}`] = r.qty; });
+    renderStock(); ok.textContent = "Existencias guardadas.";
+  } catch (e) { err.textContent = e.message; }
+  btn.disabled = false;
+}
+
+/* ---------- Pestañas y eventos ---------- */
+function tab(which) {
+  $("#tab-o").setAttribute("aria-selected", which === "o"); $("#tab-s").setAttribute("aria-selected", which === "s");
+  $("#pane-o").hidden = which !== "o"; $("#pane-s").hidden = which !== "s";
+  if (which === "s") loadStock().catch(e => { $("#s-err").textContent = e.message; });
+}
+$("#tab-o").onclick = () => tab("o");
+$("#tab-s").onclick = () => tab("s");
+$("#s-save").onclick = saveStock;
+$("#refresh").onclick = async () => { try { await loadOrders(); } catch (e) { $("#fatal").textContent = e.message; } };
+$("#chips").addEventListener("click", e => { const b = e.target.closest("[data-filter]"); if (b) { filter = b.dataset.filter; renderOrders(); } });
+$("#orders").addEventListener("toggle", e => { const d = e.target; if (d.matches && d.matches("details.ord")) { d.open ? openIds.add(d.dataset.oid) : openIds.delete(d.dataset.oid); } }, true);
+$("#orders").addEventListener("submit", e => e.preventDefault());
+$("#orders").addEventListener("click", e => { const b = e.target.closest("[data-act]"); if (!b) return; onOrderAction(b.closest("details.ord"), b.dataset.act, b); });
+document.body.insertAdjacentHTML("beforeend", '<datalist id="carriers"><option value="Estafeta"><option value="DHL"><option value="FedEx"><option value="Paquetexpress"><option value="Redpack"><option value="99 Minutos"><option value="Correos de México"></datalist>');
+
+/* ---------- Sesión ---------- */
+async function boot(session) {
+  $("#fatal").textContent = "";
+  if (!session) { bootedFor = null; show("gate"); return; }
+  if (bootedFor === session.user.id) return;
+  bootedFor = session.user.id;
+  $("#who").textContent = session.user.email || "";
+  try {
+    await loadOrders();
+    show("app");
+  } catch (e) {
+    if (e.status === 403) { $("#denied-mail").textContent = session.user.email || ""; show("denied"); }
+    else if (e.status === 401) { bootedFor = null; show("gate"); }
+    else { show("app"); $("#fatal").textContent = e.message; }
+  }
+}
+
+function loadSdk() {
+  return new Promise((ok, fail) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js";
+    s.onload = ok; s.onerror = () => fail(new Error("No se pudo cargar el servicio de cuentas."));
+    document.head.appendChild(s);
+  });
+}
+
+(async function start() {
+  if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) { $("#loading").hidden = true; $("#fatal").textContent = "Faltan las llaves de Supabase en site.js."; return; }
+  try { await loadSdk(); } catch (e) { $("#loading").hidden = true; $("#fatal").textContent = e.message; return; }
+  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  $("#f-login").addEventListener("submit", async e => {
+    e.preventDefault();
+    $("#a-err").textContent = "";
+    const { error } = await sb.auth.signInWithPassword({ email: $("#a-mail").value.trim(), password: $("#a-pass").value });
+    if (error) $("#a-err").textContent = error.message === "Invalid login credentials" ? "Correo o contraseña incorrectos." : error.message;
+  });
+  $("#logout").onclick = () => sb.auth.signOut();
+  sb.auth.onAuthStateChange((event, session) => { if (event === "TOKEN_REFRESHED") return; setTimeout(() => boot(session), 0); });
+  const { data } = await sb.auth.getSession();
+  boot(data.session);
+})();
+</script>
+</body>
+</html>

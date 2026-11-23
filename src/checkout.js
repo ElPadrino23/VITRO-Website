@@ -5,8 +5,13 @@
 // Variables de entorno (Cloudflare Pages > Settings > Variables and secrets):
 //   MP_ACCESS_TOKEN  (secreto)  Access Token de Mercado Pago (se guarda como Secret en Cloudflare)
 //   SITE_URL                    se define en wrangler.jsonc (sin diagonal final)
+// Además guarda cada pedido en Supabase (si está configurado) y lee las existencias en vivo de allí.
+// Si la base de datos falla, el cobro SIGUE funcionando: el webhook recrea el pedido desde Mercado Pago.
 
 import CATALOG from "../public/catalog.js";
+import { loadStock } from "./lib/stock.js";
+import { insertOrder, itemLabel } from "./lib/orders.js";
+import { hasDb } from "./lib/db.js";
 
 const MAX_QTY = 10, MAX_LINES = 12;
 
@@ -49,7 +54,12 @@ export async function onRequestPost({ request, env }) {
     if (!customer.school) return json({ error: "Escribe tu escuela y carrera para el precio estudiante." }, 400);
   }
 
+  let liveStock = null;
+  try { liveStock = await loadStock(env); } catch (e) { console.error("existencias en vivo", e.message); }
+  const stock = liveStock || CATALOG.stock;   // respaldo: catalog.js
+
   const mpItems = [];
+  const orderItems = [];
   const perKey = {};   // piezas pedidas por modelo-color-talla, para validar existencias
   let units = 0;
   for (const it of items) {
@@ -60,7 +70,7 @@ export async function onRequestPost({ request, env }) {
     }
     const key = `${it.model}-${it.color}`;
     perKey[key + "|" + it.size] = (perKey[key + "|" + it.size] || 0) + qty;
-    const available = (CATALOG.stock[key] || {})[it.size] || 0;
+    const available = (stock[key] || {})[it.size] || 0;
     if (perKey[key + "|" + it.size] > available) {
       return json({ error: `${model.name} (${model.kind}) ${color.name} talla ${it.size}: solo quedan ${available}.` }, 400);
     }
@@ -72,6 +82,7 @@ export async function onRequestPost({ request, env }) {
       unit_price: unit,
       currency_id: "MXN"
     });
+    orderItems.push({ model: it.model, color: it.color, size: it.size, qty, unit_price: unit, name: itemLabel(it.model, it.color) });
     units += qty;
   }
 
@@ -110,6 +121,14 @@ export async function onRequestPost({ request, env }) {
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok || !data.init_point) return json({ error: "Mercado Pago rechazó la solicitud." }, 502);
+
+  // Guardar el pedido (si falla no se interrumpe el pago; ver el comentario de arriba).
+  if (hasDb(env)) {
+    const subtotal = orderItems.reduce((t, i) => t + i.unit_price * i.qty, 0);
+    try {
+      await insertOrder(env, { id: orderId, status: "pending", student, customer, items: orderItems, subtotal, shipping, total: subtotal + shipping });
+    } catch (e) { console.error("no se guardó el pedido", orderId, e.message); }
+  }
 
   return json({ url: data.init_point, orderId });
 }

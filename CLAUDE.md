@@ -33,7 +33,7 @@ Los nombres de modelos y colores se cambian solo en `catalog.js`.
 - Estudiante: Navy $950 · Vino $800 · Verde $800.
 - Envío: $99; **gratis desde 2 sets** en el pedido.
 
-**Existencias**: primer lote pequeño, por modelo-color-talla, en `catalog.js` → `stock`. **Se descuentan a mano**: cuando se vende algo, Fernando (o tú, si te lo pide) resta la pieza en `catalog.js` y hace push. El servidor rechaza pedidos que excedan `stock`, pero no lo descuenta solo.
+**Existencias**: primer lote pequeño, por modelo-color-talla. La fuente de verdad es la tabla **`stock` de Supabase**: se edita en **`/admin` → Existencias** y se **descuenta sola** cuando Mercado Pago aprueba un pago (función SQL `mark_order_paid`, una sola vez por pedido). `catalog.js` → `stock` es solo la semilla inicial y el **respaldo** si la base de datos no responde; **no lo uses para descontar ventas**. El sitio lee las existencias vivas con `GET /stock.js` (script que genera el Worker y pisa `catalog.js`) y `checkout.js` las valida en servidor. No hay reserva: un pedido pendiente (OXXO/transferencia) no aparta piezas hasta que se paga; si se paga más de lo que había, el pedido queda con `stock_warning` y se avisa.
 
 **Precio estudiante**: el cliente marca "Soy estudiante", usa correo escolar y escribe escuela y carrera. El servidor solo aplica el descuento si `student === true`, el dominio del correo está en `studentDomains` y hay escuela. El correo no prueba que sea estudiante, así que cada pedido con descuento sale en Mercado Pago con la nota *"SI - VERIFICAR CREDENCIAL POR WHATSAPP ANTES DE ENVIAR"*. Fernando verifica la credencial por WhatsApp antes de enviar; si no la manda, se cobra la diferencia.
 
@@ -41,22 +41,29 @@ Los nombres de modelos y colores se cambian solo en `catalog.js`.
 
 ## 2. Arquitectura
 
-Un **Cloudflare Worker con assets estáticos**. Sin base de datos, sin build, sin framework.
+Un **Cloudflare Worker con assets estáticos** + **Supabase** (cuentas de clientes, pedidos, existencias, administradores). Sin build, sin framework.
 
 ```
 wrangler.jsonc        config del Worker, SITE_URL y rutas de dominio
 src/worker.js         router: redirige apex→www, POST /api/checkout, el resto → env.ASSETS
-src/checkout.js       crea la preferencia de Mercado Pago (valida todo en servidor)
+src/checkout.js       crea la preferencia de Mercado Pago (valida todo en servidor) y guarda el pedido en Supabase
+src/payments.js       POST /api/mp-webhook (notificaciones de pago), POST /api/order/confirm (al volver a /gracias), applyPayment()
+src/admin.js          API del panel: /api/admin/orders, /orders/:id (+/sync, /notify), /stock  (exige sesión de administrador)
+src/lib/              db.js (REST de Supabase con service_role), stock.js (existencias vivas + GET /stock.js), mail.js (Resend),
+                      emails.js (plantillas), orders.js (pedidos y avisos), util.js
+public/admin.html     panel de administración (pedidos, guías, existencias). Sin enlace público; noindex
+/stock.js             NO existe como archivo: lo genera el Worker. Cada página lo carga después de catalog.js
 public/index.html     página principal (HTML/CSS/JS vanilla)
 public/tienda.html    los 6 productos
 public/producto.html  un producto (`producto.html?id=mujer-navy`): descripción, tela, laboratorio, certificaciones
 public/carrito.html   carrito + datos de envío + botón de pago (único lugar desde donde se paga)
-public/cuenta.html    registro / inicio de sesión con Supabase Auth ("Mis pedidos" pendiente)
+public/cuenta.html    registro / inicio de sesión con Supabase Auth + "Mis pedidos" (función my_orders)
 public/fichas.html    fichas técnicas · public/sesion.html  galería de la sesión de fotos
 public/site.js        COMPARTIDO: CONFIG (WhatsApp, redes, llaves públicas de Supabase), carrito, panel lateral, tarjeta de producto
 public/site.css       estilos de producto, carrito y cuenta (index y tienda traen su CSS en línea)
 public/ascii.js       animación ASCII del logo; se reproduce al tocar "Continuar con el pago", antes de ir a Mercado Pago
 supabase/schema.sql   tabla `profiles` + RLS + trigger (se pega en el SQL Editor de Supabase)
+supabase/orders.sql   tablas `orders`, `stock`, `admins`, funciones `mark_order_paid` y `my_orders`, y cómo darte admin (se pega en el SQL Editor)
 public/gracias.html   página de "gracias por tu pedido" (se ve como /gracias)
 public/catalog.js     FUENTE ÚNICA: precios, nombres, colores, stock, dominios escolares
 public/img/           fotos (ver sección 6)
@@ -66,13 +73,20 @@ LEEME-DESPLIEGUE.md   guía de despliegue y pasos previos a vender
 `catalog.js` es un script clásico que define `window.VITRO_CATALOG` y también hace `module.exports`, así lo lee el navegador (`index.html`) y el servidor (`checkout.js` con `import CATALOG`). **Cualquier cambio de precio, nombre o stock se hace solo ahí.** El cliente nunca decide precios: `checkout.js` los recalcula.
 
 ### Cobro (Mercado Pago Checkout Pro)
-1. El cliente llena el carrito y el formulario de envío; `pay()` en `index.html` hace `POST /api/checkout` con `{student, items:[{model,color,size,qty}], customer}`.
+1. El cliente llena el carrito y el formulario de envío en `carrito.html`; `pay()` hace `POST /api/checkout` con `{student, items:[{model,color,size,qty}], customer}`.
 2. `checkout.js` valida modelo/color/talla/cantidad (≤10 por línea, ≤12 líneas), stock acumulado por modelo-color-talla, datos de envío (teléfono de 10 dígitos, CP de 5), precio estudiante y envío.
 3. Crea la preferencia en `https://api.mercadopago.com/checkout/preferences` con `MP_ACCESS_TOKEN` y devuelve `init_point`; el navegador redirige a Mercado Pago.
 4. Mercado Pago regresa a `${SITE_URL}/gracias?pedido=ok|pendiente&ref=VITRO-…` (fallo → `/?pedido=fallo#tienda`).
-5. Los pedidos se ven en el panel de Mercado Pago (Actividades); el folio está en `external_reference`. No hay webhooks ni base de datos.
+5. `checkout.js` también guarda el pedido en Supabase (`orders`, estado `pending`). Si la base de datos falla el cobro **sigue** (mejor cobrar que perder la venta): el webhook recrea el pedido desde los metadatos del pago.
+6. Cuando se paga, el pedido pasa a `paid` por **tres vías equivalentes** (todas usan `applyPayment()` y son idempotentes): el **webhook** de Mercado Pago (`/api/mp-webhook`), `gracias.html` llamando a `/api/order/confirm` con el `payment_id` que agrega Mercado Pago, y el botón **«Verificar pago»** del panel. **El estado del pago siempre se lee de la API de Mercado Pago** con `MP_ACCESS_TOKEN`, nunca del cuerpo de la notificación: la firma (`x-signature`) se revisa y solo se registra si no coincide (no bloquea; así una clave de prueba/producción equivocada no deja pedidos sin marcar como pagados).
+7. La primera vez que un pedido pasa a pagado (`mark_order_paid` devuelve `true`): se descuentan las existencias y se mandan los correos (a Fernando y, si el dominio está verificado en Resend, al cliente).
+8. Fernando ve y gestiona los pedidos en `/admin`: estados (pagado → preparando → enviado → entregado), paquetería y guía, «Marcar enviado y avisar por correo» y «Avisar por WhatsApp» (mientras no haya dominio verificado el correo al cliente no sale; el botón de WhatsApp siempre sirve). También los ve en el panel de Mercado Pago (Actividades) con el folio en `external_reference`.
 
-Configuración en Cloudflare: secret **`MP_ACCESS_TOKEN`** (lo gestiona solo Fernando en el panel), variable `SITE_URL` en `wrangler.jsonc` (`https://www.vitroscrubs.com`, sin diagonal final), `keep_vars: true`.
+Configuración en Cloudflare (Settings → Variables and Secrets; **los secrets los gestiona solo Fernando, nunca van en el repo**):
+- Secrets: `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET` (clave secreta de Webhooks en Mercado Pago), `SUPABASE_SERVICE_ROLE_KEY` (se salta toda la seguridad: solo el Worker la usa), `RESEND_API_KEY`.
+- Variables de texto en el panel (NO en `wrangler.jsonc`, para que un deploy no las pise): `NOTIFY_EMAIL` (a dónde te llega cada pedido; mientras uses `onboarding@resend.dev` debe ser el correo con el que abriste Resend), `MAIL_FROM` (p. ej. `VITRO <pedidos@vitroscrubs.com>` cuando el dominio esté verificado en Resend; sin esto se usa el remitente de prueba y **no se le escribe a clientes**), `MAIL_REPLY_TO` (opcional).
+- En `wrangler.jsonc` (públicas): `SITE_URL` (sin diagonal final), `SUPABASE_URL`, `WHATSAPP` (debe coincidir con `CONFIG.WHATSAPP` de `site.js`). `keep_vars: true`.
+- Webhook en Mercado Pago (Tus integraciones → Webhooks): URL `https://www.vitroscrubs.com/api/mp-webhook`, evento **Pagos**. La configuración de **prueba** y la de **producción** son separadas y cada una tiene su propia clave secreta.
 
 ### Dominio
 - DNS en Cloudflare (el registrador es GoDaddy, con nameservers de Cloudflare).
@@ -120,8 +134,10 @@ Un banner o franja destacada **a la mitad del sitio** (sugerencia: entre la tien
 
 ### D. Antes de vender de verdad (los hace Fernando, tú solo recuérdalo)
 - Cambiar el secret `MP_ACCESS_TOKEN` al de **producción** y hacer una compra real chica que se devuelve.
-- Poner su número en `CONFIG.WHATSAPP` de `index.html` (formato `52XXXXXXXXXX`, hoy dice `52XXXXXXXXXX`).
-- Actualizar stock en `catalog.js` con cada venta.
+- Verificar el dominio `vitroscrubs.com` en Resend (registros DNS en Cloudflare) y poner `MAIL_FROM`; hasta entonces los clientes no reciben correo.
+- Darse de alta como administrador (último bloque de `supabase/orders.sql`) y poner `NOTIFY_EMAIL`.
+- Las existencias se llevan en `/admin` (ya no en `catalog.js`).
+- Pendiente cuando haya dominio: correo propio para soporte y `MAIL_REPLY_TO`, SMTP propio en Supabase Auth (el gratuito manda muy pocos correos por hora), política de privacidad y términos.
 
 ### E. Más adelante
 - Otras secciones que Fernando pedirá (preguntas frecuentes, guía de tallas, envíos/devoluciones, contacto).
@@ -154,3 +170,12 @@ Un banner o franja destacada **a la mitad del sitio** (sugerencia: entre la tien
 - Cuentas: `cuenta.html` muestra "se activan muy pronto" mientras las llaves estén vacías. No se guardan datos de pago en ningún lado.
 - Las tarjetas ya no muestran "quedan N". Logo del encabezado: `img/logo-vitro-blanco.png` (recorte de la imagen oficial).
 - Fotos de producto: nombres de archivo **sin espacios** (rompen el `url()` del CSS).
+
+## 8. Pedidos, panel y existencias (22-nov-2026)
+
+- **Seguridad de la base de datos**: `orders`, `stock` y `admins` tienen RLS activado **sin políticas** y sin permisos para `anon`/`authenticated`: el navegador no puede leerlas ni escribirlas. Solo el Worker (llave `service_role`). Los clientes ven sus pedidos únicamente con la función `my_orders()` (coincide por el correo verificado de su cuenta y no expone datos internos). `mark_order_paid` solo la puede ejecutar `service_role` (si se la concedes a `authenticated`, cualquiera podría marcar pedidos como pagados).
+- **Administradores**: tabla `admins` (user_id). Se da de alta solo desde el SQL Editor. No pongas un campo `is_admin` en `profiles`: el usuario puede editar su propio perfil.
+- **Folio** = `external_reference` = `orders.id` = `VITRO-XXXXXXXX` (regex `ORDER_ID_RE`; valídalo siempre antes de meterlo en una consulta).
+- **Estados**: `pending` → `paid` → `preparing` → `shipped` → `delivered`; también `cancelled` y `refunded`. Solo Mercado Pago (webhook, confirm o «Verificar pago») puede marcar `paid`; el panel no.
+- **Cómo se probó**: el servidor con `fetch` simulado (Supabase, Mercado Pago y Resend falsos) importando `src/worker.js` en Node; el SQL contra PGlite (`@electric-sql/pglite`, Postgres en WASM) con los roles de Supabase simulados; el panel y la cuenta con Playwright y la API simulada. Para el webhook real usa las cuentas de prueba de Mercado Pago y la configuración de **prueba** de Webhooks.
+- No se guardan datos de pago en ningún lado (solo contacto y envío).

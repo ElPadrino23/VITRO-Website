@@ -87,7 +87,7 @@
         </div>
         <div class="panel">
           <h2>Mis pedidos</h2>
-          <p style="color:var(--muted)">Muy pronto vas a poder ver aquí tus pedidos. Por ahora, el folio de cada compra te llega al terminar el pago.</p>
+          <div id="myorders"><p class="muted">Cargando…</p></div>
         </div>
         <button type="button" class="btn ghost" id="logout">Cerrar sesión</button>
       </div>
@@ -102,6 +102,7 @@
 </footer>
 
 <script src="catalog.js"></script>
+<script src="stock.js"></script>
 <script src="site.js"></script>
 <script>
 /* Cuentas con Supabase Auth. Las llaves van en CONFIG (site.js). La tabla "profiles" se crea con supabase/schema.sql */
@@ -145,6 +146,26 @@ async function start() {
     $("#me-school").value = d.school || ""; $("#me-career").value = d.career || "";
     $("#atitle").textContent = d.full_name ? "Hola, " + d.full_name.split(" ")[0] : "Mi cuenta";
     show("member");
+    loadMyOrders();
+  }
+
+  /* Pedidos hechos con el correo de la cuenta (la función my_orders de Supabase solo devuelve los del usuario). */
+  const ORDER_STATUS = { pending: "Esperando pago", paid: "Pagado", preparing: "Preparando tu pedido", shipped: "Enviado", delivered: "Entregado", cancelled: "Cancelado", refunded: "Reembolsado" };
+  async function loadMyOrders() {
+    const box = $("#myorders");
+    const { data, error } = await sb.rpc("my_orders");
+    if (error) { box.innerHTML = '<p class="muted">Por ahora no podemos mostrar tus pedidos. Intenta de nuevo más tarde.</p>'; return; }
+    if (!data || !data.length) { box.innerHTML = '<p class="muted">Todavía no tienes pedidos con este correo. Cuando compres con él, aparecerán aquí con su estado y su guía de envío.</p>'; return; }
+    box.innerHTML = data.map(o => {
+      const items = (o.items || []).map(it => `<li>${esc(it.name || "")} · Talla ${esc(it.size)} × ${esc(it.qty)}</li>`).join("");
+      const when = new Date(o.created_at).toLocaleDateString("es-MX", { dateStyle: "medium" });
+      const url = /^https?:\/\//i.test(o.tracking_url || "") ? o.tracking_url : "";
+      const track = o.tracking_number || o.carrier
+        ? `<div class="track"><b>Envío</b><br>${o.carrier ? "Paquetería: " + esc(o.carrier) + "<br>" : ""}${o.tracking_number ? "Guía: <b>" + esc(o.tracking_number) + "</b>" : ""}${url ? `<br><a href="${esc(url)}" target="_blank" rel="noopener" style="text-decoration:underline">Rastrear mi paquete</a>` : ""}</div>` : "";
+      return `<div class="myo"><div class="myo-h"><div><b>${esc(o.id)}</b><br><span class="muted" style="font-size:13px">${esc(when)}</span></div><b>${esc(ORDER_STATUS[o.status] || o.status)}</b></div>
+        <ul>${items}</ul><div class="muted" style="font-size:14px">Total: <b style="color:var(--ink)">${money(o.total)} MXN</b>${o.shipping ? "" : " · envío gratis"}</div>
+        ${o.status === "pending" ? '<p class="note" style="margin-top:6px">Si ya pagaste, puede tardar unos minutos en reflejarse.</p>' : ""}${track}</div>`;
+    }).join("");
   }
 
   $("#f-in").addEventListener("submit", async e => {

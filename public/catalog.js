@@ -37,7 +37,9 @@
     // Termina en ".edu.mx" o es uno de estos. Si el correo no coincide, se pide pagar por WhatsApp con credencial.
     studentDomains: [".edu.mx", "tec.mx", "itesm.mx", "unam.mx", "uanl.mx", "udg.mx", "ipn.mx", "uaq.mx", "anahuac.mx", "ibero.mx", "up.edu.mx"],
 
-    // Existencias del primer lote (de la proforma SH-26ANNO0903). Se actualizan a mano.
+    // Existencias del primer lote (de la proforma SH-26ANNO0903).
+    // OJO: las existencias REALES viven en Supabase (tabla `stock`), se editan en /admin y se descuentan solas con cada pago.
+    // Esto es solo la semilla inicial (supabase/orders.sql) y el respaldo si la base de datos no responde. No lo uses para descontar ventas.
     stock: {
       "mujer-navy":   { XS: 3, S: 4, M: 3 },
       "mujer-vino":   { XS: 1, S: 3, M: 1 },
