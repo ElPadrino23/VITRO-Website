@@ -14,7 +14,10 @@ import { canEmailCustomers } from "./lib/mail.js";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function requireAdmin(request, env) {
-  if (!hasDb(env)) return { error: json({ error: "La base de datos no está configurada." }, 503) };
+  if (!hasDb(env)) {
+    const missing = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"].filter((k) => !env[k]);
+    return { error: json({ error: `Falta configurar en Cloudflare: ${missing.join(", ")} (el nombre debe ser exactamente ese).`, missing }, 503) };
+  }
   const auth = request.headers.get("Authorization") || "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
   if (!token) return { error: json({ error: "Inicia sesión." }, 401) };

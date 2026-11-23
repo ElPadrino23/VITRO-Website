@@ -346,7 +346,7 @@ async function boot(session) {
   } catch (e) {
     if (e.status === 403) { $("#denied-mail").textContent = session.user.email || ""; show("denied"); }
     else if (e.status === 401) { bootedFor = null; show("gate"); }
-    else { show("app"); $("#fatal").textContent = e.message; }
+    else { show("none"); $("#fatal").textContent = e.message; }
   }
 }
 
